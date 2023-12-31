@@ -10,7 +10,7 @@ const Navbar = () => {
         <div className={navbarstyles.mainContainer}>
 
             <div className={navbarstyles.nameWrapper}>
-                <NavLink to="/UserLogin">
+                <NavLink to="/">
                     <div className={navbarstyles.logoWrapper}>
                         <img src="../Images/logo.jpg" alt="logo" width={80} height={80} style={{borderRadius: "45%", padding: ".5rem" }} className={navbarstyles.logo}  />
                     </div>
@@ -36,7 +36,7 @@ const Navbar = () => {
                 </ul>
 
                 <div className={navbarstyles.userWrapper}>
-                    <NavLink to="/UserLogin">
+                    <NavLink to="/">
                         <FontAwesomeIcon icon={faUser} className={navbarstyles.user} />
                     </NavLink>
                 </div>

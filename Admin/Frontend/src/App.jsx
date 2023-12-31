@@ -13,8 +13,7 @@ import UserLogin from "./pages/UserLogin";
 const router = createBrowserRouter (
   createRoutesFromElements(
     <Route>
-      <Route path="/" element={<Navbar />} />
-      <Route path="/UserLogin" element={<UserLogin />} />
+      <Route index element={<UserLogin />} />
       <Route path="/AddBook" element={<AddBook />} />
       <Route path="/AddSuggestions" element={<AddSuggestions /> } />
 
