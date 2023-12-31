@@ -17,7 +17,7 @@ const AddBook = () => {
 
       <div className={addbookstyle.mainContainer} >
         <form action="">
-          <h2>Add Books</h2>
+          <h1>Add Books</h1>
           <fieldset>
             <label htmlFor="title"></label>
             <input type="text" name="bookTitle" id="title" placeholder="Book Title" required  />
@@ -51,8 +51,12 @@ const AddBook = () => {
               
             </div>
 
-            <label htmlFor="about"></label>
-            <textarea name="aboutAuthor" id="about" cols="30" rows="10" placeholder="About Author"> </textarea>
+            <div className={addbookstyle.textareaWrapper}>
+              <label htmlFor="about">About Author:
+                <textarea name="aboutAuthor" id="about" cols="30" rows="10" placeholder="About Author"> </textarea>
+              </label>
+            </div>
+
 
             <label htmlFor="image"></label>
             <input type="file" name="bookImage" id="image" placeholder="Images" required style={{cursor: 'pointer'}}/>

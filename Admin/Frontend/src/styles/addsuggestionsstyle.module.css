@@ -5,7 +5,7 @@
 }
 
 .mainContainer{
-    background-color:var(--primary);
+    background-color:#da9f93;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,7 +16,7 @@
 }
 
 .mainContainer h1{
-    color: #f4a259;
+    color: #370617;
 }
 
 form{
@@ -107,5 +107,5 @@ input[type="number"]::-webkit-outer-spin-button {
 
 textarea{
     width: 90%;
-    padding: .5rem;
+    color: black;
 }
