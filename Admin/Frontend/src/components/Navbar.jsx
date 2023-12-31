@@ -10,7 +10,7 @@ const Navbar = () => {
         <div className={navbarstyles.mainContainer}>
 
             <div className={navbarstyles.nameWrapper}>
-                <NavLink to="/Home">
+                <NavLink to="/UserLogin">
                     <div className={navbarstyles.logoWrapper}>
                         <img src="../Images/logo.jpg" alt="logo" width={80} height={80} style={{borderRadius: "45%", padding: ".5rem" }} className={navbarstyles.logo}  />
                     </div>
@@ -27,10 +27,6 @@ const Navbar = () => {
 
             <div className={navbarstyles.links}>
                 <ul>
-                    <NavLink to="/Home"> 
-                        <li>Home</li>
-                    </NavLink>
-                    
                     <NavLink to="/AddBook">
                         <li>Add Books</li>
                     </NavLink>
@@ -38,12 +34,14 @@ const Navbar = () => {
                         <li>Add Suggestions</li>
                     </NavLink>
                 </ul>
+
+                <div className={navbarstyles.userWrapper}>
+                    <NavLink to="/UserLogin">
+                        <FontAwesomeIcon icon={faUser} className={navbarstyles.user} />
+                    </NavLink>
+                </div>
             </div>
-            <div className={navbarstyles.userWrapper}>
-                <NavLink>
-                    <FontAwesomeIcon icon={faUser} className={navbarstyles.user} />
-                </NavLink>
-            </div>
+            
             <main>
                 <Outlet />
             </main>

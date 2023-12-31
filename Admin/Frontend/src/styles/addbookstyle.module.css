@@ -1,0 +1,97 @@
+:root{
+    --primary: #0077b6;
+    --secondery: #a5a58d;
+    --buttons: rgb(8 95 87);
+}
+
+.mainContainer{
+    background-color:var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+    display: flex;
+    border-radius: 5%;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 80%;
+    height: 100%;
+}
+
+fieldset{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    row-gap: .6rem;
+    border-color: #001845;
+    border-radius: 5%;
+    padding: .5rem;
+}
+
+fieldset .innerfieldset{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    border: 1px solid #001845;
+}
+
+.innerfieldset input{
+    display: inline block;
+}
+
+fieldset input{
+    height: 1.5rem;
+    width: 20rem;
+}
+
+::placeholder{
+    color: #0077b6;
+}
+
+input{
+    padding: .5rem;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+.availibilityWrapper{
+    display: flex;
+    margin-top: .5rem;
+    padding: .5rem;
+}
+
+.addButton{
+    margin-top: .5rem;
+    width: 7rem;
+    height: 2rem;
+    background-color: var(--buttons);
+    border: none;
+    transition: 300ms ease-in-out;
+    margin-bottom: 1rem;
+
+}
+
+.addButton:hover{
+    border-radius: 30%;
+    transform: scale(1.3);
+    cursor: pointer;
+    color: white;
+}
+
+textarea{
+    width: 90%;
+    padding: .5rem;
+}
