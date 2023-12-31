@@ -33,6 +33,9 @@ const Navbar = () => {
                     <NavLink to="/AddSuggestions">
                         <li>Add Suggestions</li>
                     </NavLink>
+                    <NavLink to="/BooksBorrowedOut">
+                        <li>Books Management</li>
+                    </NavLink>
                 </ul>
 
                 <div className={navbarstyles.userWrapper}>

@@ -1,0 +1,41 @@
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    padding: .5rem;
+}
+
+.mainContainer h1{
+    text-align: center;
+    color: #bc4b51;
+}
+
+.managementWrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+}
+
+.booksOut{
+    background-color: #132a13;
+}
+
+.booksOut h2{
+    color: white;
+}
+
+.booksOnHold{
+    background-color: #8cb369;
+}
+
+.booksOut, 
+.booksOnHold{
+    height: 26rem;
+}
+
+.booksOut h2, 
+.booksOnHold h2{
+    border-bottom: 1px solid black;
+    text-align: center;
+    
+}
+
