@@ -1,13 +1,16 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 
 import userloginstyle from "../styles/userloginstyle.module.css"
 
 const LoginForm = () => {
+
+  
+
   return (
     <>
-
-        <div className={userloginstyle.mainContainer}>
+        <div >
             <div className={userloginstyle.formWrapper}>
             <h2>Login</h2>
             <form action="">
@@ -19,19 +22,12 @@ const LoginForm = () => {
                 <input type="text" name='pwd' id='password' placeholder='Password' required />
                 </label>
 
-                <div className={userloginstyle.signupWrapper}>
-                <NavLink>
-                    <p>Sign Up</p>
-                </NavLink>
-                </div>
-
                 <div>
                 <button className={userloginstyle.loginButton}>Submit</button>
                 </div>
             </form>
             </div>
         </div>
-
     </>
   )
 }
