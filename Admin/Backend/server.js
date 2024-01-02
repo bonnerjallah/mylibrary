@@ -124,7 +124,34 @@ const validateAccessToken = (req, res, next) => {
     })
 }
 
+//Refresh token route
+app.post("/refresh_token", async (req, res) => {
+    //Check if a valid refresh token is present in the request cookies
+    const refreshToken = req.cookies.refreshToken;
 
+    if(!refreshToken) {
+        return res.status(401).json({errer: "refreshtoken is missing"})
+    }
+
+    //Verify the refresh token
+    jwt.verify(refreshToken, refshToken, (err, decoded) => {
+        if(err) {
+
+            //Token is valid or has expire
+            return res.status(401).json({error: "Invalid or expired refresh token"})
+        }
+
+        //Extract user data form the decoded refresh token payload
+        const userData = decoded.user;
+
+        //Generate a new access token
+        const newAccessToken = jwt.sign({user: userData}, jwtSec, {expiresIn: "10m"})
+
+        //send new access token back to the client
+        res.cookie("token", newAccessToken)
+        res.status(200).json({message: "Token refresh successfully"})
+    })
+})
 
 // app.get("/adminusers", async (req, res) => {
 //     try {
