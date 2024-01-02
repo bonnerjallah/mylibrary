@@ -125,12 +125,12 @@ const validateAccessToken = (req, res, next) => {
 }
 
 //Refresh token route
-app.post("/refresh_token", async (req, res) => {
+app.post("/refresh_token", (req, res) => {
     //Check if a valid refresh token is present in the request cookies
     const refreshToken = req.cookies.refreshToken;
 
     if(!refreshToken) {
-        return res.status(401).json({errer: "refreshtoken is missing"})
+        return res.status(401).json({errer: "refresh token is missing"})
     }
 
     //Verify the refresh token
@@ -151,6 +151,28 @@ app.post("/refresh_token", async (req, res) => {
         res.cookie("token", newAccessToken)
         res.status(200).json({message: "Token refresh successfully"})
     })
+})
+
+app.get("/user", async (req, res) => {
+    try {
+        if(req.user) {
+            return res.status(200).json({valid: true, user: req.user})
+        } else {
+            console.error("Token validation failed")
+            return res.status(401).json({valid: false, error: "Unauthorized user"})
+        }
+    } catch (error) {
+        console.error("Error fetching user", error)
+        return res.status(500).json({error: "Internal server error"})
+    }
+})
+
+
+app.post("/logout", (req, res) => {
+    res.clearCookie("token", {httpOnly: true, sameSite: "None", secure: true})
+    res.clearCookie("refreshtoken", {httpOnly: true, sameSite: "None", secure: true})
+
+    res.status(200).json({message: "Logged out successfully"})
 })
 
 // app.get("/adminusers", async (req, res) => {
