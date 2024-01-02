@@ -24,20 +24,20 @@ app.use(express.urlencoded({extended: true}))
 mongoose.connect("mongodb://localhost:27017/mylibrary")
 
 const jwtSec = process.env.VITE_jwtSecret
-const refshToken = process.env.VITE_jwtSecret
+const refshToken = process.env.VITE_jwtRefreshSecret
 
 
 app.use(cookieParser())
 
 
 app.use(cors({
-    origin: ['http://localhost:5174'],
+    origin: ['http://localhost:5173'],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }))
 
 
-
+//Admin sign up route
 app.post("/registeradminusers", async (req, res) => {
     try {
         const{firstname, lastname, email, username, password} = req.body
@@ -58,6 +58,8 @@ app.post("/registeradminusers", async (req, res) => {
     }
 })
 
+
+//Admin Login route
 app.post("/loginadminusers", async (req, res) => {
     try {
         const {username, password} = req.body
@@ -89,7 +91,10 @@ app.post("/loginadminusers", async (req, res) => {
                 res.cookie("token", accessToken)
                 res.cookie("refreshToken", refreshToken, { httpOnly: true })
 
-                return res.status(200).json({message: "Login Successful", userData:userData})
+                return res.status(200).json({
+                    message: "Login Successful", 
+                    userData: userData
+                })
 
             } else {
                 return res.status(401).json({message: "Invalid Password"})
@@ -118,7 +123,7 @@ const validateAccessToken = (req, res, next) => {
             return res.status(401).json({error: "Invalid access token"})
         }
 
-        //Iftoken is valid, set the user information in req.user
+        //If token is valid, set the user information in req.user
         req.user = decoded.user
         next()
     })
@@ -130,7 +135,7 @@ app.post("/refresh_token", (req, res) => {
     const refreshToken = req.cookies.refreshToken;
 
     if(!refreshToken) {
-        return res.status(401).json({errer: "refresh token is missing"})
+        return res.status(401).json({error: "refresh token is missing"})
     }
 
     //Verify the refresh token
@@ -153,7 +158,9 @@ app.post("/refresh_token", (req, res) => {
     })
 })
 
-app.get("/user", async (req, res) => {
+
+//Get Admin user route
+app.get("/adminuser", validateAccessToken, (req, res) => {
     try {
         if(req.user) {
             return res.status(200).json({valid: true, user: req.user})
@@ -174,17 +181,6 @@ app.post("/logout", (req, res) => {
 
     res.status(200).json({message: "Logged out successfully"})
 })
-
-// app.get("/adminusers", async (req, res) => {
-//     try {
-//         const result = await AdminUsers.find().exec();
-//         res.json(result);
-//     } catch (error) {
-//         console.error("Error fetching users:", error);
-//         res.status(500).json({ message: "An internal server issue" });
-//     }
-// });
-
 
 
 

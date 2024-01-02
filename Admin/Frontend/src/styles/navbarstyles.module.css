@@ -128,6 +128,25 @@ a{
     color: white;
 }
 
+.logInWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: .5rem;
+
+}
+
+.logInWrapper button{
+    background-color: #0077b6;
+    border: none;
+    width: 4rem;
+    height: 1rem;
+    color: white;
+    border-radius: 1rem;
+    cursor: pointer;
+
+}
+
 
 
 

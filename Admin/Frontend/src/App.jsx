@@ -9,6 +9,7 @@ import AddBook from "./pages/AddBook"
 import AddSuggestions from "./pages/AddSuggestions";
 import UserLogin from "./pages/UserLogin";
 import BooksBorrowedOut from "./pages/BooksBorrowedOut";
+import { AuthProvider } from "./components/AuthContext";
 
 
 const router = createBrowserRouter (
@@ -26,7 +27,9 @@ const router = createBrowserRouter (
 const App = () => {
   return (
     <div>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </div>
   );
 }

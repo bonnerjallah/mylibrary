@@ -1,11 +1,33 @@
-import { NavLink, Outlet } from "react-router-dom"
+import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBars } from "@fortawesome/free-solid-svg-icons";
+
+import { useAuth } from "./AuthContext";
 
 
 import navbarstyles from "../styles/navbarstyles.module.css"
 
 const Navbar = () => {
+
+    const {loggedIn, logOut} = useAuth()
+
+    const navigate = useNavigate()
+
+    const handleLogOut = async () => {
+        try {
+            const res = await axios.post("http://localhost:3001/logout", {}, {
+                withCredential: true
+            })
+        } catch (error) {
+            console.error("Error loging Out", error)
+
+        }
+
+        logOut()
+
+        navigate("/")
+    }
+
     return (
         <div className={navbarstyles.mainContainer}>
 
@@ -40,7 +62,15 @@ const Navbar = () => {
 
                 <div className={navbarstyles.userWrapper}>
                     <NavLink to="/">
-                        <FontAwesomeIcon icon={faUser} className={navbarstyles.user} />
+
+                        {loggedIn ? (
+                            <div className={navbarstyles.logInWrapper}>
+                                <button onClick={handleLogOut}>Log Out</button>
+                            </div>
+                            ) : (
+                            <FontAwesomeIcon icon={faUser} className={navbarstyles.user} />
+                        )}
+                        
                     </NavLink>
                 </div>
             </div>

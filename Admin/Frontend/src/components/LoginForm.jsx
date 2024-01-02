@@ -1,10 +1,18 @@
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
+import axios from "axios"
+import { useAuth } from './AuthContext'
+
+import Cookies from 'js-cookie'
 
 
 import userloginstyle from "../styles/userloginstyle.module.css"
 
 const LoginForm = () => {
+
+  const {login} = useAuth()
+
+  const navigate = useNavigate()
 
   const [loginData, setLoginData] = useState({
     username: "",
@@ -14,18 +22,40 @@ const LoginForm = () => {
   const handleLoginInput = (e) => {
     const{name, value} = e.target
 
-    setUserLogin((prev) => ({...prev, [name]: value}))
+    setLoginData((prev) => ({...prev, [name]: value}))
   }
 
+
+  axios.defaults.withCredentials = true
   const handleInputSubmit = async (e) => {
-    e.preventdefault()
+    e.preventDefault()
+
     try {
-      const response = await axios.post("http://localhost:3001/login", loginData, {
+      const response = await axios.post("http://localhost:3001/loginadminusers", loginData, {
         headers: {"Content-Type": "application/json"}
       })
 
       if(response.status === 200) {
         console.log("successfully fetch userdata")
+
+
+        //Access token from cookies
+        const token = Cookies.get('token')
+
+        //Access the data in the front end
+        const {userData} = response.data
+
+        login(userData, token)
+
+        console.log("User", userData)
+
+        setLoginData({
+          username: "",
+          password: ""
+        })
+
+        navigate("/AddBook")
+        
       }
     } catch (error) {
       console.error("error fetching user", error)
@@ -46,11 +76,11 @@ const LoginForm = () => {
                 </label>
 
                 <label htmlFor="pwd">Password:
-                <input type="text" name='password' id='pwd' value={loginData.password} placeholder='Password' onChange={handleLoginInput} required />
+                <input type="password" name='password' id='pwd' value={loginData.password} placeholder='Password' onChange={handleLoginInput} required />
                 </label>
 
                 <div>
-                  <button className={userloginstyle.loginButton}>Submit</button>
+                  <button type='submit' className={userloginstyle.loginButton}>Submit</button>
                 </div>
             </form>
             </div>
