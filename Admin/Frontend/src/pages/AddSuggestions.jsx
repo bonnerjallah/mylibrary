@@ -5,9 +5,7 @@ import addsuggestionsstyle from "../styles/addsuggestionsstyle.module.css"
 const AddSuggestions = () => {
     return (
         <div>
-            <div>
-                <Navbar />
-            </div>
+            
 
             <div className={addsuggestionsstyle.mainContainer} >
                 <form action="">

@@ -1,4 +1,4 @@
-
+import { useState, useEffect } from "react"
 
 
 import Navbar from "../components/Navbar"
@@ -11,9 +11,6 @@ import addbookstyle from "../styles/addbookstyle.module.css"
 const AddBook = () => {
   return (
     <div>
-      <div>
-        <Navbar />
-      </div>
 
       <div className={addbookstyle.mainContainer} >
         <form action="">
@@ -53,7 +50,7 @@ const AddBook = () => {
 
             <div className={addbookstyle.textareaWrapper}>
               <label htmlFor="about">About Author:
-                <textarea name="aboutAuthor" id="about" cols="30" rows="10" placeholder="About Author"> </textarea>
+                <textarea name="aboutAuthor" id="about" cols="30" rows="10"  placeholder="About Author">  </textarea>
               </label>
             </div>
 

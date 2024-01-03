@@ -15,9 +15,6 @@ const UserLogin = () => {
 
   return (
     <div>
-      <div>
-        <Navbar />
-      </div>
 
       <div className={userloginstyle.mainContainer}>
         {showLoginForm ? <LoginForm /> : <Signup />}

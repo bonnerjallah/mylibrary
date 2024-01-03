@@ -8,10 +8,6 @@ import booksborrowedoutstyle from "../styles/booksborrowedoutstyle.module.css"
 const BooksBorrowedOut = () => {
     return (
         <>
-            <div>
-                <Navbar />
-            </div>
-
             <div className={booksborrowedoutstyle.mainContainer}>
                 <div className={booksborrowedoutstyle.headerWrapper}>
                     <h1>Books Management</h1>

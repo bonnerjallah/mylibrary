@@ -36,8 +36,7 @@ const LoginForm = () => {
       })
 
       if(response.status === 200) {
-        console.log("successfully fetch userdata")
-
+        console.log("successfully logged in user")
 
         //Access token from cookies
         const token = Cookies.get('token')
