@@ -61,7 +61,7 @@ const Navbar = () => {
                     </ul>
 
                     <div className={navbarstyles.userWrapper}>
-                        <NavLink to="/">
+                        <NavLink to="/UserLogin">
 
                             {loggedIn ? (
                                 <div className={navbarstyles.logInWrapper}>

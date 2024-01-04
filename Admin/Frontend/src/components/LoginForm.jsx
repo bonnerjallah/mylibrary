@@ -22,7 +22,10 @@ const LoginForm = () => {
   const handleLoginInput = (e) => {
     const{name, value} = e.target
 
-    setLoginData((prev) => ({...prev, [name]: value}))
+    setLoginData((prev) => ({
+      ...prev, 
+      [name]: value
+    }))
   }
 
 

@@ -14,6 +14,7 @@ const saltRounds = 10
 
 //Modules
 const AdminUsers = require("./module/adminusermodel")
+const Book = require("./module/booksmodel")
 
 
 const app = express()
@@ -31,10 +32,70 @@ app.use(cookieParser())
 
 
 app.use(cors({
-    origin: ['http://localhost:5174'],
+    origin: ['http://localhost:5173'],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }))
+
+
+//Route for books images
+app.use("/booksimages", express.static(path.join(__dirname, "../../shared-assets/public/booksimages")))
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, "../../shared-assets/public/booksimages"))
+    },
+    filename: (req, file, cb) => {
+        console.log(file)
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({
+    storage: storage,
+    limits: {fileSize: 5000000},
+    fileFilter: (req, file, cb) => {
+        const fileType = /jpeg|jpg|png|webp/
+        const mimeType = fileType.test(file.mimetype)
+        const extname = fileType.test(path.extname(file.originalname))
+
+        if(mimeType && extname) {
+            return cb(null, true)
+        }
+        cb("Give proper file format to upload")
+    }
+})
+
+
+app.post("/books", upload.fields([{name: "bookImage", maxCount: 1}, {name: "authorImage", maxCount: 1}]), async (req, res) => {
+    try {
+        const { bookTitle, bookAuthor, bookGenre, bookIsbn, bookDiscription, bookPublishDate, aboutAuthor, bookAvailability } = req.body;
+
+        if (!bookTitle || !bookAuthor || !bookGenre || !bookIsbn || !bookDiscription || !bookPublishDate || !aboutAuthor) {
+            return res.status(400).json({ message: "All field require" });
+        }
+
+        const results = await Book.create({
+            bookTitle,
+            bookAuthor,
+            bookGenre,
+            bookIsbn,
+            bookDiscription,
+            bookPublishDate,
+            aboutAuthor,
+            bookAvailability, 
+            bookImageUrl: req.files["bookImage"] ? `${req.files["bookImage"][0].filename}` : "",
+            authorImage: req.files["authorImage"] ? `${req.files["authorImage"][0].filename}` : ""
+        });
+
+        res.json(results);
+    } catch (error) {
+        console.error("Error inserting book data", error);
+        return res.status(500).json({ message: "Internal server issue", error });
+    }
+});
+
+
 
 
 //Admin sign up route
@@ -57,7 +118,6 @@ app.post("/registeradminusers", async (req, res) => {
         res.status(500).json({message: "Internal server issue"})
     }
 })
-
 
 //Admin Login route
 app.post("/loginadminusers", async (req, res) => {
@@ -109,7 +169,6 @@ app.post("/loginadminusers", async (req, res) => {
     }
 })
 
-
 //Middleware to validate access token
 const validateAccessToken = (req, res, next) => {
     const accessToken = req.cookies.token; //Because the token was sent with cookie
@@ -158,7 +217,6 @@ app.post("/refresh_token", (req, res) => {
     })
 })
 
-
 //Get Admin user route
 app.get("/adminuser", validateAccessToken, (req, res) => {
     try {
@@ -174,7 +232,7 @@ app.get("/adminuser", validateAccessToken, (req, res) => {
     }
 })
 
-
+//Admin logOut Route
 app.post("/logout", (req, res) => {
     res.clearCookie("token", {httpOnly: true, sameSite: "None", secure: true})
     res.clearCookie("refreshtoken", {httpOnly: true, sameSite: "None", secure: true})
