@@ -124,7 +124,6 @@ const AddBook = () => {
   }
 
 
-
   return (
     <div className={addbookstyle.mainContainer} >
       <form onSubmit={handleFormSubmit} encType="multipart/form-data" method="POST">
@@ -157,6 +156,7 @@ const AddBook = () => {
               <div>
                 <h3>Availability</h3>
               </div>
+              
               <div className={addbookstyle.availibilityWrapper}>
                 <label htmlFor="availableYes">Yes</label>
                 <input type="checkbox" name="bookAvailableyes" checked={bookAvailableCheckBox.bookAvailableyes} id="availableYes" onChange={(e) => {handleBookInput(e, "Yes")}} />

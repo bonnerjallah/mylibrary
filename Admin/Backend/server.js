@@ -15,6 +15,7 @@ const saltRounds = 10
 //Modules
 const AdminUsers = require("./module/adminusermodel")
 const Book = require("./module/booksmodel")
+const BookSuggestions = require("./module/booksuggestions")
 
 
 const app = express()
@@ -95,6 +96,36 @@ app.post("/books", upload.fields([{name: "bookImage", maxCount: 1}, {name: "auth
     }
 });
 
+app.post("/suggestions", upload.fields([{name: "bookImage", maxCount: 1}, {name: "authorImage", maxCount: 1}]), async (req, res) => {
+
+    try {
+        const {bookTitle, bookAuthor, bookGenre, bookIsbn, bookDiscription, bookPublishDate, aboutAuthor, bookAvailability} = req.body
+
+        if(!bookTitle || !bookAuthor || !bookGenre || !bookIsbn || !bookDiscription || !bookPublishDate || !aboutAuthor) {
+            return res.status(400).json({message: "All field require"})
+        }
+
+        const results = await BookSuggestions.create({
+            bookTitle,
+            bookAuthor,
+            bookGenre,
+            bookIsbn,
+            bookDiscription,
+            bookPublishDate,
+            aboutAuthor,
+            bookAvailability,
+            bookImageUrl: req.files["bookImage"] ? `${req.files["bookImage"][0].filename}` : "",
+            authorImage: req.files["authorImage"] ? `${req.files["authorImage"][0].filename}` : ""            
+        })
+
+        res.json(results)
+
+    } catch (error) {
+        console.log("Error inserting suggested book", error)
+        return res.status(500).json({message: "Internal server issue", error})
+    }
+})
+
 
 
 
@@ -160,7 +191,7 @@ app.post("/loginadminusers", async (req, res) => {
                 return res.status(401).json({message: "Invalid Password"})
             }
         } else {
-            return res.status(404).json({message: "User not found"})
+            return res.status(404).json({message: "Invalid Username"})
         }
 
     } catch (error) {

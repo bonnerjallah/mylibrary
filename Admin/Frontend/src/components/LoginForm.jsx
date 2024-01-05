@@ -28,6 +28,8 @@ const LoginForm = () => {
     }))
   }
 
+  const [errorMessage, setErrorMessage] = useState()
+
 
   axios.defaults.withCredentials = true
   const handleInputSubmit = async (e) => {
@@ -61,16 +63,17 @@ const LoginForm = () => {
       }
     } catch (error) {
       console.error("error fetching user", error)
+      setErrorMessage(error.response.data.message)
     }
   }
-
-
-
 
   return (
     <>
         <div >
+
             <div className={userloginstyle.formWrapper}>
+            {errorMessage && (<p style={{color: "red", textalign: "center"}}>{errorMessage}</p>)}
+
             <h2>Login</h2>
             <form onSubmit={handleInputSubmit} >
                 <label htmlFor="user">Username: 
