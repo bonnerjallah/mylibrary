@@ -24,6 +24,7 @@ export const AuthProvider = ({children}) => {
                 
                 setLoggedIn(true)
                 setUser(userData)
+                
             } else {
                 console.log("Token verification failed")
 
@@ -61,7 +62,7 @@ export const AuthProvider = ({children}) => {
             //if there's no store token, initiate the token refresh
             refreshAccessToken({setToken, setLoggedIn, setUser})
         }
-    }, [loggedIn])
+    }, [])
 
     
 
