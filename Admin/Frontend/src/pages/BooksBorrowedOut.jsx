@@ -13,6 +13,13 @@ const BooksBorrowedOut = () => {
                     <h1>Books Management</h1>
                 </div>
 
+                <div className={booksborrowedoutstyle.catalogWrapper}>
+                    <h2>Complete Catalog</h2>
+                    <div>
+                        
+                    </div>
+                </div>
+
                 <div className={booksborrowedoutstyle.managementWrapper}>
                     <div className={booksborrowedoutstyle.booksOut}>
                         <h2>Books Out</h2>
