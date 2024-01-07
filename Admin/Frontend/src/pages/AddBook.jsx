@@ -43,12 +43,6 @@ const AddBook = () => {
         [name]: checked, 
         [name + "_discription"]: checked ? discription : prev[name + "_discription"]
       }))
-    } else if (name === "bookPublishDate") {
-      const formatedDate = new Date(value).toISOString().split("T")[0]
-      setBookData((prev) => ({
-        ...prev,
-        [name]: formatedDate
-      }))
     } else {
       setBookData((prev) => ({
         ...prev,

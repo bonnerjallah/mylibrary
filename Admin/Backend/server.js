@@ -67,7 +67,30 @@ const upload = multer({
     }
 })
 
+//Get book route
+app.get("/books", async (req, res) => {
+    try {
+        const results = await Book.find().exec()
+        res.json(results)
+        
+    } catch (error) {
+        console.log("Error fetching books from database", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
 
+app.get("/suggestions", async (req, res) => {
+    try {
+        const results = await BookSuggestions.find().exec()
+        res.json(results)
+        
+    } catch (error) {
+        console.log("Error fetching book suggestions from database", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
+
+//Add book route
 app.post("/books", upload.fields([{name: "bookImage", maxCount: 1}, {name: "authorImage", maxCount: 1}]), async (req, res) => {
     try {
         const { bookTitle, bookAuthor, bookGenre, bookIsbn, bookDiscription, bookPublishDate, aboutAuthor, bookAvailability } = req.body;
@@ -96,6 +119,7 @@ app.post("/books", upload.fields([{name: "bookImage", maxCount: 1}, {name: "auth
     }
 });
 
+//Add suggestions book route
 app.post("/suggestions", upload.fields([{name: "bookImage", maxCount: 1}, {name: "authorImage", maxCount: 1}]), async (req, res) => {
 
     try {
@@ -125,9 +149,6 @@ app.post("/suggestions", upload.fields([{name: "bookImage", maxCount: 1}, {name:
         return res.status(500).json({message: "Internal server issue", error})
     }
 })
-
-
-
 
 //Admin sign up route
 app.post("/registeradminusers", async (req, res) => {
