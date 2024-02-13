@@ -83,7 +83,7 @@ app.get("/suggestions", async (req, res) => {
     try {
         const results = await BookSuggestions.find().exec()
         res.json(results)
-        
+
     } catch (error) {
         console.log("Error fetching book suggestions from database", error)
         return res.status(500).json({message: "Internal server issue"})

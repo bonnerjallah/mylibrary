@@ -101,6 +101,8 @@
     align-self: center;
     margin-top: 1rem;
     border-radius: .5rem;
+    display: flex;
+    justify-content: center;
 }
 
 .bookskeywordSearch input{
@@ -115,5 +117,7 @@
     align-self: center;
     margin-top: 1rem;
     border-radius: .5rem;
+    display: flex;
+    justify-content: center;
 }
 
