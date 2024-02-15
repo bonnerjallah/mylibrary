@@ -3,6 +3,10 @@ import axios from "axios"
 
 import booksborrowedoutstyle from "../styles/booksborrowedoutstyle.module.css"
 
+//Modal
+import EditModal from "../components/EditModal"
+import EditSuggestionsModal from "../components/EditSuggestionsModal"
+
 
 
 const BooksBorrowedOut = () => {
@@ -47,8 +51,6 @@ const BooksBorrowedOut = () => {
 
                 setSuggestionsData(fomattedSuggestedData)
 
-
-
             } catch (error) {
                 console.log("error fetching data", error)
             }
@@ -60,7 +62,6 @@ const BooksBorrowedOut = () => {
     const [searchTerms, setSearchTerms] = useState('')
     const [searchCatagory, setSearchCatagory] = useState('')
     const [filteredBookData, setFilterBookData] = useState([])
-
 
     const handleKeyWordSearch = (e) => {
         e.preventDefault()
@@ -98,6 +99,22 @@ const BooksBorrowedOut = () => {
         setfilterSuggestions(suggFilterData)
     }
 
+    //Modals Logics
+    const [openEditModal, setOpenEditModal] = useState(false)
+    const [dataToEdit, setDataToEdit] = useState()
+    
+    const handleOpenEditModal = (elem) => {
+        setOpenEditModal(true)
+        setDataToEdit(elem)
+    }
+
+    const [openSuggEditModal, setOpenSuggEditModal] = useState(false)
+    const [suggDataToEdit, setSuggDataToEdit] = useState(false)
+
+    const handleSuggestionsEditModal = (elem) => {
+        setOpenSuggEditModal(true)
+        setSuggDataToEdit(elem)
+    }
 
 
     return (
@@ -106,7 +123,6 @@ const BooksBorrowedOut = () => {
                 <div className={booksborrowedoutstyle.headerWrapper}>
                     <h1>Books Management</h1>
                 </div>
-
 
                 <div className={booksborrowedoutstyle.managementWrapper}>
                     <div className={booksborrowedoutstyle.booksOut}>
@@ -120,7 +136,7 @@ const BooksBorrowedOut = () => {
                                         <option value="Author">Author</option>
                                     </select>
                                     <input type="text" name="srcbooks" id="searchbooks" value={searchTerms} onChange={(e) => setSearchTerms(e.target.value)} placeholder="Search Books" />
-                                    <button type="submit">Submit</button>
+                                    <button className={booksborrowedoutstyle.keywordBttn} type="submit">Submit</button>
                                 </label>
                             </form>     
                         </div>
@@ -136,8 +152,8 @@ const BooksBorrowedOut = () => {
                                             <p>Available: <span style={{ color: "#bc4b51" }}>{elem.bookAvailability}</span> </p>
                                         </div>
                                         <div className={booksborrowedoutstyle.editDeleteWrapper}>
-                                            <button className={booksborrowedoutstyle.edit}>Edit</button>
-                                            <button className={booksborrowedoutstyle.delete}>Delete</button>
+                                            <button className={booksborrowedoutstyle.edit} onClick={() => handleOpenEditModal(elem)}>Edit</button>
+                                            <button className={booksborrowedoutstyle.delete} >Delete</button>
                                         </div>
                                     </div>
                                 ))
@@ -152,13 +168,14 @@ const BooksBorrowedOut = () => {
                                             <p>Available: <span style={{ color: "#bc4b51" }}>{elem.bookAvailability}</span> </p>
                                         </div>
                                         <div className={booksborrowedoutstyle.editDeleteWrapper}>
-                                            <button className={booksborrowedoutstyle.edit}>Edit</button>
+                                            <button className={booksborrowedoutstyle.edit} onClick={() => handleOpenEditModal(elem)}>Edit</button>
                                             <button className={booksborrowedoutstyle.delete}>Delete</button>
                                         </div>
                                     </div>
                                 ))
                             )}
                         </div>
+                        {openEditModal && (<EditModal dataToEdit={dataToEdit} closeEditModal={setOpenEditModal}  />)}
 
                     </div>
 
@@ -173,12 +190,12 @@ const BooksBorrowedOut = () => {
                                         <option value="Author">Author</option>
                                     </select>
                                     <input type="text" name="srcbooks" id="searchbooks" placeholder="Search Books" value={suggestSearchTerm} onChange={(e) => setSuggestSearchTerm(e.target.value)} />
-                                    <button type="submit">Submit</button>
+                                    <button className={booksborrowedoutstyle.suggestKeywordBttn} type="submit">Submit</button>
                                 </label>
                             </form>
                         </div>
-                        <div className={booksborrowedoutstyle.suggestionsCatalogeWrapper}>
 
+                        <div className={booksborrowedoutstyle.suggestionsCatalogeWrapper}>
                             {filterSuggestions.length > 0 ? 
                                 (filterSuggestions.map((elem, id)=> (
                                     <div key={id}  className={booksborrowedoutstyle.books}>
@@ -190,8 +207,8 @@ const BooksBorrowedOut = () => {
                                             <p>Available: <span style={{color: "#bc4b51"}}>{elem.bookAvailability}</span> </p>
                                         </div>
                                         <div className={booksborrowedoutstyle.editDeleteWrapper}>
-                                            <button className={booksborrowedoutstyle.edit}>Edit</button>
-                                            <button className={booksborrowedoutstyle.delete}>Delete</button>
+                                            <button className={booksborrowedoutstyle.edit} onClick={(e) => handleSuggestionsEditModal(elem)}>Edit</button>
+                                            <button className={booksborrowedoutstyle.delete} onClick={(e) => handleSuggestionsEditModal(elem)}>Delete</button>
                                         </div>
                                     </div>
                                 ))
@@ -207,13 +224,14 @@ const BooksBorrowedOut = () => {
         
                                         </div>
                                         <div className={booksborrowedoutstyle.editDeleteWrapper}>
-                                            <button className={booksborrowedoutstyle.edit}>Edit</button>
-                                            <button className={booksborrowedoutstyle.delete}>Delete</button>
+                                            <button className={booksborrowedoutstyle.edit} onClick={(e) => handleSuggestionsEditModal(elem)}>Edit</button>
+                                            <button className={booksborrowedoutstyle.delete} onClick={(e) => handleSuggestionsEditModal(elem)}>Delete</button>
                                         </div>
                                     </div>
                                 ))
                             )}
                         </div>
+                        {openSuggEditModal && (<EditSuggestionsModal suggDataToEdit={suggDataToEdit} closeSuggestionsEditModal={setOpenSuggEditModal}/>)}
                     </div>
                 </div>
             </div>

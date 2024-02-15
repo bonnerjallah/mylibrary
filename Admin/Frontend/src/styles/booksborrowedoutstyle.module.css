@@ -96,13 +96,13 @@
 .bookskeywordSearch{
     margin-bottom: 2rem;
     background-color: #52b788;
-    width: 90%;
+    width: 47.5%;
     height: 3rem;
     align-self: center;
-    margin-top: 1rem;
-    border-radius: .5rem;
     display: flex;
     justify-content: center;
+    position: fixed;
+    z-index: 2;
 }
 
 .bookskeywordSearch input{
@@ -112,12 +112,39 @@
 .suggestionskeywordSearch{
     margin-bottom: 2rem;
     background-color: #3d5a80;
-    width: 90%;
+    width: 47.5%;
     height: 3rem;
     align-self: center;
-    margin-top: 1rem;
-    border-radius: .5rem;
     display: flex;
     justify-content: center;
+    position: fixed;
+    z-index: 2;
 }
 
+.keywordBttn{
+    cursor: pointer;
+    width: 3rem;
+}
+
+.keywordBttn:hover{
+    background-color: #19392a;
+    color: white;
+    border: none;
+    width: max-content;
+    width: 3rem;
+    border-radius: .5rem;
+}
+
+.suggestKeywordBttn{
+    cursor: pointer;
+    width: 3rem;
+}
+
+.suggestKeywordBttn:hover{
+    background-color: #16212e;
+    color: white;
+    border: none;
+    width: max-content;
+    width: 3rem; 
+    border-radius: .5rem;
+}

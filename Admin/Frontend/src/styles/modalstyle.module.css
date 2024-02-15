@@ -1,0 +1,76 @@
+.mainContainer{
+    position: fixed;
+    left: 19.5rem ;
+    top: 27.8rem ;
+    width: 47.5%;
+    height: 51.7%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(64, 64, 71);
+}
+
+.suggestionMainContainer{
+    position: fixed;
+    right: -17.5rem;
+    top: 27.8rem ;
+    width: 47.5%;
+    height: 51.7%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(64, 64, 71);
+}
+
+.closeX{
+    position: absolute;
+    right: .2rem;
+    top: .2rem;
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+.closeX:hover{
+    color: white;
+    background-color: red;
+}
+
+.bookInfoWrapper{
+    display: flex;
+    padding: .5rem;
+}
+
+.bookInfoWrapper p span{
+    color: rgb(93, 80, 213);
+}
+
+.formWrapper{
+    padding-left: 5.rem;
+}
+
+.formWrapper form{
+    width: max-content;
+    padding-left: 1rem;
+}
+
+.formWrapper form input{
+    max-width: 20rem ;
+    max-height: 1.5rem ;
+}
+
+.checkedBoxOptions input{
+    margin-left: -5rem;
+}
+
+.editFormButton{
+    width: 5rem;
+    height: 2rem;
+    color: blue;
+    border: none;
+    border-radius: 2rem;
+    margin-top: 1rem;
+}
+
+.editFormButton:hover{
+    color: white;
+    background-color: blue;
+    border-radius: 2rem;
+    cursor: pointer;
+    border: none;
+}
