@@ -130,7 +130,7 @@ const BooksBorrowedOut = () => {
                         <div className={booksborrowedoutstyle.bookskeywordSearch}>
                             <form onSubmit={handleKeyWordSearch}>
                                 <label htmlFor="searchbooks">KeyWord:     
-                                    <select style={{marginLeft:".5rem"}} value={searchCatagory} onChange={(e) => setSearchCatagory(e.target.value)}>
+                                    <select id="searchByOption"  style={{marginLeft:".5rem"}} value={searchCatagory} onChange={(e) => setSearchCatagory(e.target.value)}>
                                         <option value=""></option>
                                         <option value="Title">Title</option>
                                         <option value="Author">Author</option>
@@ -184,7 +184,7 @@ const BooksBorrowedOut = () => {
                         <div className={booksborrowedoutstyle.suggestionskeywordSearch}>
                             <form onSubmit={handleSuggestionsFilter}>
                                 <label htmlFor="searchbooks">KeyWord:
-                                    <select style={{marginLeft:".5rem"}} value={suggestSearchCatagory} onChange={(e) => setSuggestSearchCatagory(e.target.value)}>
+                                    <select id="suggestionsSearchBy" style={{marginLeft:".5rem"}} value={suggestSearchCatagory} onChange={(e) => setSuggestSearchCatagory(e.target.value)}>
                                         <option value=""></option>
                                         <option value="Title">Title</option>
                                         <option value="Author">Author</option>

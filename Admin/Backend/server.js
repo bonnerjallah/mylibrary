@@ -150,6 +150,38 @@ app.post("/suggestions", upload.fields([{name: "bookImage", maxCount: 1}, {name:
     }
 })
 
+//Update books routes
+app.put("/bookEdit/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        console.log("Request body:", req.body);
+
+        const { bookTitle, bookAuthor, bookPublishDate, bookAvailability } = req.body;
+
+        const updateObject = {
+            bookTitle,
+            bookAuthor,
+            bookPublishDate,
+            bookAvailability
+        };
+
+        const results = await Book.findByIdAndUpdate(id, updateObject, { new: true });
+
+        if (!results) {
+            console.log("Book not found");
+            return res.status(400).json({ message: "Book not found" });
+        }
+
+        console.log("Updated book:", results);
+        res.json(results);
+    } catch (error) {
+        console.log("Error updating book:", error);
+        return res.status(500).json({ message: "Internal server issue" });
+    }
+});
+
+
 //Admin sign up route
 app.post("/registeradminusers", async (req, res) => {
     try {
