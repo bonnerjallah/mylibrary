@@ -4,7 +4,6 @@ import modalstyle from "../styles/modalstyle.module.css"
 import axios from "axios"
 
 
-
 const EditModal = ({closeEditModal, dataToEdit}) => {
 
     const [editInputData, setEditInputData] = useState(dataToEdit)
@@ -48,18 +47,12 @@ const EditModal = ({closeEditModal, dataToEdit}) => {
         formData.append("bookPublishDate", editInputData.bookPublishDate);
     
         const availability = bookAvailableCheckBox.bookAvailableYes ? "Yes" : (bookAvailableCheckBox.bookAvailableNo ? "No" : "");
-        formData.append("bookAvailability", availability);
+        formData.append("bookAvailability", availability);        
 
-        console.log("FormData before sending:", formData);
-        
-        
-    
         try {
             const response = await axios.put(`http://localhost:3001/bookEdit/${_id}`, formData, {
                 headers: { "Content-Type": "application/json" }
             });
-
-            console.log("Server response:", response);  
     
             if (response.status === 200) {
                 console.log("Edit book successful");
@@ -80,6 +73,7 @@ const EditModal = ({closeEditModal, dataToEdit}) => {
             console.log("Error editing book data", error);
         }
     };
+    
     
     
 

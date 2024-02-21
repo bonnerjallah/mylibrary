@@ -59,6 +59,8 @@ const BooksBorrowedOut = () => {
         fetchData()
     }, [])
 
+
+    //Keyword search
     const [searchTerms, setSearchTerms] = useState('')
     const [searchCatagory, setSearchCatagory] = useState('')
     const [filteredBookData, setFilterBookData] = useState([])
@@ -97,6 +99,62 @@ const BooksBorrowedOut = () => {
         })
 
         setfilterSuggestions(suggFilterData)
+    }
+
+    console.log("catalog", catalogeData)
+    console.log("suggestionsdata", suggestionsData)
+
+
+
+    //Delete books
+    const handleDeletbook = async (id) => {
+
+        console.log("delete button clicked")
+
+        const userConfirmed = window.confirm("Are you sure you want to update this data?");
+    
+        if (!userConfirmed) {
+            return;
+        }
+
+        try {
+            const response = await axios.delete(`http://localhost:3001/bookdelete/${id}`, {
+                headers: {"Content-Type": "application/json"}
+            })
+
+            if(response.status === 200){
+                console.log("deleted book succsessfully")
+            } else{
+                console.log("Error deleting book form server", response.data)
+            }
+            
+        } catch (error) {
+            console.log("Error deleting book", error)
+        }
+    }
+
+    const handleDeletsuggestedbook = async (id) => {
+
+        const userConfirmed = window.confirm("Are you sure you wnat to delete this book?")
+
+        if(!userConfirmed){
+            return
+        }
+
+        try {
+            const response = await axios.delete(`http://localhost:3001/deletesuggestedbook/${id}`, {
+                headers: {"Content-Type": "application/json"}
+            })
+
+            if(response.status === 200){
+                console.log("Deleted suggested book successfully")
+            } else {
+                console.log("Error deleting suggested book", response.data)
+            }
+            
+        } catch (error) {
+            console.log("Error deleting suggested book data", error)
+        }
     }
 
     //Modals Logics
@@ -153,7 +211,7 @@ const BooksBorrowedOut = () => {
                                         </div>
                                         <div className={booksborrowedoutstyle.editDeleteWrapper}>
                                             <button className={booksborrowedoutstyle.edit} onClick={() => handleOpenEditModal(elem)}>Edit</button>
-                                            <button className={booksborrowedoutstyle.delete} >Delete</button>
+                                            <button className={booksborrowedoutstyle.delete} onClick={() => handleDeletbook(elem._id)} >Delete</button>
                                         </div>
                                     </div>
                                 ))
@@ -169,7 +227,7 @@ const BooksBorrowedOut = () => {
                                         </div>
                                         <div className={booksborrowedoutstyle.editDeleteWrapper}>
                                             <button className={booksborrowedoutstyle.edit} onClick={() => handleOpenEditModal(elem)}>Edit</button>
-                                            <button className={booksborrowedoutstyle.delete}>Delete</button>
+                                            <button className={booksborrowedoutstyle.delete} onClick={() => handleDeletbook(elem._id)}>Delete</button>
                                         </div>
                                     </div>
                                 ))
@@ -208,7 +266,7 @@ const BooksBorrowedOut = () => {
                                         </div>
                                         <div className={booksborrowedoutstyle.editDeleteWrapper}>
                                             <button className={booksborrowedoutstyle.edit} onClick={(e) => handleSuggestionsEditModal(elem)}>Edit</button>
-                                            <button className={booksborrowedoutstyle.delete} onClick={(e) => handleSuggestionsEditModal(elem)}>Delete</button>
+                                            <button className={booksborrowedoutstyle.delete} onClick={() => handleDeletsuggestedbook(elem._id)}>Delete</button>
                                         </div>
                                     </div>
                                 ))
@@ -225,7 +283,7 @@ const BooksBorrowedOut = () => {
                                         </div>
                                         <div className={booksborrowedoutstyle.editDeleteWrapper}>
                                             <button className={booksborrowedoutstyle.edit} onClick={(e) => handleSuggestionsEditModal(elem)}>Edit</button>
-                                            <button className={booksborrowedoutstyle.delete} onClick={(e) => handleSuggestionsEditModal(elem)}>Delete</button>
+                                            <button className={booksborrowedoutstyle.delete} onClick={() => handleDeletsuggestedbook(elem._id)}>Delete</button>
                                         </div>
                                     </div>
                                 ))

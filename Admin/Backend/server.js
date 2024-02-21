@@ -155,8 +155,6 @@ app.put("/bookEdit/:id", async (req, res) => {
     try {
         const { id } = req.params;
 
-        console.log("Request body:", req.body);
-
         const { bookTitle, bookAuthor, bookPublishDate, bookAvailability } = req.body;
 
         const updateObject = {
@@ -173,14 +171,88 @@ app.put("/bookEdit/:id", async (req, res) => {
             return res.status(400).json({ message: "Book not found" });
         }
 
-        console.log("Updated book:", results);
         res.json(results);
+
     } catch (error) {
         console.log("Error updating book:", error);
         return res.status(500).json({ message: "Internal server issue" });
     }
 });
 
+app.put("/editSuggestedBook/:id", async(req, res) => {
+    try {
+        const { id } = req.params
+
+        const {bookTitle, bookAuthor, bookPublishDate, bookAvailability} = req.body
+
+        const updateObject = {
+            bookTitle,
+            bookAuthor,
+            bookPublishDate,
+            bookAvailability
+        }
+
+        const results = await BookSuggestions.findByIdAndUpdate(id, updateObject, { new: true})
+
+        if(!results){
+            console.log("Book not found")
+            return res.status(400).json({message: "Book not found"})
+        }
+
+        res.json(results)
+
+    } catch (error) {
+        console.log("Error updating book suggestion data", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
+
+//Deleting books routes
+app.delete("/bookdelete/:id", async(req, res) => {
+
+    console.log("received with data", req.body)
+    try {
+        const { id } = req.params
+
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(400).json({message: "Invalid objectId format"})
+        }
+
+        const results = await Book.findByIdAndDelete({ _id: id})
+
+        if(!results){
+            return res.status(400).json({message: "Error deleting book"})
+        }
+
+        res.json(results)
+        
+    } catch (error) {
+        console.log("Error deleting book form database", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
+
+app.delete("/deletesuggestedbook/:id", async(req, res) => {
+    try {
+        const { id } = req.params
+
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(400).json({message: "Invalid objectId format"})
+        }
+
+        const results = await BookSuggestions.findByIdAndDelete({_id: id})
+
+        if(!results){
+            return res.status(400).json({message: "Suggested book deleting error"})
+        }
+
+         res.json(results)
+         
+    } catch (error) {
+        console.log("Error deleting book suggested", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
 
 //Admin sign up route
 app.post("/registeradminusers", async (req, res) => {

@@ -1,15 +1,13 @@
 import { useState } from "react"
 import modalstyle from "../styles/modalstyle.module.css"
 
+import axios from "axios"
+
 
 
 const EditSuggestionsModal = ({closeSuggestionsEditModal, suggDataToEdit}) => {
 
-    const [suggestionInputData, setSuggestionInputData] = useState({
-        bookTitle: "",
-        bookAuthor: "",
-        bookPublishDate: "",
-    })
+    const [suggestionInputData, setSuggestionInputData] = useState(suggDataToEdit)
 
     const [bookAvailableCheckBox, setBookAvailableCheckBox] = useState({
         bookAvailableYes: false,
@@ -19,11 +17,11 @@ const EditSuggestionsModal = ({closeSuggestionsEditModal, suggDataToEdit}) => {
     const handleSuggestionEditInputData = (e, discription) => {
         const {name, value, type, checked} = e.target 
 
-        if(type === "checked") {
+        if(type === "checkbox") {
             setBookAvailableCheckBox((prev) => ({
                 ...prev,
                 [name] : checked,
-                [name + "_discription"] : checked ? discription : prev[name + "_discription"]
+                [name + "_discription"] : checked ? discription : ""
             }))
         } else {
             setSuggestionInputData((prev) => ({
@@ -43,6 +41,7 @@ const EditSuggestionsModal = ({closeSuggestionsEditModal, suggDataToEdit}) => {
             return
         }
 
+        const { _id } = suggDataToEdit
         const formData = new FormData()
 
         formData.append("bookTitle", suggestionInputData.bookTitle)
@@ -53,11 +52,11 @@ const EditSuggestionsModal = ({closeSuggestionsEditModal, suggDataToEdit}) => {
         formData.append("bookAvailability", availability)
 
         try {
-            const response = await axios.put("http://localhost:3001/editSuggestedBook", formData, {
-                headers: {'Content-type': "multipart/form-data"}
+            const response = await axios.put(`http://localhost:3001/editSuggestedBook/${_id}`, formData, {
+                headers: {'Content-type': "application/json"}
             }) 
 
-            if(response === 200) {
+            if(response.status === 200) {
                 setSuggestionInputData({
                     bookTitle: "",
                     bookAuthor: "",
@@ -91,8 +90,8 @@ const EditSuggestionsModal = ({closeSuggestionsEditModal, suggDataToEdit}) => {
                         <div className={modalstyle.formWrapper}>
                             <form onSubmit={handleEditInputSubmit} encType="multipart/form-data" method="PUT">
                                 <div>
-                                    <label htmlFor=" title">Title:<input type="text" name="bookTitle" id="title" value={suggDataToEdit.bookTitle} onChange={handleSuggestionEditInputData} /></label>
-                                    <label htmlFor="author">Author:<input type="text" name="bookAuthor" id="author"  value={suggDataToEdit.bookAuthor} onChange={handleSuggestionEditInputData} /></label>
+                                    <label htmlFor=" title">Title:<input type="text" name="bookTitle" id="title" value={suggestionInputData.bookTitle || ""} onChange={handleSuggestionEditInputData} /></label>
+                                    <label htmlFor="author">Author:<input type="text" name="bookAuthor" id="author"  value={suggestionInputData.bookAuthor || ""} onChange={handleSuggestionEditInputData} /></label>
                                     <label htmlFor="pubDate">Publish Date:<input type="date" name="bookPublishDate" id="pubDate" onChange={handleSuggestionEditInputData}/></label>
                                 </div>
                                 
