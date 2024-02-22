@@ -246,8 +246,8 @@ app.delete("/deletesuggestedbook/:id", async(req, res) => {
             return res.status(400).json({message: "Suggested book deleting error"})
         }
 
-         res.json(results)
-         
+        res.json(results)
+        
     } catch (error) {
         console.log("Error deleting book suggested", error)
         return res.status(500).json({message: "Internal server issue"})
