@@ -7,7 +7,8 @@
 }
 
 .mainContainer{
-    margin-bottom: .1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .userNameContainer{
@@ -23,7 +24,11 @@
     background-color: rgb(20, 153, 230);
     padding: .5rem;
     display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
+    position: absolute;
+    right: 2rem;
 }
 
 .linksContainer{
@@ -103,8 +108,9 @@
 
 nav{
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     background-color: orange;
+    padding-left: 2rem;
     width: 100%;
 }
 
@@ -152,11 +158,12 @@ a{
 nav ul li.reviews:hover .dropDown {
     display: block;
     position: absolute;
-    background-color:rgb(108, 72, 5);
+    background-color:rgba(107, 71, 3);
     width: max-content;
     padding: 0 .75rem;
     border-radius: .5rem;
     margin-left: 1rem;
+    box-shadow: 0 10px 10px rgba(1, 1, 1, 0.5);
 }
 
 .dropDown ul {
@@ -182,6 +189,16 @@ nav ul li.reviews a{
     align-items: center;
     gap: .5rem;
 }
+
+.sidebarDiv{
+    color: #3a5a40;
+}
+
+.sidebarDiv:hover{
+    color: white;
+    cursor: pointer;
+}
+
 
 
 

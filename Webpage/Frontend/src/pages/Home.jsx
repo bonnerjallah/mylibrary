@@ -1,10 +1,10 @@
-import React from 'react'
+
+import homestyle from "../styles/homestyle.module.css"
 
 const Home = () => {
   return (
     <div>
-      Home
-      
+      <div className={homestyle.heroSection} ></div>
     </div>
   )
 }

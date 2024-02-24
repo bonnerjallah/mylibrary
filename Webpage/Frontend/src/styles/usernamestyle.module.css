@@ -19,3 +19,90 @@
     justify-content: center;
     align-items: center;
 }
+
+.UserNameModalMainContainer{
+    z-index: 999;
+    width: 20rem;
+    margin-top: 3rem;
+    background-color: #168aad;
+    animation: userModalAnimi 800ms ease-in-out  1 normal forwards;
+}
+
+@keyframes userModalAnimi {
+    0%{margin-top: 2rem; opacity: 0}
+    100%{margin-top: 3rem; opacity: 1;}
+}
+
+.accountAndLogOutContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    background-color: #3c7b8e;
+}
+
+.accountWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid black;
+    padding: 0 1rem;
+    height:2.5rem
+}
+
+.accountWrapper h4 a{
+    color: black;
+}
+
+.accountWrapper h4 a:hover{
+    color: white;
+}
+
+.userNameButtonWrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.userNameButtonWrapper button{
+    width: 10rem;
+}
+
+.usernameIconsWrapper{
+    display: flex;
+    height: 80%;
+    align-items: center;
+    font-size: .2rem;
+    gap: .5rem;
+}
+
+.bellIconWrapper,
+.gearIconWrapper{
+    font-size: 1.5rem;
+    width: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.bellIconWrapper:hover,
+.gearIconWrapper:hover{
+    cursor: pointer;
+    color:  white;
+    box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.5);
+    transition: all 100ms ease-in-out;
+}
+
+.userNameButtonWrapper button{
+    height: 2rem;
+    margin-bottom: .5rem;
+    box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.userNameButtonWrapper button:hover{
+    color: white;
+    cursor: pointer;
+    background-color: #184e77;
+    border: none;
+    border-radius: .2rem;
+    transition: all 600ms ease-in-out;
+}
+

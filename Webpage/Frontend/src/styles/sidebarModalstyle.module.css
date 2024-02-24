@@ -1,0 +1,74 @@
+.mainContainer{
+    background-color: #168aad;
+    width: 20rem;
+    padding: .5rem;
+    z-index: 999;
+    margin-left: -200px;
+    animation: modalOpen 800ms ease-in-out  1 normal forwards;
+}
+
+@keyframes modalOpen {
+    0%{margin-left: -200px; opacity: 0;}
+    100%{margin-left:0; opacity: 1;}
+}
+
+.closeModalBttn{
+    cursor: pointer;
+    border-bottom: 2px solid black;
+    display: flex;
+    justify-content: flex-end;
+    padding: .5rem;
+}
+
+.closeModalBttn p{
+    border: 1px solid black;
+}
+
+.closeModalBttn p:hover{
+    background-color: red;
+    color: white;
+}
+
+.listItems ul li{
+    font-size: black;
+    font-size: 1.3rem;
+    margin: 1rem;
+    list-style: none;
+}
+
+.listItems ul li a{
+    color: black;
+}
+
+.listItems ul li a:hover{
+    color: white;
+    cursor: pointer;
+}
+
+.culture,
+.lifeStyle{
+    color: black
+}
+
+.culture {
+    display: none;
+}
+
+.showVisible {
+    display: block;
+    animation: visible 500ms ease-in-out 1 normal forwards;
+}
+
+@keyframes visible {
+    0%{margin-top:-1rem; opacity: 0;}
+    100%{marign-top: 0; opacity: 1;}
+}
+
+.lifeStyle{
+    display: none;
+}
+
+.showLifeStyle{
+    display: block;
+    animation: visible 500ms ease-in-out 1 normal forwards;
+}
