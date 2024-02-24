@@ -1,0 +1,134 @@
+*,
+*::before,
+*::after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.mainContainer{
+    margin-bottom: .1rem;
+}
+
+.userNameContainer{
+    display: flex;
+    justify-content: flex-end;
+    padding-right: .5rem;
+    height: 3rem;
+    border-bottom: 2px solid rgb(20, 153, 230);
+}
+
+.userNameContainer h3{
+    width: max-content;
+    background-color: rgb(20, 153, 230);
+    padding: .5rem;
+    display: flex;
+    align-items: center;
+}
+
+.linksContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.logoContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    height: 9rem;
+    padding: 1rem;
+}
+
+.logoWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(21, 21, 21);
+    width: 5rem;
+    border-radius: 20%;
+    transform: rotate(45deg);
+    animation: spin 15s ease-in-out 1s infinite normal;
+    transition: transform 0.3s ease; 
+}
+@keyframes spin {
+    0% { transform: rotate(45deg) rotateY(0deg); }
+    100% { transform: rotate(45deg) rotateY(360deg); }
+}
+
+.logo {
+    border-radius: 20rem;
+    animation: continuousSpin 10s linear infinite;
+    transition: transform 0.3s ease; /* Add a smooth transition to the transform property */
+}
+
+@keyframes continuousSpin {
+    0% { transform: rotate(-20deg) rotateX(0deg); }
+    100% { transform: rotate(-20deg) rotateX(360deg); }
+}
+
+.shadow {
+    width: 5rem;
+    height: 5rem;
+    background-color: #34373a;
+    transform: rotateX(95deg);
+    box-shadow: 0 0 10px 10px rgba(34, 36, 36, 0.7); 
+    top: 4rem;
+    border-radius: 40%;
+    position: absolute;
+    animation: shadowspin 5s ease-in-out 500ms infinite;
+    transition: transform 0.3s ease;
+}
+
+@keyframes shadowspin {
+    0% { transform:  rotateX(95deg) scaleY(-2); }
+    100% { transform: rotateX(95deg) scaleY(2); }
+}
+
+.logoAndNameWrapper{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.header{
+    width: 10rem;
+}
+
+.header h1{
+    font-size: 2rem;
+    color: black;
+}
+
+nav{
+    display: flex;
+    align-items: flex-end;
+    background-color: orange;
+    width: 100%;
+}
+
+nav ul{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    list-style: none;
+    font-size: 1.5rem;
+}
+
+nav ul li:hover{
+    color: white;
+    cursor: pointer;
+}
+
+a{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.searchbarContainer{
+    width: 70%;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+}

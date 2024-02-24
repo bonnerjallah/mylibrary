@@ -1,0 +1,21 @@
+.mainContainer{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.mainContainer:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.firstletter{
+    background-color: black;
+    height: 2rem;
+    width: 2rem;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
