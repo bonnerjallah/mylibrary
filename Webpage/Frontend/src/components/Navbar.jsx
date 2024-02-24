@@ -1,5 +1,8 @@
 import { NavLink, Outlet } from "react-router-dom"
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faCaretDown } from "@fortawesome/free-solid-svg-icons";
+
 import navstyles from "../styles/navstyles.module.css"
 
 import Searchbar from "./Searchbar"
@@ -35,13 +38,21 @@ const Navbar = () => {
 
                     <nav>
                         <ul>
-                            <li>Our picks</li>
-                            <li>Discover</li>
-                            <li>Books</li>
-                            <li>Reviews</li>
-                            <li>Blog</li>
-                            <li>Shop</li>
-                            <li>Who we are</li>
+                            <li><NavLink>Our picks</NavLink></li>
+                            <li><NavLink>Discove</NavLink>r</li>
+                            <li><NavLink>Books</NavLink></li>
+                            <li className={navstyles.reviews}>
+                                <NavLink>Reviews<FontAwesomeIcon icon={faCaretDown} /></NavLink>
+                                <div className={navstyles.dropDown}>
+                                    <ul>
+                                        <li><NavLink>Members</NavLink></li>
+                                        <li><NavLink>Social</NavLink></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><NavLink>Blog</NavLink></li>
+                            <li><NavLink>Shop</NavLink></li>
+                            <li><NavLink>Who we are</NavLink></li>
                         </ul>
                     </nav>
                 </div>
