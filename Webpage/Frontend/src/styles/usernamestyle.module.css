@@ -23,14 +23,14 @@
 .UserNameModalMainContainer{
     z-index: 999;
     width: 20rem;
-    margin-top: 3rem;
+    margin-top: 10rem;
     background-color: #168aad;
     animation: userModalAnimi 800ms ease-in-out  1 normal forwards;
 }
 
 @keyframes userModalAnimi {
     0%{margin-top: 2rem; opacity: 0}
-    100%{margin-top: 3rem; opacity: 1;}
+    100%{margin-top: 9rem; opacity: 1;}
 }
 
 .accountAndLogOutContainer{
@@ -103,6 +103,6 @@
     background-color: #184e77;
     border: none;
     border-radius: .2rem;
-    transition: all 600ms ease-in-out;
+    transition: all 300ms ease-in-out;
 }
 

@@ -35,7 +35,12 @@ const Navbar = () => {
         <>
             <div className={navstyles.mainContainer}>
                 <div className={navstyles.userNameContainer}>
-                    <h3 onClick={handleUserNameModal} ><Username /></h3>
+                    <div className={navstyles.loginOrRegisterWrapper}>
+                        <h3><NavLink to="/Login">Log In/Register</NavLink></h3>
+                    </div>
+                    {/* <div onClick={handleUserNameModal} className={navstyles.usernameDivWrapper}>
+                        <Username />
+                    </div> */}
                     {showUserNameModal && (<UserNameModal />)}
                 </div>
 
