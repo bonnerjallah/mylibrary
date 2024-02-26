@@ -28,7 +28,7 @@ const refreshToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5174"],
     methods: ["POST, GET, PUT"],
     credentials: true
 }))
@@ -105,6 +105,25 @@ app.get("/loginlibraryusers", async(req, res) => {
         return res.status(500).json({message: "Internal server issue"})
     }
 })
+
+//Middleware to validate access token
+const validateAccessToken = (req, res, next) => {
+    const accessToken = req.cookie.token
+    if(accessToken){
+        return res.status(401).json({error: "Access token is missing"})
+    }
+
+    jwt.verify(accessToken, jwtSec, (err, decoded) => {
+        if(err){
+            console.error("Error verifying access token", err)  
+            return res.status(401).json({error: "Invalid access token"})
+        }
+
+        //if token is valid, set user information in req.user
+        req.user = decoded.user
+        next()
+    })
+}
 
 app.listen(3001, () => {
     console.log("listening to port 3001")
