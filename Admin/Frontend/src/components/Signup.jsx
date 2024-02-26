@@ -27,7 +27,6 @@ const Signup = () => {
     e.preventDefault()
 
     try {
-      console.log("Info being sent", adminSignUp)
       const response = await axios.post("http://localhost:3001/registeradminusers", adminSignUp, {
         headers: {"Content-Type": "application/json"}
       });

@@ -10,7 +10,7 @@ const Login = () => {
             </div>
             <div className={loginstyle.formWrapper}>
                 <form>
-                    <label htmlFor="UserName">Username:</label>
+                    <label htmlFor="UserName">Email:</label>
                     <input type="text" name='username' id='UserName' />
 
                     <label htmlFor="Password">Password:</label>

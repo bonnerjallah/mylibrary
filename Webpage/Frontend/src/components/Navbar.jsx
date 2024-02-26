@@ -30,18 +30,28 @@ const Navbar = () => {
         }
     }
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+
+
 
     return (
         <>
             <div className={navstyles.mainContainer}>
                 <div className={navstyles.userNameContainer}>
-                    <div className={navstyles.loginOrRegisterWrapper}>
-                        <h3><NavLink to="/Login">Log In/Register</NavLink></h3>
-                    </div>
-                    {/* <div onClick={handleUserNameModal} className={navstyles.usernameDivWrapper}>
-                        <Username />
-                    </div> */}
+
+                    {isLoggedIn ? (
+                        <div onClick={handleUserNameModal} className={navstyles.usernameDivWrapper}>
+                            <Username />
+                        </div>
+                    ) : (
+                        <div className={navstyles.loginOrRegisterWrapper}>
+                            <h3><NavLink to="/Login">Log In/Register</NavLink></h3>
+                        </div>
+                    )}
+
                     {showUserNameModal && (<UserNameModal />)}
+
                 </div>
 
                 <div className={navstyles.linksContainer}>

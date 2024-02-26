@@ -28,7 +28,7 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ["http://localhost:5174"],
+    origin: ["http://localhost:5173"],
     methods: ["POST, GET, PUT"],
     credentials: true
 }))
@@ -48,7 +48,7 @@ app.post("/registerlibraryusers", async (req, res) => {
 
         const hashPwd = await bcrypt.hash(password, saltRounds)
 
-        const newUser = await db.LibraryUsers.create({...req.body, password: hashPwd})
+        const newUser = await LibraryUsers.create({...req.body, password: hashPwd})
 
         return res.json(newUser)   
         
@@ -60,13 +60,13 @@ app.post("/registerlibraryusers", async (req, res) => {
 
 app.get("/loginlibraryusers", async(req, res) => {
     try {
-        const {username, password} = req.body
+        const {email, password} = req.body
 
-        if(!username || !password){
+        if(!email || !password){
             return res.status(400).json({message: "All field require"})
         }
 
-        const results = await LibraryUsers.findOne({username})
+        const results = await LibraryUsers.findOne({email})
 
         if(results){
             const hashedPassword = results.password
@@ -154,8 +154,8 @@ app.post("/refresh_token", (req, res) => {
     })
 })
 
-//Get library user data
-app.get("/libraryusers", async(req, res) => {
+//Get library user route
+app.get("/libraryusers", validateAccessToken, async(req, res) => {
     try {
         if(req.user){
             return res.status(200).json({valid: true, user: req.user})
