@@ -23,7 +23,7 @@ mongoose.connect("mongodb://localhost:27017/mylibrary")
 
 //jwt and refresh token
 const jwtSec = process.env.VITE_jwtSecret
-const refreshToken = process.env.VITE_jwtRefreshSecret
+const refToken = process.env.VITE_jwtRefreshSecret
 
 app.use(cookieParser())
 
@@ -83,7 +83,7 @@ app.get("/loginlibraryusers", async(req, res) => {
 
                 //Generate Jwt Token
                 const accessToken = jwt.sign({user: userData}, jwtSec, {expiresIn: "15min"})
-                const refresh_token = jwt.sign({user: userData}, refreshToken, {expiresIn: "1hr"})
+                const refresh_token = jwt.sign({user: userData}, refToken, {expiresIn: "1hr"})
 
                 //Send Token to Client
                 res.cookie("token", accessToken)
@@ -124,6 +124,35 @@ const validateAccessToken = (req, res, next) => {
         next()
     })
 }
+
+//Refresh token route
+app.post("/refresh_token", (req, res) => {
+    //Check if a valid refresh token is present in the request cookie
+    const refreshToken = req.cookies.refreshToken
+
+    if(!refreshToken){
+        return res.status(400).json({error: "refresh token is missing"})
+    }
+
+    //Verify refresh token
+    jwt.verify(refreshToken, refToken, (err, decoded) => {
+        if(err){
+
+            //Token valid or has expire
+            return res.status(401).json({error: "Invalid or expired refresh token"})
+        }
+
+        //Extract user data from the decoded refresh token payload
+        const userData = decoded.user
+
+        //Generate a new refresh token
+        const newAccessToken = jwt.sign({user: userData}, jwtSec, {expiresIn: "15min"})
+
+        //Send new refresh token to the client
+        res.cookie("token", newAccessToken)
+        return res.status(200).json({message: "Token refresh successfully"})
+    })
+})
 
 app.listen(3001, () => {
     console.log("listening to port 3001")
