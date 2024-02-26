@@ -154,6 +154,21 @@ app.post("/refresh_token", (req, res) => {
     })
 })
 
+//Get library user data
+app.get("/libraryusers", async(req, res) => {
+    try {
+        if(req.user){
+            return res.status(200).json({valid: true, user: req.user})
+        }else {
+            console.error("Token validation failed")
+            return res.status(401).json({valid: false, error: "Unauthorized user"})
+        }
+    } catch (error) {
+        console.log("Error fetching user", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
+
 app.listen(3001, () => {
     console.log("listening to port 3001")
 })
