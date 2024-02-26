@@ -40,13 +40,13 @@ const bookSchema = new mongoose.Schema({
     authorImage:{
         type:String
     },
-    bookRatings: {
-        type: Number
+    Ratings: {
+        type: String
     },
     comments:[{
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "LibraryUsers",
+            ref: "libraryUsers",
             required: true
         },
         content: String,

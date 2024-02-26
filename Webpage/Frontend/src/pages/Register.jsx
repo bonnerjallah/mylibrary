@@ -41,12 +41,12 @@ const Register = () => {
 
                     <label htmlFor="PostalCode">
                         Postal Code: <span style={{color: "red"}}>*</span>
-                        <input type="text" name='postalcode' id='PostalCode' required />
+                        <input type="number" name='postalcode' id='PostalCode' required />
                     </label>
 
                     <label htmlFor="PhoneNumber">
                         Phone Number: 
-                        <input type="text" name='phonenumber' id='PhoneNumber' />
+                        <input type="number" name='phonenumber' id='PhoneNumber' />
                     </label>
 
                     <label htmlFor="EmailAddress">
