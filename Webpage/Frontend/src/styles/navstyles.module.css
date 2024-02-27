@@ -33,12 +33,12 @@
     cursor: pointer;
 }
 
-.loginOrRegisterWrapper h3 a{
+.loginOrRegisterWrapper a{
     text-decoration: none;
     color: black
 }
 
-.loginOrRegisterWrapper h3 a:hover{
+.loginOrRegisterWrapper a:hover{
     color: white;
 }
 

@@ -45,7 +45,12 @@ const libraryUsersSchema = new mongoose.Schema({
         required: true
     },
 
-    password: {
+    username:{
+        type: String,
+        required: true
+    },
+
+    password:{
         type: String,
         required: true,
     },

@@ -35,9 +35,9 @@ app.use(cors ({
 
 app.post("/registerlibraryusers", async (req, res) => {
     try {
-        const {firstname, lastname, birthday, address, city, state, postalcode, phonenumber, email, password} = req.body;
+        const {firstname, lastname, birthday, address, city, state, postalcode, phonenumber, email, username, password} = req.body;
 
-        if(!firstname || !lastname || !birthday || !address || !city || !state || !postalcode || !email || !password) {
+        if(!firstname || !lastname || !birthday || !address || !city || !state || !postalcode || !email || !username || !password) {
             return res.status(400).json({message: "All fields Required"});
         }
 
@@ -58,15 +58,15 @@ app.post("/registerlibraryusers", async (req, res) => {
     }
 })
 
-app.get("/loginlibraryusers", async(req, res) => {
+app.post("/loginlibraryusers", async(req, res) => {
     try {
-        const {email, password} = req.body
+        const {username, password} = req.body
 
-        if(!email || !password){
+        if(!username || !password){
             return res.status(400).json({message: "All field require"})
         }
 
-        const results = await LibraryUsers.findOne({email})
+        const results = await LibraryUsers.findOne({username})
 
         if(results){
             const hashedPassword = results.password

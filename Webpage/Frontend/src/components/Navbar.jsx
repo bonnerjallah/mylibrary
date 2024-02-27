@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom"
+import { useAuth } from "./AuthContext";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faCaretDown, faBars } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +15,8 @@ import UserNameModal from "./UserNameModal";
 
 const Navbar = () => {
 
+    const {loggedIn, logOut} = useAuth()
+
     const [OpensidebarModal, setOpenSidebarModal] = useState(false)
 
     const handleSideBarModal = () => {
@@ -23,16 +26,8 @@ const Navbar = () => {
     const [showUserNameModal, setShowUserNameModal] = useState(false)
 
     const handleUserNameModal = () => {
-        if(!showUserNameModal){
-            setShowUserNameModal(true)
-        } else{
-            setShowUserNameModal(false)
-        }
+        setShowUserNameModal(!showUserNameModal)
     }
-
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-
 
 
     return (
@@ -40,17 +35,17 @@ const Navbar = () => {
             <div className={navstyles.mainContainer}>
                 <div className={navstyles.userNameContainer}>
 
-                    {isLoggedIn ? (
+                    {loggedIn ? (
                         <div onClick={handleUserNameModal} className={navstyles.usernameDivWrapper}>
                             <Username />
                         </div>
                     ) : (
                         <div className={navstyles.loginOrRegisterWrapper}>
-                            <h3><NavLink to="/Login">Log In/Register</NavLink></h3>
+                            <NavLink to="/LoginForm"><h3>Log In/Register</h3></NavLink>
                         </div>
                     )}
 
-                    {showUserNameModal && (<UserNameModal />)}
+                    {showUserNameModal && (<UserNameModal closemodal={setShowUserNameModal} />)}
 
                 </div>
 

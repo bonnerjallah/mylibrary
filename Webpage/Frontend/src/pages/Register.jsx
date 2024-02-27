@@ -19,6 +19,7 @@ const Register = () => {
         postalcode: "",
         phonenumber: "",
         email: "",
+        username: "",
         password: ""
     })
 
@@ -48,6 +49,7 @@ const Register = () => {
                 postalcode: "",
                 phonenumber: "",
                 email: "",
+                username:"",
                 password: ""
             })
 
@@ -112,6 +114,11 @@ const Register = () => {
                     <label htmlFor="EmailAddress">
                         Email Address: <span style={{color: 'red'}}>*</span>
                         <input type="email" name='email' id='EmailAddress' value={userInputData.email} required onChange={handleUserInputData} />
+                    </label>
+
+                    <label htmlFor="UserName">
+                        Username: <span style={{color: "red"}}>*</span>
+                        <input type="text" name="username" id="UserName" value={userInputData.username} required onChange={handleUserInputData} />
                     </label>
 
                     <label htmlFor="Password">
