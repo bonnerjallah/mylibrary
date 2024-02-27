@@ -9,8 +9,8 @@
 }
 
 @keyframes modalOpen {
-    0%{margin: 12.8rem -300px; opacity: 0; position: absolute;}
-    100%{margin: 12.8rem 0 0 0; opacity: 1; z-index: 3; position: absolute;}
+    0%{margin: 12.7rem -300px; opacity: 0; position: absolute;}
+    100%{margin: 12.7rem 0 0 0; opacity: 1; z-index: 3; position: absolute;}
 }
 
 .closeModalBttn{
