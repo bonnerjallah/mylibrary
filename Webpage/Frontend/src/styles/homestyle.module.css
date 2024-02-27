@@ -1,7 +1,5 @@
-/* .heroSection{
-    height: 30rem;
-    background-image: url('/home.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-} */
+
+.heroSection img{
+    height: 24rem;
+    width: 100%;
+}
