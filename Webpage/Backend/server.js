@@ -13,6 +13,8 @@ const cookieParser = require("cookie-parser")
 
 //Moduels
 const LibraryUsers = require("./module/libraryusermodel")
+const BooksCatalog = require("./module/bookmodel")
+const BooksSuggestions = require("./module/booksuggestions")
 
 const app = express()
 app.use(express.json())
@@ -28,10 +30,36 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ["http://localhost:5173"],
+    origin: ['http://localhost:5173'],
     methods: ["POST, GET, PUT"],
     credentials: true
 }))
+
+app.use("/booksimages", express.static(path.join(__dirname, "../../shared-assets/public/booksimages")))
+
+app.get("/catalogbooks", async (req, res) => {
+    try {
+        const results = await BooksCatalog.find().exec()
+
+        res.json(results)
+
+    } catch (error) {
+        console.log("Error fetch books", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
+
+app.get("/suggestedBooks", async (req, res) => {
+    try {
+        const results = await BooksSuggestions.find().exec()
+
+        res.json(results)
+        
+    } catch (error) {
+        console.log("Error fetching suggested books from database", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
 
 app.post("/registerlibraryusers", async (req, res) => {
     try {

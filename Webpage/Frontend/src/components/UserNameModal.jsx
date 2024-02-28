@@ -36,7 +36,7 @@ const UserNameModal = ({closemodal}) => {
         <div className={usernamestyle.UserNameModalMainContainer}>
             <div className={usernamestyle.accountAndLogOutContainer}>
                 <div className={usernamestyle.accountWrapper}>
-                    <h4><NavLink>My Account</NavLink></h4>
+                    <h4><NavLink to="/Dashboard">My Account</NavLink></h4>
                     <div className={usernamestyle.usernameIconsWrapper}>
                         <div className={usernamestyle.bellIconWrapper}>
                             <FontAwesomeIcon icon={faBell}  />
