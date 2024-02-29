@@ -51,7 +51,7 @@ const Navbar = () => {
 
                 <div className={navstyles.linksContainer}>
                     <div className={navstyles.logoContainer}>
-                        <NavLink to="/Home">
+                        <NavLink to="/HomeBase">
                             <div className={navstyles.logoAndNameWrapper}>
                                 <div className={navstyles.logoWrapper}>
                                     <img className={navstyles.logo} src="/logo.jpg" alt="" width={80} height={80} style={{borderRadius: "45%", padding: ".5rem" }} />

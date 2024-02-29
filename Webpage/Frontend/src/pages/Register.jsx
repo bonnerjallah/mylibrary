@@ -132,7 +132,7 @@ const Register = () => {
                 </div>
 
                 <div className={loginstyle.cancelButtonWrapper}>
-                    <NavLink to="/Home"><button>Cancel</button></NavLink>
+                    <NavLink to="/HomeBase"><button>Cancel</button></NavLink>
                 </div>
             </form>
         </div>

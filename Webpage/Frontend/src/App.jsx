@@ -2,8 +2,8 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import { AuthProvider } from "./components/AuthContext"
 
 import Navbar from "./components/Navbar"
+import HomeBase from "./pages/HomeBase"
 import LoginForm from "./pages/LoginForm"
-import Home from "./pages/Home"
 import Register from "./pages/Register"
 import ForgotPassword from "./pages/ForgotPassword"
 import Dashboard from "./pages/Dashboard"
@@ -11,11 +11,11 @@ import Dashboard from "./pages/Dashboard"
 const router = createBrowserRouter (
   createRoutesFromElements(
     <Route path="/" element={<Navbar />}>
-      <Route path="/Home" element={<Home />} />
+      <Route path="HomeBase" element={<HomeBase />} />
       <Route path="/LoginForm" element={<LoginForm />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/ForgotPassword" element={<ForgotPassword />} />
-      <Route path="/Dashboard" element={<Dashboard />} />
+      <Route path="/Dashboard" element={<Dashboard />} /> 
     </Route>
   )
 )

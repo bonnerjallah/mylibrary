@@ -68,6 +68,11 @@
     font-size: 1.3rem;
 }
 
+.bookSummeryWrapper div{
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .stafflistWrapper{
     width: 20%;
 }
@@ -85,5 +90,15 @@
     gap: 1rem;
 }
 
+.joinSection{
+    margin-top: 1.5rem;
+    height: 30rem;
+    display: flex;
+}
+
+.joinSection > div:first-child {
+    display: flex;
+    width: 50%;
+}
 
 
