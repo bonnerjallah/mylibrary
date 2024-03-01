@@ -5,6 +5,8 @@ import axios from "axios"
 
 import homestyle from "../styles/homestyle.module.css"
 
+import Fotter from "../components/Footer"
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowCircleLeft, faArrowCircleRight } from "@fortawesome/free-solid-svg-icons"
 
@@ -252,7 +254,7 @@ const HomeBase = () => {
               <div className={homestyle.userImageAndName}>
                 <img src="/readinginforest.jpg" alt="" style={{borderRadius:"50%"}} width="50" height="50" />
               </div>
-              <p>Hannan Reed</p>
+              <p>John Reed</p>
             </div>
             <div style={{backgroundColor: "#ffe14c", borderRadius:"2rem", width:"5rem", height:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white" }}>Follow</div>
           </div>
@@ -275,6 +277,10 @@ const HomeBase = () => {
             <div style={{backgroundColor: "#ffe14c", borderRadius:"2rem", width:"5rem", height:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>Follow</div>
           </div>
         </div>
+      </div>
+
+      <div>
+        <Fotter />
       </div>
     </div>
   )

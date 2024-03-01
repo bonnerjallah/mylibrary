@@ -1,0 +1,47 @@
+.mainContainer{
+    display: flex;
+    justify-content: space-between;
+    padding: 4rem;
+    background-color: #168aad;
+    margin-top: 5rem;
+    height: 15rem;
+}
+
+.newletterContainer{
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+}
+
+.newletterContainer div form{
+    display: flex;
+    margin-top: 1rem;
+}
+
+.newletterContainer div form button:hover{
+    background-color: #168aad;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.newletterContainer div form input{
+    height: 2rem;
+    width: 15rem;
+}
+
+.socialIcons{
+    display: flex;
+    column-gap: .5rem;
+    align-items: center;
+    width: 20rem;
+    margin-top: 2rem;
+    justify-content: space-evenly;
+}
+
+
+.facebook:hover,
+.instagram:hover,
+.twiter:hover{
+    color: white;
+    cursor: pointer;
+}
