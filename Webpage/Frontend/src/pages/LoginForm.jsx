@@ -8,6 +8,8 @@ import Cookies from "js-cookie"
 
 import loginstyle from "../styles/loginstyle.module.css"
 
+import Footer from "../components/Footer"
+
 
 const LoginForm = () => {
 
@@ -90,6 +92,9 @@ const LoginForm = () => {
                         <p><NavLink to="/Register">Register</NavLink></p>
                     </div>
                 </form>
+            </div>
+            <div>
+                <Footer />
             </div>
         </div>
     )
