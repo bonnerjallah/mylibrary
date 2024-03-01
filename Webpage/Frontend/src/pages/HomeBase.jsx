@@ -229,14 +229,51 @@ const HomeBase = () => {
         </div>  
       </div>
       <div className={homestyle.joinSection}>
-        <div>
-          <div>
-            {/* <img src="/HandsDown.jpg" width="400" /> */}
-            <img src="/Screenshot2.jpg" width="300" />
+        <div style={{display:"flex", justifyContent:"center", width:"80%"}}>
+          <img src="/HandsDown.jpg" alt="" />
+          <div className={homestyle.joinWrapper}>
+            <h2>Join the Club</h2>
+            <p>Meet your fellow book lover <br /> and get involved in the conversitions.</p>
+            <NavLink to="/Register"><button>Let's Chat</button></NavLink>
           </div>
         </div>
-        <div>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia, laudantium?</p>
+        <div style={{display:"flex", alignItems:"center"}}>
+          <img src="/Screenshot2.jpg" alt="book picture" width="100%" height="50%" />
+        </div>
+      </div>
+      <div className={homestyle.followUsersContainer}>
+        <div className={homestyle.followWrapper}>
+          <h2>Follow other users and book reviewers</h2>
+          <p>Join a global network of readers and reviewers, fostering connections that transcend borders. Engage in vibrant discussions about your favorite books and topics, forging lasting connections that keep you inspired and informed.</p>
+        </div>
+        <div className={homestyle.followersExampleWrapper}>
+          <div className={homestyle.follower}>
+            <div className={homestyle.user}>
+              <div className={homestyle.userImageAndName}>
+                <img src="/readinginforest.jpg" alt="" style={{borderRadius:"50%"}} width="50" height="50" />
+              </div>
+              <p>Hannan Reed</p>
+            </div>
+            <div style={{backgroundColor: "#ffe14c", borderRadius:"2rem", width:"5rem", height:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white" }}>Follow</div>
+          </div>
+          <div className={homestyle.follower}>
+            <div className={homestyle.user}>
+              <div className={homestyle.userImageAndName}>
+                <img src="/fakeuser1.jpg" alt="" style={{borderRadius:"50%"}} width="50" height="50" />
+              </div>
+              <p>Amanda White</p>
+            </div>
+            <div style={{backgroundColor: "#ffe14c", borderRadius:"2rem", width:"5rem", height:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>Follow</div>
+          </div>
+          <div className={homestyle.follower}>
+            <div className={homestyle.user}>
+              <div className={homestyle.userImageAndName}>
+                <img src="/blackgirlreading.jpg" alt="" style={{borderRadius:"50%"}} width="50" height="50" />
+              </div>
+              <p>Khadijah Brown</p>
+            </div>
+            <div style={{backgroundColor: "#ffe14c", borderRadius:"2rem", width:"5rem", height:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>Follow</div>
+          </div>
         </div>
       </div>
     </div>

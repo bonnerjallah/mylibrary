@@ -91,14 +91,96 @@
 }
 
 .joinSection{
-    margin-top: 1.5rem;
+    margin-top: 5rem;
     height: 30rem;
     display: flex;
 }
 
-.joinSection > div:first-child {
+.joinWrapper{
     display: flex;
-    width: 50%;
+    flex-direction: column;
+    justify-content: center;
+    width: 20rem;
 }
 
+.joinWrapper h2{
+    font-size: 2rem;
+    color: #00a6fb;
+}
 
+.joinWrapper button{
+    width: 15rem;
+    height: 3rem;
+    border-radius: 5rem;
+    font-size: 2rem;
+    background-color: #168aad;
+    margin-top: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.joinWrapper button:hover{
+    color: white;
+}
+
+.followUsersContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 20rem;
+    padding-right: .5rem;
+}
+
+.followWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 7rem;
+    gap: 1rem;
+}
+
+.followWrapper h2{
+    font-size: 2rem;
+    color: #00a6fb;
+
+}
+
+.followWrapper p{
+    font-size: 1.2rem;
+}
+
+.followersExampleWrapper{
+    background-color: #e9ecef;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    border-radius: 1rem;
+}
+
+.follower{
+    background-color: white;
+    display: flex;
+    width: 25rem;
+    height: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem;
+    border-radius: 2rem;
+}
+
+.userImageAndName{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user{
+    width: 50%;
+    height: 100%;
+    column-gap: .5rem;
+    display: flex;
+    align-items: center;
+}
