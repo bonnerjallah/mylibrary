@@ -20,6 +20,7 @@
 
 .newletterContainer div form button:hover{
     background-color: #168aad;
+    color: white;
     border: 1px solid black;
     cursor: pointer;
 }

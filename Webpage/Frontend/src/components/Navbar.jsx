@@ -51,7 +51,7 @@ const Navbar = () => {
 
                 <div className={navstyles.linksContainer}>
                     <div className={navstyles.logoContainer}>
-                        <NavLink to="/HomeBase">
+                        <NavLink to="/">
                             <div className={navstyles.logoAndNameWrapper}>
                                 <div className={navstyles.logoWrapper}>
                                     <img className={navstyles.logo} src="/logo.jpg" alt="" width={80} height={80} style={{borderRadius: "45%", padding: ".5rem" }} />
@@ -77,7 +77,7 @@ const Navbar = () => {
                         <ul>
                             <li><NavLink>Our picks</NavLink></li>
                             <li><NavLink>Discove</NavLink>r</li>
-                            <li><NavLink>Books</NavLink></li>
+                            <li><NavLink to="/Dashboard">Borrow</NavLink></li>
                             <li className={navstyles.reviews}>
                                 <NavLink>Reviews<FontAwesomeIcon icon={faCaretDown} /></NavLink>
                                 <div className={navstyles.dropDown}>

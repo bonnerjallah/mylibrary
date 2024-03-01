@@ -11,7 +11,7 @@ import Dashboard from "./pages/Dashboard"
 const router = createBrowserRouter (
   createRoutesFromElements(
     <Route path="/" element={<Navbar />}>
-      <Route path="HomeBase" element={<HomeBase />} />
+      <Route path="/" element={<HomeBase />} />
       <Route path="/LoginForm" element={<LoginForm />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/ForgotPassword" element={<ForgotPassword />} />

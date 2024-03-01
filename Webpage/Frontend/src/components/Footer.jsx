@@ -22,7 +22,7 @@ const Footer = () => {
                     </form>
                 </div>
 
-                &copy; 2024 Counsious Book Club. All Rights Reserved.
+                &copy; 2024 Consious Book Club. All Rights Reserved.
             </div>
             <div className={footer.socialIcons}>
                 <Facebook  size={48} className={footer.facebook} />

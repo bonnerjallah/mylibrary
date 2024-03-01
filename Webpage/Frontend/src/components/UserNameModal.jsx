@@ -29,7 +29,7 @@ const UserNameModal = ({closemodal}) => {
             closemodal(false)
         }, 100)
 
-        navigate("/Home")
+        navigate("/")
     }
 
     return (
