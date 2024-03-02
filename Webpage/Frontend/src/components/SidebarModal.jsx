@@ -31,7 +31,7 @@ const SidebarModal = ({closeSidebarModal}) => {
                         <NavLink onClick={handleShowCulture}>Culture <FontAwesomeIcon icon={faCaretDown} /> </NavLink>
                         <div className={`${sidebarModalstyle.culture} ${isCultureVisible ? sidebarModalstyle.showVisible : ""}`}>
                             <ul>
-                                <li><NavLink>Documentry</NavLink></li>
+                                <li><NavLink>Documentary</NavLink></li>
                                 <li><NavLink>Music</NavLink></li>
                             </ul>
                         </div>

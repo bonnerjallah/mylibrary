@@ -7,6 +7,8 @@ import LoginForm from "./pages/LoginForm"
 import Register from "./pages/Register"
 import ForgotPassword from "./pages/ForgotPassword"
 import Dashboard from "./pages/Dashboard"
+import ProtectedRoutes from "./components/ProtectedRoutes"
+
 
 const router = createBrowserRouter (
   createRoutesFromElements(
@@ -15,7 +17,12 @@ const router = createBrowserRouter (
       <Route path="/LoginForm" element={<LoginForm />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/ForgotPassword" element={<ForgotPassword />} />
-      <Route path="/Dashboard" element={<Dashboard />} /> 
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/Dashboard" element={<Dashboard />} /> 
+      </Route>
+      
+
+      
     </Route>
   )
 )
