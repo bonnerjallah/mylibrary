@@ -122,9 +122,6 @@ const HomeBase = () => {
 
   }, [])
 
-  
-  console.log("staff list", staffList)
-
 
   //Function to get a random book of the week.
   useEffect(() => {

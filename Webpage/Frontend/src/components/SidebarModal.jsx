@@ -10,7 +10,6 @@ const SidebarModal = ({closeSidebarModal}) => {
     const [isCultureVisible, setCultureVisible] = useState(false);
 
     const handleShowCulture = () => {
-        console.log("button click")
         setCultureVisible(!isCultureVisible);
     }
 

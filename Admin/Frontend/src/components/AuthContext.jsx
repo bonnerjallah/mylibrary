@@ -26,14 +26,14 @@ export const AuthProvider = ({children}) => {
                 setUser(userData)
                 
             } else {
-                console.log("Token verification failed")
+                console.error("Token verification failed", response.status)
 
                 logOut()
             }
 
 
         } catch (error) {
-            console.error(error)
+            console.error("Error refershing access token", error)
             logOut()
         }
     }

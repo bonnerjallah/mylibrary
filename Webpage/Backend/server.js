@@ -5,11 +5,10 @@ const multer = require("multer")
 const path = require("path")
 
 const jwt = require("jsonwebtoken")
-const cookie = require("cookie-parser")
+const cookieParser = require("cookie-parser")
 
 const bcrypt = require("bcrypt")
 const saltRounds = 10
-const cookieParser = require("cookie-parser")
 
 //Moduels
 const LibraryUsers = require("./module/libraryusermodel")
@@ -110,7 +109,7 @@ app.post("/loginlibraryusers", async(req, res) => {
                 }
 
                 //Generate Jwt Token
-                const accessToken = jwt.sign({user: userData}, jwtSec, {expiresIn: "15min"})
+                const accessToken = jwt.sign({user: userData}, jwtSec, {expiresIn: "5min"})
                 const refresh_token = jwt.sign({user: userData}, refToken, {expiresIn: "1hr"})
 
                 //Send Token to Client
@@ -136,8 +135,8 @@ app.post("/loginlibraryusers", async(req, res) => {
 
 //Middleware to validate access token
 const validateAccessToken = (req, res, next) => {
-    const accessToken = req.cookie.token
-    if(accessToken){
+    const accessToken = req.cookies.token
+    if(!accessToken){
         return res.status(401).json({error: "Access token is missing"})
     }
 
@@ -174,25 +173,25 @@ app.post("/refresh_token", (req, res) => {
         const userData = decoded.user
 
         //Generate a new refresh token
-        const newAccessToken = jwt.sign({user: userData}, jwtSec, {expiresIn: "15min"})
+        const newAccessToken = jwt.sign({user: userData}, jwtSec, {expiresIn: "5min"})
 
         //Send new refresh token to the client
         res.cookie("token", newAccessToken)
-        return res.status(200).json({message: "Token refresh successfully"})
+        res.status(200).json({message: "Token refresh successfully"})
     })
 })
 
 //Get library user route
-app.get("/libraryusers", validateAccessToken, async(req, res) => {
+app.get("/libraryusers", validateAccessToken, (req, res) => {
     try {
         if(req.user){
-            return res.status(200).json({valid: true, user: req.user})
+            return res.json({valid: true, user: req.user})
         }else {
             console.error("Token validation failed")
             return res.status(401).json({valid: false, error: "Unauthorized user"})
         }
     } catch (error) {
-        console.log("Error fetching user", error)
+        console.error("Error fetching user", error)
         return res.status(500).json({message: "Internal server issue"})
     }
 })
@@ -200,7 +199,7 @@ app.get("/libraryusers", validateAccessToken, async(req, res) => {
 //Logout route
 app.post("/logout", (req, res) => {
     res.clearCookie("token", {httpOnly: true, sameSite: "None", secure: true})
-    res.clearCookie("refreshtoken", {httpOnly: true, sameSite: "None", secure: true})
+    res.clearCookie("refreshToken", {httpOnly: true, sameSite: "None", secure: true})
 
     res.status(200).json({message: "Logged out successfully"})
 })

@@ -6,59 +6,64 @@ const AuthContext = createContext()
 export const AuthProvider = ({children}) => {
 
     const [loggedIn, setLoggedIn] = useState(false)
-    const [user , setUser] = useState()
-    const [token, setToken] = useState()
+    const [user , setUser] = useState(null)
+    const [token, setToken] = useState(null)
 
-    axios.defaults.withCredentials = true
-    async function refreshAccessToken ({setLoggedIn, setUser}) {
+    axios.defaults.withCredentials = true;
+    const refreshAccessToken = async ({ setLoggedIn, setUser, logOut }) => {
         try {
-            const response = await axios.post("http://localhost:3001/refresh_token", {}, {
-                headers:{"Content-Type": "aplication/json"}
-            })
-            
-            if(response.status === 200) {
-                const userData = response.data
 
-                setLoggedIn(true)
-                setUser(userData)
+            const storedToken = window.localStorage.getItem("token");
 
-            } else {
-                console.log("Error fetching user data", error)
-                logOut()
+            // Check if the user is logged in before attempting to refresh the token
+            if(!storedToken) {
+                return //Exit the function is user is not logged in
             }
 
+            const response = await axios.post("http://localhost:3001/refresh_token", {}, {
+                headers: {"Content-Type": "application/json"}
+            });
+            
+            if (response.status === 200) {
+                const userData = response.data;
+    
+                setLoggedIn(true);
+                setUser(userData);
+            } else {
+                console.error("Token verification failed with status:", response.status);
+
+                logOut();
+            }
         } catch (error) {
-            console.log(error)
-            logOut()
+            console.error("Error refreshing access token:", error);
+            logOut();
         }
     }
-
+    
     useEffect(() => {
-        
-        const storedToken = window.localStorage.getItem("token")
-
-        if(storedToken) {
-            
-            setLoggedIn(true)
-
-            //set up Interval to refresh the access token
-            const refreshAccessTokenInterval = setInterval(() => {
-                refreshAccessToken({
-                    setToken,
-                    setLoggedIn,
-                    setUser
-                }, 40 * 60 * 1000)
-            })
-
-            //Clear interval when component unmounts to prevent memory leaks
+        const storedToken = window.localStorage.getItem("token");
+    
+        const refreshAccessTokenHandler = () => {
+            refreshAccessToken({ setToken, setLoggedIn, setUser });
+        };
+    
+        if (loggedIn && storedToken) {
+            setLoggedIn(true);
+    
+            // Set up Interval to refresh the access token
+            const refreshAccessTokenInterval = setInterval(refreshAccessTokenHandler, 50 * 1000);
+    
+            // Clear interval when component unmounts to prevent memory leaks
             return () => {
-                clearInterval(refreshAccessTokenInterval)
-            }
+                clearInterval(refreshAccessTokenInterval);
+            };
         } else {
-            //If there is no stored token, initiate the token refresh
-            refreshAccessToken({setToken, setLoggedIn, setUser})
+            // If there is no stored token, initiate the token refresh
+            refreshAccessTokenHandler();
         }
-    }, [])
+    }, [loggedIn]);
+    
+    
 
     const login = (userData, token) => {
         setLoggedIn(true)
@@ -72,7 +77,7 @@ export const AuthProvider = ({children}) => {
         setUser(null)
         setToken(null)
 
-        window.localStorage.removeItem("token")
+        window.localStorage.removeItem('token');
     }
 
     return (

@@ -39,13 +39,10 @@ const LoginForm = () => {
             })
 
             if(response.status === 200){
-                console.log("Login user successfully")
 
                 const token = Cookies.get("token")
 
                 const {userData} = response.data
-
-                console.log("User", userData)
 
                 login(userData, token)
 

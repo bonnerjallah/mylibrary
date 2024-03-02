@@ -1,6 +1,8 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext'
 
+import axios from 'axios';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faGear } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,11 +14,10 @@ const UserNameModal = ({closemodal}) => {
 
     const navigate = useNavigate()
 
-    const handleLogOut = async (e) => {
-        e.preventDefault()
+    const handleLogOut = async () => {
         try {
-            const response = await axios.post("/http:localhost:3001/logout", {}, {
-                withCredential: true
+            const response = await axios.post("http://localhost:3001/logout", {}, {
+                withCredentials: true
             })
             
         } catch (error) {

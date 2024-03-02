@@ -1,30 +1,49 @@
 import {useEffect, useState} from "react";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 import usernamestyle from "../styles/usernamestyle.module.css"
 
 const Username = () => {
 
-    const {user} = useAuth()
+    const { user } = useAuth();
 
-    const [member, setMember] = useState('')
+    const [member, setMember] = useState('');
 
+    axios.defaults.withCredentials = true;
 
-
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (!user) return;
     
+            try {
+                const token = Cookies.get("token");
+                const response = await axios.get("http://localhost:3001/libraryusers", {
+                    headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
+                });
     
+                response.data.valid ? setMember(response.data) : console.error("Invalid response data", response.data);
+            } catch (error) {
+                console.error("Error fetching user data", error);
+            }
+        };
+    
+        fetchUserData(); 
+    }, [user]);
+    
+
     return (
         <>
             <div className={usernamestyle.mainContainer} >
                 <div className={usernamestyle.firstletter}>
-                    B
+                    {member && (<p>{member.user.userName.charAt(0).toUpperCase()}</p>)}
                 </div>
                 <h4>
-                    UserName Goes here
+                    {member && (<p>{member.user.userName}</p>)}
                 </h4>
                 <div>
                     <FontAwesomeIcon icon={faCaretDown} />
