@@ -105,7 +105,9 @@ app.post("/loginlibraryusers", async(req, res) => {
                     id: results._id,
                     firstName: results.firstname,
                     lastName: results.lastname,
-                    userName: results.username
+                    userName: results.username,
+                    followers: results.followers,
+                    following: results.following
                 }
 
                 //Generate Jwt Token
