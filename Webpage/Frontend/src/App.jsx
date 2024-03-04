@@ -3,6 +3,8 @@ import { AuthProvider } from "./components/AuthContext"
 
 import Navbar from "./components/Navbar"
 import HomeBase from "./pages/HomeBase"
+import Ourpicks from "./pages/Ourpicks"
+import Discover from "./pages/Discover"
 import LoginForm from "./pages/LoginForm"
 import Register from "./pages/Register"
 import ForgotPassword from "./pages/ForgotPassword"
@@ -15,6 +17,8 @@ const router = createBrowserRouter (
     <Route path="/" element={<Navbar />}>
       <Route path="/" element={<HomeBase />} />
       <Route path="/LoginForm" element={<LoginForm />} />
+      <Route path="/Ourpicks" element={<Ourpicks />} />
+      <Route path="/Discover" element={<Discover />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/ForgotPassword" element={<ForgotPassword />} />
       <Route element={<ProtectedRoutes />}>

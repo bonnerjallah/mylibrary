@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react"
 import {NavLink} from "react-router-dom"
-
 import axios from "axios"
-
 import homestyle from "../styles/homestyle.module.css"
-
 import Fotter from "../components/Footer"
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowCircleLeft, faArrowCircleRight } from "@fortawesome/free-solid-svg-icons"
+import ScrollToTop from "../components/ScrollToTop"
 
 
 import openbrainbook from "/openbrainbook.jpg";
@@ -71,7 +66,6 @@ const ImageSlider = ({imageUrls}) => {
 const HomeBase = () => {
 
   const [staffList, setStaffList] = useState([])
-  const [staffPicks, setStaffPicks] = useState([])
   const [allBooks, setAllBooks] = useState([])
   const [bookOfTheWeek, setBookOfTheWeek] = useState([])
   const [currentDay, setCurrentDay] = useState('')
@@ -125,36 +119,46 @@ const HomeBase = () => {
 
   //Function to get a random book of the week.
   useEffect(() => {
-    const calculateTimeUntilNextSunday = () => {
-        const today = new Date();
-        const dayOfWeek = today.getDay(); // Sunday is 0, Monday is 1, ..., Saturday is 6
-        const daysUntilNextSunday = (7 - dayOfWeek + 0) % 7; // Calculate days until next Sunday
-        const millisecondsUntilNextSunday = daysUntilNextSunday * 24 * 60 * 60 * 1000; // Convert days to milliseconds
-        return millisecondsUntilNextSunday;
-    };
-
-    // Function to select weekly book
-    const weeklyBooks = () => {
+    const selectWeeklyBook = () => {
         const randomNumber = Math.floor(Math.random() * allBooks.length);
         return allBooks[randomNumber];
     };
 
-    // Set book of the week initially
-    setBookOfTheWeek(weeklyBooks());
+    const storedBook = localStorage.getItem('bookOfTheWeek');
+    const storedTimestamp = localStorage.getItem('bookSelectionTimestamp');
 
-    // Calculate time until next Sunday
-    const timeUntilNextSunday = calculateTimeUntilNextSunday();
+    if (storedBook && storedTimestamp) {
+        // Check if the stored book is valid (selected within the last seven days)
+        const selectedTimestamp = new Date(storedTimestamp).getTime();
+        const currentTimestamp = new Date().getTime();
+        const timeDifference = currentTimestamp - selectedTimestamp;
+        const millisecondsInSevenDays = 7 * 24 * 60 * 60 * 1000;
 
-    // Set up interval to run weeklyBooks every Sunday
-    const interval = setInterval(() => {
-        setBookOfTheWeek(weeklyBooks());
-    }, timeUntilNextSunday);
+        if (timeDifference <= millisecondsInSevenDays) {
+            try {
+                // Attempt to parse the stored book as JSON
+                const parsedBook = JSON.parse(storedBook);
+                setBookOfTheWeek(parsedBook);
+                return; // Exit early if a valid book is found in storage
+            } catch (error) {
+                console.error('Error parsing stored book:', error);
+                // Handle the error here, e.g., by selecting a new book
+            }
+        }
+    }
 
-    // Clear interval on component unmount
-    return () => {
-        clearInterval(interval);
-    };
+    // If no valid book found in storage or error occurred, select a new book and update local storage
+    const selectedBook = selectWeeklyBook();
+    setBookOfTheWeek(selectedBook);
+    localStorage.setItem('bookOfTheWeek', JSON.stringify(selectedBook));
+    localStorage.setItem('bookSelectionTimestamp', new Date().toISOString());
+
 }, [allBooks]);
+
+
+
+
+
 
 
   //Function to get the current day and date
@@ -173,6 +177,7 @@ const HomeBase = () => {
   
   return (
     <div>
+      <ScrollToTop />
       <div className={homestyle.heroSection} >
         <ImageSlider imageUrls = {Images} />
       </div>

@@ -1,0 +1,63 @@
+.mainContainer{
+    padding: 2rem;
+    margin-top: -4rem;
+}
+
+.pageHeader{
+    text-align: center;
+    margin-top: 1rem;
+    height: 10rem;
+    font-size: 1.2rem;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgb(186, 138, 33) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paginationWrapper{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.paginationWrapper li{
+    list-style: none;
+    margin: .5rem .5rem;
+    width: 1rem;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #000000;
+    color:white;
+    cursor: pointer;
+}
+
+.paginationWrapper li:hover{
+    color: black;
+}
+
+.booksContainer{
+    margin-top: .5rem;
+}
+
+.booksWrapper{
+    border: .5px solid black;
+    margin: 1rem;
+    display: flex;
+    column-gap: 1rem;
+    background-color: #22c1c3;
+    padding-right: .5rem;
+}
+
+.bookTitleWrapper p{
+    font-size: 1.5rem;
+
+}
+
+.bookTitleWrapper p span{
+    color: white
+}
+
+.bookdiscriptionWrapper{
+    font-size: 1.2rem;
+    margin-top: .5rem;
+}

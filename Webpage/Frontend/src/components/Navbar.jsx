@@ -73,10 +73,10 @@ const Navbar = () => {
                     <nav>
                         <div className={navstyles.sidebarDiv}>
                             <FontAwesomeIcon icon={faBars} onClick={handleSideBarModal} />
-                        </div>
+                        </div>  
                         <ul>
-                            <li><NavLink>Our picks</NavLink></li>
-                            <li><NavLink>Discove</NavLink>r</li>
+                            <li><NavLink to="/Ourpicks">Our picks</NavLink></li>
+                            <li><NavLink to="/Discover">Discover</NavLink></li>
                             <li><NavLink to="/Dashboard">Borrow</NavLink></li>
                             <li className={navstyles.reviews}>
                                 <NavLink>Reviews<FontAwesomeIcon icon={faCaretDown} /></NavLink>
