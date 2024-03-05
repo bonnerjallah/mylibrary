@@ -55,8 +55,8 @@ const libraryUsersSchema = new mongoose.Schema({
         required: true,
     },
 
-    profilePic:{
-        type:String
+    profilepic:{
+        type: String
     },
 
     followers:[{
@@ -76,7 +76,12 @@ const libraryUsersSchema = new mongoose.Schema({
         userName: {type: String, required: true},
         profilePic: {type: String},
         content: String
-    }]
+    }],
+
+    reviewer: {
+        type: Boolean 
+    }
+
 })
 
 const LibraryUsers = mongoose.model("libraryUsers", libraryUsersSchema)

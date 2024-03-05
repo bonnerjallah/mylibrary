@@ -29,12 +29,39 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5174'],
     methods: ["POST, GET, PUT"],
     credentials: true
 }))
 
 app.use("/booksimages", express.static(path.join(__dirname, "../../shared-assets/public/booksimages")))
+
+app.use("/libraryusersprofilepics", express.static(path.join(__dirname, "../../shared-assets/public/libraryusersprofilepics")))
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb (null, path.join(__dirname, "../../shared-assets/public/libraryusersprofilepics"))
+    },
+    filename: (req, file, cb) => {
+        cb (null, Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({
+    storage: storage,
+    limits: {fileSize:5000000},
+    fileFilter: (req, file, cb) => {
+        const fileType = /jpeg|jpg|png|webp/i;
+        const mimeType = fileType.test(file.mimetype);
+        const extname = fileType.test(path.extname(file.originalname));
+
+        if(mimeType && extname) {
+            return cb(null, true)
+        }
+
+        cb(new Error("Give proper file format to upload"))
+    }
+})
 
 app.get("/catalogbooks", async (req, res) => {
     try {
@@ -60,10 +87,15 @@ app.get("/suggestedBooks", async (req, res) => {
     }
 })
 
-app.post("/registerlibraryusers", async (req, res) => {
+app.post("/registerlibraryusers", upload.single("profilepic"), async (req, res) => {
     try {
         const {firstname, lastname, birthday, address, city, state, postalcode, phonenumber, email, username, password} = req.body;
 
+        const profilepic = req.file ? path.basename(req.file.path) : ''; // Extracts only the file name
+        
+        console.log("Request Body:", req.body);
+        console.log("Uploaded File:", req.file);
+        
         if(!firstname || !lastname || !birthday || !address || !city || !state || !postalcode || !email || !username || !password) {
             return res.status(400).json({message: "All fields Required"});
         }
@@ -75,7 +107,7 @@ app.post("/registerlibraryusers", async (req, res) => {
 
         const hashPwd = await bcrypt.hash(password, saltRounds)
 
-        const newUser = await LibraryUsers.create({...req.body, password: hashPwd})
+        const newUser = await LibraryUsers.create({...req.body, password: hashPwd, profilepic})
 
         return res.json(newUser)   
         
@@ -106,8 +138,11 @@ app.post("/loginlibraryusers", async(req, res) => {
                     firstName: results.firstname,
                     lastName: results.lastname,
                     userName: results.username,
+                    profilepic: results.profilepic,
                     followers: results.followers,
-                    following: results.following
+                    following: results.following,
+                    messages: results.messages,
+                    reviewer: results.reviewer,
                 }
 
                 //Generate Jwt Token

@@ -1,31 +1,71 @@
+import { useEffect, useState } from "react";
+
 import dashboardstyle from "../styles/dashboardstyle.module.css"
+import { useAuth } from "../components/AuthContext";
+
+import axios from "axios";
+import Cookies from "js-cookie";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faGear, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
+
 const Dashboard = () => {
+
+    const {user} = useAuth()
+
+    const [member, setMember] = useState('')
+    const [showInfo, setShowInfo] = useState(false)
+
+    axios.defaults.withCredentials = true
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if(!user) return;
+
+            try {
+                const token = Cookies.get("token")
+                const response = await axios.get("http://localhost:3001/libraryusers", {
+                    headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
+                })
+                
+                response.data.valid ? setMember(response.data) : console.error("Invalid user data", response.data)
+                
+            } catch (error) {
+                console.error("Error fetch user form database", error)
+            }
+        }
+        fetchUserData()
+    }, [])
+
+
+    const handleShowInfo = () => {
+        setShowInfo(!showInfo)
+    }
+
     return (
         <div className={dashboardstyle.mainContainer}>
             <div className={dashboardstyle.headerContainer}>
                 <div className={dashboardstyle.headerWrapper}>
                     <div className={dashboardstyle.profilePicWrapper}>
-                        <img src="" alt="" />
+                        {member && member.user &&                         
+                            <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt=""  style={{borderRadius:"50%", maxWidth:"100%", maxHeight:"100%", width:"auto", height:"auto"}}/>
+                        }
                     </div>
-                    <div className={dashboardstyle.MainUsernameWrapper}>
-                        <p>User Name</p>
+                    <div className={dashboardstyle.mainUsernameWrapper}>
+                        <p>{member && member.user && member.user.firstName} {member && member.user && member.user.lastName}</p>
                     </div>
                 </div>
                 <div className={dashboardstyle.usernameAndFollowersContainer}>
                     <div className={dashboardstyle.usernameWrapper}>
                         <div className={dashboardstyle.firstNameAndLastnameWrapper}>
-                            <p>first name</p> <p>LastName</p>
+                            <p>{member && member.user && member.user.firstName} {member && member.user && member.user.lastName}</p>
                         </div>
-                        <p>user name</p>
+                        <p>@{member && member.user && member.user.userName} - {member && member.user && member.user.reviewer === true ? (<span>Reviewer </span>) : (<span>Reader</span>)}</p>
                     </div>
                     <div className={dashboardstyle.followerAndFollowingWrapper}>
                         <div className={dashboardstyle.numberOfFollowersAndFollowing}>
-                            <p>0</p>
-                            <p>0</p>
+                            <p>{member && member.user && member.user.followers.length}</p>
+                            <p>{member && member.user && member.user.following.length}</p>
                         </div>
                         <div className={dashboardstyle.followersAndFollowing}>
                             <p>Followers</p>
@@ -38,20 +78,27 @@ const Dashboard = () => {
             <div className={dashboardstyle.secondMainContainerHeader}>
                 <div className={dashboardstyle.secondHeaderWrapper}>
                     <h1>My Dashboard</h1>
-                    <p>Welcome <span>B</span> <span>Username</span> !!</p>
+                    <p>Welcome <span style={{backgroundColor:"#720026", borderRadius:"50%", color:"white", padding:" 0 .5rem"}}>{member && member.user && member.user.userName.charAt(0).toUpperCase()}</span> <span>{member && member.user && member.user.userName}</span> !!</p>
                 </div>
                 <div className={dashboardstyle.moreInfoAndEditContainer}>
-                    <div className={dashboardstyle.moreInfoWrapper}>
-                        <p>More Information <span><FontAwesomeIcon icon={faCaretDown} />  </span></p>
-                        <ul>
-                            <li>How do I renew items?</li>
-                            <li>What is borrowing history?</li>
-                            <li>What is Shelves for?</li>
-                        </ul>
+                    <div className={dashboardstyle.moreInofAndDropDownWrapper}>
+                        <div >
+                            <p style={{cursor:"pointer"}} onClick={handleShowInfo}>More Information <span><FontAwesomeIcon icon={faCaretDown} /></span></p>
+                        </div>
+                        <div  className={`${dashboardstyle.moreInfoWrapper} ${showInfo ? dashboardstyle.showMoreInfoWrapper : ""}` }>
+                            <p style={{fontSize:"1.5rem"}}>Frequently Asked Questions</p>
+                            <ul>
+                                <li>How do I renew items?</li>
+                                <li>What is borrowing history?</li>
+                                <li>What is Shelves for?</li>
+                            </ul>
+                        </div>
                     </div>
+                    
                     <div className={dashboardstyle.editIconWrapper}>
-                        <div>
-                            <FontAwesomeIcon icon={faBell}  />
+                        <div className={dashboardstyle.messageWrapper}>
+                            <span>{member && member.user && member.user.messages.length > 0 ? (member.user.message.length) : ""}</span>
+                            <FontAwesomeIcon icon={faBell} className={`${member && member.user && member.user.length > 0 ? usernamestyle.bellIcon : "" }`} />
                         </div>
                         <div>
                             <FontAwesomeIcon icon={faGear}/>

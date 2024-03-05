@@ -10,6 +10,7 @@ const Register = () => {
 
     const navigate = useNavigate()
 
+    const [UserProfilePicUrl, setUserProfilePicUrl] = useState()
     const [userInputData, setUserInputData] = useState({
         firstname: "",
         lastname: "",
@@ -24,6 +25,12 @@ const Register = () => {
         password: ""
     })
 
+    const handleProfilePicInput = (e) => {
+        setUserProfilePicUrl(e.target.files[0])
+    }
+
+    console.log(UserProfilePicUrl)
+
     const handleUserInputData = (e) => {
         const {name, value} = e.target
         setUserInputData(prev => ({...prev, [name] : value}))
@@ -31,9 +38,30 @@ const Register = () => {
 
     const handleDataSubmit = async (e) => {
         e.preventDefault()
+
+        const formData = new FormData()
+
+        formData.append("firstname", userInputData.firstname)
+        formData.append("lastname", userInputData.lastname)
+        formData.append("birthday", userInputData.birthday)
+        formData.append("address", userInputData.address)
+        formData.append("city", userInputData.city)
+        formData.append("state", userInputData.state)
+        formData.append("postalcode", userInputData.postalcode)
+        formData.append("phonenumber", userInputData.phonenumber)
+        formData.append("email", userInputData.email)
+        formData.append("username", userInputData.username)
+        formData.append("password", userInputData.password)
+
+        if(UserProfilePicUrl) {
+            formData.append("profilepic", UserProfilePicUrl, UserProfilePicUrl.name )
+        }
+
+        console.log("data being sent", formData)
+
         try {
-            const response = await axios.post("http://localhost:3001/registerlibraryusers", userInputData, {
-                headers: {"Content-Type": "application/json"}
+            const response = await axios.post("http://localhost:3001/registerlibraryusers", formData, {
+                headers: {"Content-type": "multipart/form-data"}
             })
 
             if(response.status === 200){
@@ -54,11 +82,11 @@ const Register = () => {
                 password: ""
             })
 
-            navigate("/Login")
+            navigate("/LoginForm")
             
         } catch (error) {
             console.log("Error inserting user", error)
-            if(response.error){
+            if(error.response){
                 console.log(error.response.data)
             }
         }
@@ -126,6 +154,10 @@ const Register = () => {
                         <label htmlFor="Password">
                             Password: <span style={{color: "red"}}>*</span>
                             <input type="password" name='password' id='Password' value={userInputData.password} required onChange={handleUserInputData} />
+                        </label>
+
+                        <label htmlFor="ProfilePic">Profile Pic:
+                            <input type="file" name="profilepic" id="ProfilePic" accept="image/*" onChange={handleProfilePicInput} />
                         </label>
                     </div>
 

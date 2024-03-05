@@ -6,14 +6,13 @@
 .headerContainer{
     display: flex;
     flex-direction: column;
-    height: 24rem;
+    height: 23rem;
     background-color: rgb(60, 123, 142);
     position: relative;
-    color: white;
+    color: black;
 }
 
 .headerWrapper{
-    border: 2px solid black;
     margin: auto;
     width: 100%;
     height: 13rem;
@@ -24,7 +23,6 @@
 }
 
 .profilePicWrapper{
-    border: 2px solid black;
     border-radius: 50%;
     width: 9rem;
     height: 9rem;
@@ -33,30 +31,46 @@
     align-items: center;
 }
 
-.MainUsernameWrapper{
-    border: 2px solid red;
-    font-size: 2rem;
+.mainUsernameWrapper {
+    font-size: 3rem;
+    color: #720026;
+
 }
 
 .usernameAndFollowersContainer{
     position: absolute;
     bottom: 0;
-    border: 2px solid green;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 0 1rem;
+    padding: 0 10rem;
+    margin-bottom: .5rem;
 }
 
 .usernameWrapper{
     display: flex;
     flex-direction: column;
-    border: 2px solid orange;
-    width: 15rem;
-    height: 3.2rem;
-    justify-content: space-between;
-    margin-bottom: .5rem;
+    width: 20rem;
+    justify-content: space-evenly;
+    row-gap: .5rem;    
+
+}
+
+.followerAndFollowingWrapper{
+    row-gap: .5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.usernameWrapper p{
+    font-size:1rem ;
+}
+
+.usernameWrapper div p{
+    font-size: 1.5rem;
+    color: white
+
 }
 
 .firstNameAndLastnameWrapper{
@@ -64,17 +78,20 @@
     justify-content: space-between;
 }
 
+.numberOfFollowersAndFollowing{
+    color: white;
+    font-size: 1.2rem;
+}
+
 .numberOfFollowersAndFollowing,
 .followersAndFollowing{
     display: flex;
     width: 15rem;
-    border: 2px solid pink;
-    margin-bottom: .5rem;
     justify-content: space-around;
+    
 }
 
 .secondMainContainerHeader{
-    border: 2px solid brown;
     display: flex;
     margin-top: 1rem;
     justify-content: space-between;
@@ -83,17 +100,75 @@
     column-gap: 1rem;
 }
 
+.moreInofAndDropDownWrapper{
+    width: 15rem;
+    z-index: 999;
+}
+
+.secondHeaderWrapper p {
+    font-size: 2.5rem;
+}
+
 .moreInfoAndEditContainer{
     display: flex;
-    border: 2px solid yellow;
-    width: 20rem;
+    width: 23rem;
     justify-content: space-between;
     align-items: flex-end;
+    padding: 1rem;
+}
+
+.moreInofAndDropDownWrapper div:first-child:hover {
+    text-decoration: underline;
+}
+
+.moreInfoWrapper {
+    display: none;
+    color: #720026;
+}
+
+.showMoreInfoWrapper {
+    display: block;
+    margin-top: .3rem;
+    animation: visibleInfo 500ms ease-in-out 1 normal forwards;
+}
+
+@keyframes visibleInfo {
+    0% { margin-top: -1rem; opacity: 0; }
+    100% { margin-top: 0; opacity: 1; }
+}
+
+
+.showMoreInfoWrapper ul li{
+    list-style: none;
+    color: black;
+    background-color: rgb(212, 228, 223);
+    padding: 0 1rem;
+    line-height: 1.5rem;
+    cursor: pointer;
+    margin: .5rem;
 }
 
 .editIconWrapper{
     display: flex;
     column-gap: 1rem;
+    font-size: 1.5rem;
+}
+
+.editIconWrapper div{
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editIconWrapper div:hover{
+    box-shadow: 1px 5px 15px rgba(0, 0, 0, 0.5);
+    background-color: rgb(24, 78, 119);
+    color: white;
+    cursor: pointer;
+    transition: all 500ms ease-in-out;
+
 }
 
 .lastSectionContainer{
@@ -101,6 +176,28 @@
     grid-template-columns: 30% 70%;
     border: 2px solid black;
     gap: 1rem;
+    height: 20rem;
+}
+
+.messageWrapper{
+    position: relative;
+}
+
+.messageWrapper span{
+    position: absolute;
+    color: #720026;
+    top: -.9rem;
+    right: 0rem;
+}
+
+.bellIcon {
+    transition: transform 1s ease-in-out; /* Adjust duration as needed */
+    animation: bellShake 500ms ease-in-out infinite alternate; /* Adjust duration as needed */
+}
+
+@keyframes bellShake {
+    0% { transform: rotateZ(-10deg); } /* Adjust angle as needed */
+    100% { transform: rotateZ(10deg); } /* Adjust angle as needed */
 }
 
 .lastSectionSideBarContainer{

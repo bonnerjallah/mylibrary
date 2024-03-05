@@ -75,6 +75,29 @@
     gap: .5rem;
 }
 
+.bellIconWrapper{
+    position: relative;
+}
+
+.bellIconWrapper span{
+    color: #720026;
+    position: absolute;
+    top: -.5rem;
+    right: 0;
+    font-size: 1rem;
+}
+
+.bellIcon {
+    transition: transform 1s ease-in-out; /* Adjust duration as needed */
+    animation: bellShake 500ms ease-in-out infinite alternate; /* Adjust duration as needed */
+}
+
+@keyframes bellShake {
+    0% { transform: rotateZ(-10deg); } /* Adjust angle as needed */
+    100% { transform: rotateZ(10deg); } /* Adjust angle as needed */
+}
+
+
 .bellIconWrapper,
 .gearIconWrapper{
     font-size: 1.5rem;
@@ -88,7 +111,7 @@
     cursor: pointer;
     color:  white;
     box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.5);
-    transition: all 100ms ease-in-out;
+    transition: all 500ms ease-in-out;
 }
 
 .userNameButtonWrapper button{
@@ -100,7 +123,7 @@
 .userNameButtonWrapper button:hover{
     color: white;
     cursor: pointer;
-    background-color: #184e77;
+    background-color: rgb(24, 78, 119);
     border: none;
     border-radius: .2rem;
     transition: all 300ms ease-in-out;
