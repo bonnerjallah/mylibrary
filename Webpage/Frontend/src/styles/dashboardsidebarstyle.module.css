@@ -1,6 +1,7 @@
 .borrowMainContainer,
-.profileboxMainContainer{
-    border: 2px solid black;
+.profileboxMainContainer,
+.myCollectionMainContainer{
+    border: 1px solid black;
     box-shadow: 10px 10px 10px rgba(7, 13, 15, 0.5);
 }
 
@@ -33,9 +34,41 @@
     column-gap: .5rem;
 }
 
-.CheckOutHoldFeesWrapper div:hover{
+.CheckOutHoldFeesWrapper div:hover,
+.laterProgressCompletedWrapper h3:hover{
     background-color: rgb(60, 123, 142);
     cursor: pointer;
+}
+
+.laterProgressCompletedWrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    padding: 0 1rem 0 3rem;
+    margin-top: 1rem;
+}
+
+.laterProgressCompletedWrapper h3{
+    display: flex;
+    justify-content: space-between;
+}
+
+.username:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.getStarded{
+    display: flex;
+    align-items: center;
+    column-gap: .5rem;  
+}
+
+.getStarded:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    color:rgb(60, 123, 142) ;
 }
 
 

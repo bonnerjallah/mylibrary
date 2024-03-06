@@ -6,7 +6,7 @@
 .headerContainer{
     display: flex;
     flex-direction: column;
-    height: 23rem;
+    height: 24rem;
     background-color: rgb(60, 123, 142);
     position: relative;
     color: black;
@@ -172,9 +172,9 @@
 .lastSectionContainer{
     display: grid;
     grid-template-columns: 30% 60%;
-    border: 2px solid black;
+    border: 2px solid rgb(24, 78, 119);
     gap: 1rem;
-    padding: 1rem;
+    padding: 1rem 1rem 2rem 1rem;
     justify-content: space-around;
 }
 

@@ -8,6 +8,8 @@ import Cookies from "js-cookie";
 
 import Myborrowing from "../components/Myborrowing";
 import Myprofilebox from "../components/Myprofilebox";
+import Mycollection from "../components/Mycollection";
+import ShelveComponent from "../components/ShelveComponent";
 import Footer from "../components/Footer";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -115,9 +117,10 @@ const Dashboard = () => {
                 <div className={dashboardstyle.lastSectionSideBarContainer}>
                         <Myborrowing />
                         <Myprofilebox />
+                        <Mycollection />
                 </div>
                 <div className={dashboardstyle.shelfReviewAndIdeaContainer}>
-
+                        <ShelveComponent />
                 </div>
 
             </div>

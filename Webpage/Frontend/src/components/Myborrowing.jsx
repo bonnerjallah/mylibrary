@@ -19,7 +19,7 @@ const Myborrowing = () => {
                 </div>
                 <div>
                     <p>Fees</p>
-                    <span>0 <ChevronRight /></span>
+                    <span>$0.00 <ChevronRight /></span>
                 </div>
             </div>
         </div>

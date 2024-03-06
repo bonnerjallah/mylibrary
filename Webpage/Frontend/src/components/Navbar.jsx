@@ -77,7 +77,7 @@ const Navbar = () => {
                         <ul>
                             <li><NavLink to="/Ourpicks">Our picks</NavLink></li>
                             <li><NavLink to="/Discover">Discover</NavLink></li>
-                            <li><NavLink to="/Dashboard">Borrow</NavLink></li>
+                            <li><NavLink to="/Dashboard">Dashboard</NavLink></li>
                             <li className={navstyles.reviews}>
                                 <NavLink>Reviews<FontAwesomeIcon icon={faCaretDown} /></NavLink>
                                 <div className={navstyles.dropDown}>
