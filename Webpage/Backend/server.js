@@ -29,7 +29,7 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ['http://localhost:5174'],
+    origin: ['http://localhost:5175'],
     methods: ["POST, GET, PUT"],
     credentials: true
 }))
@@ -83,6 +83,20 @@ app.get("/suggestedBooks", async (req, res) => {
         
     } catch (error) {
         console.log("Error fetching suggested books from database", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
+
+app.get("/usersToFollow", async(req, res) => {
+    try {
+        const results = await LibraryUsers.find().select("_id username profilepic").exec()
+
+        console.log(results)
+
+        return res.json(results)
+
+    } catch (error) {
+        console.log("Error fetching all users form database", error)
         return res.status(500).json({message: "Internal server issue"})
     }
 })

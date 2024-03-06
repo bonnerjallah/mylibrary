@@ -10,6 +10,8 @@ import Myborrowing from "../components/Myborrowing";
 import Myprofilebox from "../components/Myprofilebox";
 import Mycollection from "../components/Mycollection";
 import ShelveComponent from "../components/ShelveComponent";
+import ReviewerComponent from "../components/ReviewerComponent";
+import FollowerComonent from "../components/FollowerComonent";
 import Footer from "../components/Footer";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -115,12 +117,14 @@ const Dashboard = () => {
 
             <div className={dashboardstyle.lastSectionContainer}>
                 <div className={dashboardstyle.lastSectionSideBarContainer}>
-                        <Myborrowing />
-                        <Myprofilebox />
-                        <Mycollection />
+                    <Myborrowing />
+                    <Myprofilebox />
+                    <Mycollection />
                 </div>
                 <div className={dashboardstyle.shelfReviewAndIdeaContainer}>
-                        <ShelveComponent />
+                    <ShelveComponent />
+                    <ReviewerComponent />
+                    <FollowerComonent />
                 </div>
 
             </div>

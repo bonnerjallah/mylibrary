@@ -35,7 +35,6 @@ const Username = () => {
         fetchUserData(); 
     }, [user]);
     
-    console.log(member)
 
     return (
         <>

@@ -206,5 +206,7 @@
 }
 
 .shelfReviewAndIdeaContainer{
-    border: 2px solid indigo;
+    display: flex;
+    flex-direction: column;
+    row-gap: 4rem;
 }
