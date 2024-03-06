@@ -6,6 +6,10 @@ import { useAuth } from "../components/AuthContext";
 import axios from "axios";
 import Cookies from "js-cookie";
 
+import Myborrowing from "../components/Myborrowing";
+import Myprofilebox from "../components/Myprofilebox";
+import Footer from "../components/Footer";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faGear, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -109,13 +113,16 @@ const Dashboard = () => {
 
             <div className={dashboardstyle.lastSectionContainer}>
                 <div className={dashboardstyle.lastSectionSideBarContainer}>
-
+                        <Myborrowing />
+                        <Myprofilebox />
                 </div>
                 <div className={dashboardstyle.shelfReviewAndIdeaContainer}>
 
                 </div>
 
             </div>
+
+            <Footer />
 
         </div>
     )

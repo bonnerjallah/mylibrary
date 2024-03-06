@@ -1,0 +1,41 @@
+.borrowMainContainer,
+.profileboxMainContainer{
+    border: 2px solid black;
+    box-shadow: 10px 10px 10px rgba(7, 13, 15, 0.5);
+}
+
+.borrowingHeader h2{
+    display: flex;
+    column-gap: .5rem;
+    margin-bottom: 1rem;
+    padding: .5rem;
+}
+
+.CheckOutHoldFeesWrapper{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.CheckOutHoldFeesWrapper div{
+    display: flex;
+    width: 100%;
+    border: 1px solid black;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    padding: 1rem;    
+}
+
+.CheckOutHoldFeesWrapper div span{
+    display: flex;
+    align-items: center;
+    column-gap: .5rem;
+}
+
+.CheckOutHoldFeesWrapper div:hover{
+    background-color: rgb(60, 123, 142);
+    cursor: pointer;
+}
+
+
