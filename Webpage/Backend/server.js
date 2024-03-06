@@ -29,7 +29,7 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ['http://localhost:5175'],
+    origin: ['http://localhost:5173'],
     methods: ["POST, GET, PUT"],
     credentials: true
 }))
@@ -89,9 +89,7 @@ app.get("/suggestedBooks", async (req, res) => {
 
 app.get("/usersToFollow", async(req, res) => {
     try {
-        const results = await LibraryUsers.find().select("_id username profilepic").exec()
-
-        console.log(results)
+        const results = await LibraryUsers.find().select("_id username profilepic reviewer").exec()
 
         return res.json(results)
 

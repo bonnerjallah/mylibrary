@@ -56,7 +56,7 @@ const Dashboard = () => {
                 <div className={dashboardstyle.headerWrapper}>
                     <div className={dashboardstyle.profilePicWrapper}>
                         {member && member.user &&                         
-                            <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt=""  style={{borderRadius:"50%", maxWidth:"100%", maxHeight:"100%", width:"auto", height:"auto"}}/>
+                            <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt=""  style={{borderRadius:"50%", maxWidth:"100%", maxHeight:"100%"}}/>
                         }
                     </div>
                     <div className={dashboardstyle.mainUsernameWrapper}>

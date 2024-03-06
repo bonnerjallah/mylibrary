@@ -79,7 +79,8 @@ const libraryUsersSchema = new mongoose.Schema({
     }],
 
     reviewer: {
-        type: Boolean 
+        type: Boolean,
+        default: false
     }
 
 })

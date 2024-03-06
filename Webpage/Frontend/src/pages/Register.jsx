@@ -162,7 +162,7 @@ const Register = () => {
                     </div>
 
                     <div className={loginstyle.registerButtonWrapper}>
-                        <button>Register</button>
+                        <button type="submit">Register</button>
                     </div>
 
                     <div className={loginstyle.cancelButtonWrapper}>

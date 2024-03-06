@@ -254,7 +254,7 @@ const HomeBase = () => {
           <div className={homestyle.follower}>
             <div className={homestyle.user}>
               <div className={homestyle.userImageAndName}>
-                <img src="/readinginforest.jpg" alt="" style={{borderRadius:"50%"}} width="50" height="50" />
+                <img src="/readinginforest.jpg" alt="Profile pic" style={{borderRadius:"50%"}} width="50" height="50" />
               </div>
               <p>John Reed</p>
             </div>
@@ -263,7 +263,7 @@ const HomeBase = () => {
           <div className={homestyle.follower}>
             <div className={homestyle.user}>
               <div className={homestyle.userImageAndName}>
-                <img src="/fakeuser1.jpg" alt="" style={{borderRadius:"50%"}} width="50" height="50" />
+                <img src="/fakeuser1.jpg" alt="Profile pic" style={{borderRadius:"50%"}} width="50" height="50" />
               </div>
               <p>Amanda White</p>
             </div>
@@ -272,7 +272,7 @@ const HomeBase = () => {
           <div className={homestyle.follower}>
             <div className={homestyle.user}>
               <div className={homestyle.userImageAndName}>
-                <img src="/blackgirlreading.jpg" alt="" style={{borderRadius:"50%"}} width="50" height="50" />
+                <img src="/blackgirlreading.jpg" alt="Profile pic" style={{borderRadius:"50%"}} width="50" height="50" />
               </div>
               <p>Khadijah Brown</p>
             </div>

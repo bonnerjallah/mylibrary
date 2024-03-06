@@ -85,7 +85,7 @@ const LoginForm = () => {
                     <p><NavLink to="/ForgotPassword">Forgot your Password?</NavLink></p>
 
                     <div className={loginstyle.buttonWrapper}>
-                        <button>Log In</button>
+                        <button type="submit">Log In</button>
                         <p><NavLink to="/Register">Register</NavLink></p>
                     </div>
                 </form>

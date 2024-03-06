@@ -24,9 +24,6 @@
 .profilePicWrapper{
     border-radius: 50%;
     height: 9rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .mainUsernameWrapper {
