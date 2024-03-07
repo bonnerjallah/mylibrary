@@ -14,6 +14,42 @@ const FollowerComonent = () => {
     const [allMembers, setAllMembers] = useState([]);
     const [loggedInUser, setLoggedInUser] = useState('')
 
+    const [followingError, setFollowingError] = ("")
+
+    const handleRequestToFollow = async (_id) => {
+        try {
+            
+            if(!_id ) {
+                console.log("Invalid member to follow", error)
+                return
+            }
+
+            console.log("_id", _id)
+
+            const requestBody = {
+                _id : _id,
+                userId : loggedInUser.user.id
+            }
+
+            console.log("request Body", requestBody)
+
+            const response = await axios.post("http://localhost:3001/followRequest", requestBody, {
+                headers: {"Content-Type": "application/json"}
+            })
+
+            if(response.status === 200) {
+                console.log("Follow user successfully")
+
+            }
+
+        } catch (error) {
+            console.log("Error following user", error)
+            if(error.response) {
+                console.log(setFollowingError(error.response.error))
+            }
+        }
+    }
+
     axios.defaults.withCredentials = true
     useEffect(() => {
         const fetchUserData = async () => {
@@ -42,6 +78,7 @@ const FollowerComonent = () => {
     }, [])
 
     console.log(allMembers)
+    console.log(loggedInUser)
 
     return (
         <div className={shelvestyle.followMainContainer}>
@@ -71,7 +108,7 @@ const FollowerComonent = () => {
                                         ) }</p>
                                     </div>
                                 </div>
-                                <div className={shelvestyle.followButtonWrapper}>
+                                <div onClick={() => handleRequestToFollow(member._id)} className={shelvestyle.followButtonWrapper}>
                                     <p style={{backgroundColor: "#ffe14c", borderRadius:"2rem", width:"5rem", height:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white" }}> Follow </p>
                                 </div>
                             </div>

@@ -4,6 +4,8 @@ const mongoose = require("mongoose")
 const multer = require("multer")
 const path = require("path")
 
+const ObjectId = require("mongodb")
+
 const jwt = require("jsonwebtoken")
 const cookieParser = require("cookie-parser")
 
@@ -98,6 +100,33 @@ app.get("/usersToFollow", async(req, res) => {
         return res.status(500).json({message: "Internal server issue"})
     }
 })
+
+app.post("/followRequest", async (req, res) => {
+    const { _id, userId} = req.body;
+
+    const id = new mongoose.Types.ObjectId(_id)
+
+    console.log(id)
+
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid userid" });
+        }
+
+        // Add the ID of the user being followed to the followers array of the follower
+        const updatedFollower = await LibraryUsers.findByIdAndUpdate(
+            userId, // req.user._id is the ID of the authenticated user (follower)
+            { $push: { following: id} }, // Add the ID of the user being followed
+            { new: true }
+        );
+
+        return res.status(200).json(updatedFollower);
+    } catch (error) {
+        console.log("Error following user", error);
+        return res.status(500).json({ message: "Internal server issue" });
+    }
+});
+
 
 app.post("/registerlibraryusers", upload.single("profilepic"), async (req, res) => {
     try {
