@@ -31,7 +31,7 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5174'],
     methods: ["POST, GET, PUT"],
     credentials: true
 }))
