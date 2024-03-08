@@ -14,21 +14,24 @@ const FollowerComonent = () => {
     const [allMembers, setAllMembers] = useState([]);
     const [loggedInUser, setLoggedInUser] = useState('')
 
-    const [followingError, setFollowingError] = ("")
+    const [followingError, setFollowingError] = useState("")
+    const [isFollowing, setIsFollowing] = useState(false);
 
-    const handleRequestToFollow = async (_id) => {
+    const handleRequestToFollow = async ( _id, username) => {
+        const confirm = window.confirm("Are you sure you want to follow this user?")
+        if(!confirm) {
+            return
+        }
         try {
             
-            if(!_id ) {
+            if(!_id) {
                 console.log("Invalid member to follow", error)
                 return
             }
 
-            console.log("_id", _id)
-
             const requestBody = {
                 _id : _id,
-                userId : loggedInUser.user.id
+                followerId : loggedInUser.user.id,
             }
 
             console.log("request Body", requestBody)
@@ -39,13 +42,21 @@ const FollowerComonent = () => {
 
             if(response.status === 200) {
                 console.log("Follow user successfully")
+                setIsFollowing(`You are now following ${username}`);
 
+                setTimeout(() => {
+                    setIsFollowing(false)
+                }, 2000);
             }
 
         } catch (error) {
             console.log("Error following user", error)
             if(error.response) {
-                console.log(setFollowingError(error.response.error))
+                (setFollowingError(error.response.data.message))
+
+                setTimeout(() => {
+                    setFollowingError("")
+                }, 2000)
             }
         }
     }
@@ -108,7 +119,7 @@ const FollowerComonent = () => {
                                         ) }</p>
                                     </div>
                                 </div>
-                                <div onClick={() => handleRequestToFollow(member._id)} className={shelvestyle.followButtonWrapper}>
+                                <div onClick={() => handleRequestToFollow( member._id, member.username)} className={shelvestyle.followButtonWrapper}>
                                     <p style={{backgroundColor: "#ffe14c", borderRadius:"2rem", width:"5rem", height:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white" }}> Follow </p>
                                 </div>
                             </div>
@@ -117,7 +128,8 @@ const FollowerComonent = () => {
                 </div>
             </div>
             
-
+            {followingError && (<p className={shelvestyle.ErrorUserMessage}>{followingError}</p>)}
+            {isFollowing && (<p className={shelvestyle.followingMessage}>{isFollowing}</p>)}
 
         </div>
     )

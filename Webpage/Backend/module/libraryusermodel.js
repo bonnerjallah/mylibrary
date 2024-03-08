@@ -60,19 +60,15 @@ const libraryUsersSchema = new mongoose.Schema({
     },
 
     followers:[{
-        userId: {type: mongoose.Schema.Types.ObjectId, ref: "libraryUsers"},
-        userName: {type: String, required: true},
-        profilePic: {type: String}
+        type: String,
     }], 
 
     following:[{
-        userId: {type: mongoose.Schema.Types.ObjectId, ref: "libraryUsers"},
-        userName: {type: String, required: true},
-        profilePic: {type: String}
+        type: String,
     }],
 
     messages:[{
-        userId: {type: mongoose.Schema.Types.ObjectId, ref: "libraryUsers"},
+        userId: {type: String},
         userName: {type: String, required: true},
         profilePic: {type: String},
         content: String

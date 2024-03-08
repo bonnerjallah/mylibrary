@@ -102,30 +102,39 @@ app.get("/usersToFollow", async(req, res) => {
 })
 
 app.post("/followRequest", async (req, res) => {
-    const { _id, userId} = req.body;
-
-    const id = new mongoose.Types.ObjectId(_id)
-
-    console.log(id)
+    const { _id, followerId } = req.body;
 
     try {
-        if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: "Invalid userid" });
-        }
+        // Check if the user is already following the user being followed
+        const follower = await LibraryUsers.findById(followerId);
 
-        // Add the ID of the user being followed to the followers array of the follower
+        if (follower.following.includes(_id)) {
+            return res.status(400).json({ message: "You are already following this user" });
+        }
+        
         const updatedFollower = await LibraryUsers.findByIdAndUpdate(
-            userId, // req.user._id is the ID of the authenticated user (follower)
-            { $push: { following: id} }, // Add the ID of the user being followed
+            followerId,
+            { $push: { following:  _id } },
             { new: true }
         );
 
-        return res.status(200).json(updatedFollower);
+
+        const userBeingFollowed = await LibraryUsers.findByIdAndUpdate(
+            _id,
+            { $push: { followers:  followerId} } ,
+            { new: true }
+        );
+
+        return res.status(200).json({ updatedFollower, userBeingFollowed });
+
     } catch (error) {
         console.log("Error following user", error);
         return res.status(500).json({ message: "Internal server issue" });
     }
 });
+
+
+
 
 
 app.post("/registerlibraryusers", upload.single("profilepic"), async (req, res) => {

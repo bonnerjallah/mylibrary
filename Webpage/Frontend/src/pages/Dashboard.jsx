@@ -72,8 +72,8 @@ const Dashboard = () => {
                     </div>
                     <div className={dashboardstyle.followerAndFollowingWrapper}>
                         <div className={dashboardstyle.numberOfFollowersAndFollowing}>
-                            <p>{member && member.user && member.user.followers.length + 1}</p> // add 1 to start count form 1 instead of 0
-                            <p>{member && member.user && member.user.following.length + 1}</p> // add 1 to start count form 1 instead of 0
+                            <p>{member && member.user && member.user.followers.length }</p> 
+                            <p>{member && member.user && member.user.following.length }</p> 
                         </div>
                         <div className={dashboardstyle.followersAndFollowing}>
                             <p>Followers</p>
