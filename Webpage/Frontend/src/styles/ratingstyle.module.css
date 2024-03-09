@@ -1,0 +1,35 @@
+.mainContainer {
+    display: flex;
+    align-items: center; /* Align items vertically */
+}
+
+.ratingWrapper {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    margin-right: 5px; /* Adjust spacing between rating elements */
+}
+
+.ratingWrapper input[type="radio"] {
+    margin-right: -1.3rem; /* Adjust spacing between radio button and star icon */
+    cursor: pointer;
+    /* Hide default radio button */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Define custom radio button styles */
+    width: 17px;
+    height: 16px;
+    border-radius: 50%;
+    outline: none;
+    z-index: 5;
+    opacity: 0;
+}
+
+.ratingWrapper input[type="radio"]:checked {
+    background-color: #333; /* Change background color when selected */
+}
+
+/* Adjust star icon styles as needed */
+.star{
+    stroke: none;
+}

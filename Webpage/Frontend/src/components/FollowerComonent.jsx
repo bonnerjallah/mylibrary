@@ -88,8 +88,7 @@ const FollowerComonent = () => {
         fetchAllUser()
     }, [])
 
-    console.log(allMembers)
-    console.log(loggedInUser)
+
 
     return (
         <div className={shelvestyle.followMainContainer}>
