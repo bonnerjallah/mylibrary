@@ -1,8 +1,8 @@
-import { Star, Tag, MessageCircle, ArrowRight, Heart, Glasses, BookImage } from 'lucide-react';
+import { Star, Tag, MessageCircle, ArrowRight, Heart, Glasses, BookImage, Search } from 'lucide-react';
 
 import shelvestyle from "../styles/shelvestyle.module.css"
 import { NavLink } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import axios from "axios"
 import Cookies from 'js-cookie';
 import { useAuth } from './AuthContext';
@@ -23,10 +23,14 @@ const ReviewerComponent = () => {
         rating: ""
     })
 
+    const [allBooks, setAllBooks] = useState([])
+    const [searchTitle, setSearchTitle] = useState('')
+    const [filterBookData, setFilterBookData] = useState([])
     const [recommendationCheckBox, setRecommendationCheckBox] = useState({ recommendation: false });
     const [currentlyreadingCheckBox, setCurrentlyreadingCheckBox] = useState({ currentlyreading: false })
+    const [parentRating, setParentRating] = useState(null)
 
-    const handleHeartColorAndInput = (e, description) => {
+    const handleColorAndInput = (e, description) => {
         const { name, value, checked } = e.target;
     
         if (e.target.type === "checkbox") {
@@ -78,6 +82,70 @@ const ReviewerComponent = () => {
 
     console.log("member", member)
 
+    useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                const catalogBooksResponse = await axios.get("http://localhost:3001/catalogbooks")
+                const booksInCatalog = catalogBooksResponse.data
+
+                const formatedCatalogBookData = booksInCatalog.map((elem) => {
+                    const originalDate = new Date (elem.booksPublishDate)
+                    const formattedDate = originalDate.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: '2-digit'
+                    })
+
+                    elem.booksPublishDate = formattedDate
+                    return elem
+                })
+
+                const suggestionsBookResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const booksInSuggestions = suggestionsBookResponse.data
+
+                const formatedBookSuggestionsData = booksInSuggestions.map((suggestElem) => {
+                    const suggestionOriginalDate = new Date (suggestElem.booksPublishDate)
+                    const formattedSuggDate = suggestionOriginalDate.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit"
+                    })
+
+                    suggestElem.booksPublishDate = formattedSuggDate
+                    return suggestElem
+                })
+
+
+                const combineBooks = [...formatedCatalogBookData, ...formatedBookSuggestionsData]
+                setAllBooks(combineBooks)
+
+            } catch (error) {
+                console.log("Error fetching books", error)
+            }
+        }
+        fetchBooks()
+    }, [])
+
+    console.log(allBooks)
+
+
+    //callback function to handle Rating change
+    const handleRatingChange = useCallback((newRating) => {
+        setParentRating(newRating)
+    }, [])
+
+    //Search book title
+    const handleBookSearch = (e) => {
+        e.preventDefault()
+        const  filterBook = allBooks.filter(book => {
+            return book.bookTitle.toLowerCase().includes(searchTitle.toLowerCase())
+        })
+        setFilterBookData(filterBook)
+    }
+
+
+
+
     return (
         <div className={shelvestyle.reviewerComponentMainContainer}>
 
@@ -108,28 +176,39 @@ const ReviewerComponent = () => {
                         </div>
                         <div className={shelvestyle.recommendationAndCurrentlyReadingContainer}>
                             <label htmlFor="Recommendation">
-                                <Heart size={20} fill={recommendationCheckBox.recommendation ? "red" : "white"} className={shelvestyle.heart}  /> Recommendation
-                                <input type="checkbox" name='recommendation' id='Recommendation' checked={recommendationCheckBox.recommendedyes} onChange={(e) => handleHeartColorAndInput(e, "yes")} />
+                                <Heart size={20} fill={recommendationCheckBox.recommendation ? "red" : "white"} className={shelvestyle.heart}  /> Recommend
+                                <input type="checkbox" name='recommendation' id='Recommendation' checked={recommendationCheckBox.recommendation} onChange={(e) => handleColorAndInput(e, "yes")} />
                             </label>
 
                             <label htmlFor="CurrentlyReading">
                                 <Glasses size={20} fill={currentlyreadingCheckBox.currentlyreading ? "blue" : "white"} className={shelvestyle.glasses}/> Currently Reading
-                                <input type="checkbox" name='currentlyreading' id='CurrentlyReading' checked={currentlyreadingCheckBox.currentlyreadingyes} onChange={(e) => handleHeartColorAndInput(e, "yes")} />
+                                <input type="checkbox" name='currentlyreading' id='CurrentlyReading' checked={currentlyreadingCheckBox.currentlyreading} onChange={(e) => handleColorAndInput(e, "yes")} />
                             </label>
                         </div>
                     </fieldset>
                     <fieldset className={shelvestyle.secoundFieldSetWrapper}>
                         <div className={shelvestyle.bookImageWrapper}>
-                            <BookImage size={100}/>
+                            {filterBookData && filterBookData.length > 0 ? (
+                                <div style={{padding:".5rem .5rem", display:'flex', justifyContent:"center"}}>
+                                    <img src={`http://localhost:3001/booksimages/${filterBookData[0].bookImageUrl}`} alt=" book Image" width="80" height="90" />
+                                </div>
+                            ) : (
+                                <BookImage size={100}/>
+                            )}
                         </div>
                         <div className={shelvestyle.ratingStarAndSearchBookContainer}>
-                            <p>Search book to review</p>
+                            <p>Search by title to review</p>
                             <label htmlFor="BookSearch"></label>
-                            <input type="text" name='booksearch' id='BookSearch' />
+                            <div style={{display:"flex"}}>
+                                <input type="text" name='booksearch' id='BookSearch' value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)} />
+                                <div className={shelvestyle.searchIconWrapper} onClick={handleBookSearch}>
+                                    <Search />
+                                </div>
+                            </div>
                             <div className={shelvestyle.ratingStarContainer}>
                                 <div className={shelvestyle.mainStarContainer}>
                                     <div className={shelvestyle.starWrapper}>                                        
-                                        <Rating />
+                                        <Rating onRatingChange={handleRatingChange} />
                                     </div>
                                 </div>
                                 <p>Add a rating</p>                          

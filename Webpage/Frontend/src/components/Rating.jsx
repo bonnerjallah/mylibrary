@@ -3,9 +3,14 @@ import { Star } from "lucide-react"
 import ratingstyle from "../styles/ratingstyle.module.css"
 import { useState } from "react"
 
-const Rating = () => {
+const Rating = ({onRatingChange}) => {
 
     const [rating, setRating] = useState(null)
+
+    const handleRating = (currentRating) => {
+        setRating(currentRating)
+        onRatingChange(currentRating); // Call the callback function to update the parent state
+    }
 
     return (
         
@@ -14,7 +19,7 @@ const Rating = () => {
                 const currentRating = index + 1
                 return (
                     <div key={index} className={ratingstyle.ratingWrapper}>
-                        <input type="radio" name="rating" value={currentRating} onClick={() => setRating(currentRating)} />
+                        <input type="radio" name="rating" value={currentRating} onClick={() => handleRating(currentRating)} />
                         <Star className={ratingstyle.star} fill={currentRating <= rating ? "yellow" : "gray"}/>
                     </div>
                 )
