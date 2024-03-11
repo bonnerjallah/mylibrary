@@ -133,6 +133,56 @@ app.post("/followRequest", async (req, res) => {
     }
 });
 
+//Updating multiple fields in the document
+app.post("/reviewerinput", async (req, res) => {
+    try {
+        const { review, bookId, rating, recommend, currentlyreading, userid } = req.body;
+
+        console.log(req.body);
+
+        // Create an object to update the document
+        const updateObject = {};
+
+        // Check if the fields are present and add them to the update object accordingly
+        if (review || bookId || rating || recommend || currentlyreading) {
+            updateObject.$push = {
+                reviewandrating: {
+                    bookId: bookId,
+                    review: review,
+                    rating: rating,
+                    recommend: recommend,
+                    currentlyreading: currentlyreading
+                }
+            };
+        }
+
+        const alreadyReviewed = await LibraryUsers.findOne({
+            _id: userid,
+            reviewandrating : {$elemMatch : {bookId : bookId}}
+        })
+
+        if(alreadyReviewed) {
+            return res.status(400).json({message: "Already reviewed this book"})
+        }
+
+        // Update the user document
+        const updatedUser = await LibraryUsers.findByIdAndUpdate(
+            userid,
+            updateObject,
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ message: "Review submitted successfully" });
+
+    } catch (error) {
+        console.error("Error inserting data", error);
+        res.status(500).json({ message: "Internal server issue" });
+    }
+});
 
 
 

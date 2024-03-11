@@ -68,16 +68,25 @@ const libraryUsersSchema = new mongoose.Schema({
     }],
 
     messages:[{
-        userId: {type: String},
+        userId: String,
         userName: {type: String, required: true},
-        profilePic: {type: String},
+        profilePic: String,
         content: String
     }],
 
     reviewer: {
         type: Boolean,
         default: false
-    }
+    },
+
+    
+    reviewandrating : [{
+        bookId: String,
+        review: String,
+        rating: Number,
+        recommend: String,
+        currentlyreading: String
+    }]
 
 })
 

@@ -15,48 +15,126 @@ const ReviewerComponent = () => {
     const {user} = useAuth()
 
     const [member, setMember] = useState("")
-    const [formDataInput, setFormDataInput] = useState({
-        reviewinput: "",
-        recommendatoin: "",
-        currentlyreading: "",
-        booksearch: "",
-        rating: ""
-    })
-
     const [allBooks, setAllBooks] = useState([])
+    const [filterBookData, setFilterBookData] = useState('')
     const [searchTitle, setSearchTitle] = useState('')
-    const [filterBookData, setFilterBookData] = useState([])
-    const [recommendationCheckBox, setRecommendationCheckBox] = useState({ recommendation: false });
+    const [recommendationCheckBox, setRecommendationCheckBox] = useState({ recommend: false });
     const [currentlyreadingCheckBox, setCurrentlyreadingCheckBox] = useState({ currentlyreading: false })
     const [parentRating, setParentRating] = useState(null)
+    const [review, setreview] = useState({
+        review: "",
+    })
 
+    const [alreadyReviewedErrorMsg, setalreadyReviewedErrorMsg] = useState('')
+    const [genericErrorMsg, setGenericErrorMsg] = useState('')
+
+    const handleReviewInput = (e) => {
+        const {name, value} = e.target 
+        setreview((prev) => ({...prev, [name]: value}))
+    }
+    
     const handleColorAndInput = (e, description) => {
-        const { name, value, checked } = e.target;
+        const { name, checked } = e.target;
     
         if (e.target.type === "checkbox") {
-            if(name === "recommendation") {
+            if (name === "recommend") {
                 setRecommendationCheckBox((prev) => ({
                     ...prev,
                     [name]: checked,
-                    [name + "_description"]: checked ? description : 'no', 
+                    [name + "_description"]: checked ? description : 'false', 
                 }));
             } else if (name === "currentlyreading") {
                 setCurrentlyreadingCheckBox((prev) => ({
                     ...prev,
                     [name]: checked,
-                    [name + "_discription"]: checked ? description : 'no'
+                    [name + "_description"]: checked ? description : 'false'
                 }))
-            }
-            
-        } else {
-            setFormDataInput((prev) => ({
-                ...prev,
-                [name]: value
-            }));
-        }
+            }      
+        } 
     }
     
+    //Search book title
+    const handleBookSearch = () => {
+        const filterBook = allBooks.filter(book => {
+            return book.bookTitle.toLowerCase().includes(searchTitle.toLowerCase());
+        });
     
+        setFilterBookData(filterBook);
+    };
+
+    //callback function to handle Rating change
+    const handleRatingChange = useCallback((newRating) => {
+        setParentRating(newRating)
+    }, [])
+    
+
+
+    const handleReviewerFromInputData = async (e, _id) => {
+        e.preventDefault()
+
+        const formData = new FormData()
+
+        formData.append("review", review.review);
+
+        filterBookData.map((elem) => {
+            formData.append("bookId", elem._id)
+        })
+
+        formData.append("rating", parentRating);
+
+        
+        const recommended = recommendationCheckBox.recommend ? "Yes" : (recommendationCheckBox.recommend ? "No" : "");
+        formData.append("recommend", recommended)
+
+        const readingCurrently = currentlyreadingCheckBox.currentlyreading ? "Yes" : (currentlyreadingCheckBox.currentlyreading ? "No" : "")
+        formData.append("currentlyreading", readingCurrently)
+
+        formData.append("userid", member.user.id);
+
+
+        try {
+            const response = await axios.post("http://localhost:3001/reviewerinput", formData, {
+                headers:{"Content-Type": "application/json"}
+            })
+
+            if(response.status === 200) {
+                console.log("Inserted reviewer data successfully")
+
+                setFilterBookData("")
+                setSearchTitle("")
+                setRecommendationCheckBox("")
+                setCurrentlyreadingCheckBox("")
+                setParentRating("")
+                setreview({
+                    review: ""
+                })
+
+
+            } else {
+                console.log("error inserting reviewer data to database", error)
+            }
+
+            
+        } catch (error) {
+            console.log("Error inserting data", error)
+            if (error.response && error.response.data && error.response.data.message === "Already reviewed this book") {
+                setalreadyReviewedErrorMsg(error.response.data.message);
+
+                setTimeout(() => {
+                    setalreadyReviewedErrorMsg('');
+                    
+                }, 5000);
+            } else {
+                if(error.response && error.response.data) {
+                    setGenericErrorMsg("An error occurred. Please try again.");
+
+                    setTimeout(() => {
+                        setGenericErrorMsg('')
+                    }, 5000)
+                }
+            }
+        }
+    }
 
     axios.defaults.withCredentials = true
     useEffect(() => {
@@ -80,7 +158,6 @@ const ReviewerComponent = () => {
 
     }, [user])
 
-    console.log("member", member)
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -126,23 +203,6 @@ const ReviewerComponent = () => {
         fetchBooks()
     }, [])
 
-    console.log(allBooks)
-
-
-    //callback function to handle Rating change
-    const handleRatingChange = useCallback((newRating) => {
-        setParentRating(newRating)
-    }, [])
-
-    //Search book title
-    const handleBookSearch = (e) => {
-        e.preventDefault()
-        const  filterBook = allBooks.filter(book => {
-            return book.bookTitle.toLowerCase().includes(searchTitle.toLowerCase())
-        })
-        setFilterBookData(filterBook)
-    }
-
 
 
 
@@ -167,22 +227,22 @@ const ReviewerComponent = () => {
                     </div>
                 </div> 
             ): (
-                <form>
+                <form onSubmit={handleReviewerFromInputData} encType='multipart/form-data' method='POST'>
                     <fieldset>
                         <div className={shelvestyle.userNameAndTextInputContainer}>
                             {member && member.user.userName && (<h2>{member.user.userName}</h2>)}
                             <label htmlFor="ReviewInput"></label>
-                            <textarea name="reviewinput" id="ReviewInput" cols="30" rows="10" placeholder='Write A Review'></textarea>
+                            <textarea name="review" id="ReviewInput" cols="30" rows="10" placeholder='Write A Review' value={review.review} onChange={handleReviewInput}></textarea>
                         </div>
                         <div className={shelvestyle.recommendationAndCurrentlyReadingContainer}>
                             <label htmlFor="Recommendation">
-                                <Heart size={20} fill={recommendationCheckBox.recommendation ? "red" : "white"} className={shelvestyle.heart}  /> Recommend
-                                <input type="checkbox" name='recommendation' id='Recommendation' checked={recommendationCheckBox.recommendation} onChange={(e) => handleColorAndInput(e, "yes")} />
+                                <Heart size={20} fill={recommendationCheckBox.recommend ? "red" : "white"} className={shelvestyle.heart}  /> Recommend
+                                <input type="checkbox" name='recommend' id='Recommendation' checked={recommendationCheckBox.recommend} onChange={(e) => handleColorAndInput(e, "Yes")} />
                             </label>
 
                             <label htmlFor="CurrentlyReading">
                                 <Glasses size={20} fill={currentlyreadingCheckBox.currentlyreading ? "blue" : "white"} className={shelvestyle.glasses}/> Currently Reading
-                                <input type="checkbox" name='currentlyreading' id='CurrentlyReading' checked={currentlyreadingCheckBox.currentlyreading} onChange={(e) => handleColorAndInput(e, "yes")} />
+                                <input type="checkbox" name='currentlyreading' id='CurrentlyReading' checked={currentlyreadingCheckBox.currentlyreading} onChange={(e) => handleColorAndInput(e, "Yes")} />
                             </label>
                         </div>
                     </fieldset>
@@ -219,6 +279,8 @@ const ReviewerComponent = () => {
                     <div className={shelvestyle.reviewButtonWrapper}>
                         <button type='submit'> Submit</button>
                     </div>
+                    {alreadyReviewedErrorMsg && (<p style={{color:"red", fontSize:"2rem", zIndex:"9999", margin:"1rem 0 1rem 2rem "}}>{alreadyReviewedErrorMsg}</p>)}
+                    {genericErrorMsg && (<p style={{color:"red", fontSize:"2rem", zIndex:"9999", margin:"1rem 0 1rem 2rem "}}>{genericErrorMsg}</p>)}
 
                 </form>
             )}

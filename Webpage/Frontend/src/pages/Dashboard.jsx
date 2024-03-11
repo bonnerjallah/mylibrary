@@ -54,11 +54,21 @@ const Dashboard = () => {
         <div className={dashboardstyle.mainContainer}>
             <div className={dashboardstyle.headerContainer}>
                 <div className={dashboardstyle.headerWrapper}>
-                    <div className={dashboardstyle.profilePicWrapper}>
-                        {member && member.user &&                         
-                            <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt=""  style={{borderRadius:"50%", maxWidth:"100%", maxHeight:"100%"}}/>
-                        }
-                    </div>
+                    
+                    {member && member.user && member.user.profilepic ? (
+                        <div className={dashboardstyle.profilePicWrapper}>
+                            <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt="" style={{ borderRadius: "50%", maxWidth: "100%", maxHeight: "100%" }} />
+                        </div>
+                    ) : (
+                        <div className={dashboardstyle.profilePicWrapper}>
+                            {member && member.user && member.user.firstname && member.user.lastname ? (
+                                `${member.user.firstname.charAt(0).toUpperCase()}${member.user.lastname.charAt(0).toUpperCase()}`
+                            ) : (
+                                'Unknown'
+                            )}
+                        </div>
+                    )}
+
                     <div className={dashboardstyle.mainUsernameWrapper}>
                         <p>{member && member.user && member.user.firstName} {member && member.user && member.user.lastName}</p>
                     </div>

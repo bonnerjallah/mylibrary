@@ -10,6 +10,7 @@ const Rating = ({onRatingChange}) => {
     const handleRating = (currentRating) => {
         setRating(currentRating)
         onRatingChange(currentRating); // Call the callback function to update the parent state
+        
     }
 
     return (
