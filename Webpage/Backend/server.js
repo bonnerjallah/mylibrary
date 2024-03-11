@@ -184,9 +184,6 @@ app.post("/reviewerinput", async (req, res) => {
     }
 });
 
-
-
-
 app.post("/registerlibraryusers", upload.single("profilepic"), async (req, res) => {
     try {
         const {firstname, lastname, birthday, address, city, state, postalcode, phonenumber, email, username, password} = req.body;

@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 import { useAuth } from './AuthContext';
 
 import Rating from './Rating';
+import ReviewerRequestModal from './ReviewerRequestModal';
 
 
 const ReviewerComponent = () => {
@@ -25,14 +26,25 @@ const ReviewerComponent = () => {
         review: "",
     })
 
+    //User Error Message display
     const [alreadyReviewedErrorMsg, setalreadyReviewedErrorMsg] = useState('')
     const [genericErrorMsg, setGenericErrorMsg] = useState('')
 
+    //Module State
+    const [showModal, setShowModal] = useState(false)
+
+    //Function to handle module
+    const handleModule = () => {
+        setShowModal(true)
+    }
+
+    //Function to handle review state
     const handleReviewInput = (e) => {
         const {name, value} = e.target 
         setreview((prev) => ({...prev, [name]: value}))
     }
     
+    //Function to handle checkbox state
     const handleColorAndInput = (e, description) => {
         const { name, checked } = e.target;
     
@@ -53,7 +65,7 @@ const ReviewerComponent = () => {
         } 
     }
     
-    //Search book title
+    //Function for search book title
     const handleBookSearch = () => {
         const filterBook = allBooks.filter(book => {
             return book.bookTitle.toLowerCase().includes(searchTitle.toLowerCase());
@@ -68,7 +80,7 @@ const ReviewerComponent = () => {
     }, [])
     
 
-
+    //Function to handle review submit
     const handleReviewerFromInputData = async (e, _id) => {
         e.preventDefault()
 
@@ -82,7 +94,6 @@ const ReviewerComponent = () => {
 
         formData.append("rating", parentRating);
 
-        
         const recommended = recommendationCheckBox.recommend ? "Yes" : (recommendationCheckBox.recommend ? "No" : "");
         formData.append("recommend", recommended)
 
@@ -90,7 +101,6 @@ const ReviewerComponent = () => {
         formData.append("currentlyreading", readingCurrently)
 
         formData.append("userid", member.user.id);
-
 
         try {
             const response = await axios.post("http://localhost:3001/reviewerinput", formData, {
@@ -136,6 +146,7 @@ const ReviewerComponent = () => {
         }
     }
 
+    //Fetching user data
     axios.defaults.withCredentials = true
     useEffect(() => {
         const fetchUserData = async () => {
@@ -158,7 +169,7 @@ const ReviewerComponent = () => {
 
     }, [user])
 
-
+    //Fetching books data
     useEffect(() => {
         const fetchBooks = async () => {
             try {
@@ -203,9 +214,6 @@ const ReviewerComponent = () => {
         fetchBooks()
     }, [])
 
-
-
-
     return (
         <div className={shelvestyle.reviewerComponentMainContainer}>
 
@@ -221,10 +229,9 @@ const ReviewerComponent = () => {
                         <p>Write reviews, rate titles, add tags and comments, create recommendation, and more...</p>
                     </div>
                     <div className={shelvestyle.buttonWrapper}>
-                        <NavLink>
-                            <button> Register <ArrowRight /></button>
-                        </NavLink>
+                        <button onClick={handleModule}> Register <ArrowRight /></button>
                     </div>
+                    {showModal && (< ReviewerRequestModal memberId={member.user.id} closeModal={setShowModal} />)}
                 </div> 
             ): (
                 <form onSubmit={handleReviewerFromInputData} encType='multipart/form-data' method='POST'>
