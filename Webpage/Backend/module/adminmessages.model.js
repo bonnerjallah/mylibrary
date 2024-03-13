@@ -10,8 +10,9 @@ const adminMessageSchema = new mongoose.Schema({
 
     reviewerrequestmsgs : [{
         userId: String,
-        
         msg: String,
+        avgbooksread: Number,
+        userage: Number,
         timestamp: {type: Date, default: Date.now}
     }]
 

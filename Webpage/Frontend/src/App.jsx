@@ -10,6 +10,7 @@ import Register from "./pages/Register"
 import ForgotPassword from "./pages/ForgotPassword"
 import Dashboard from "./pages/Dashboard"
 import ProtectedRoutes from "./components/ProtectedRoutes"
+import ReviewerRequest from "./pages/ReviewerRequest"
 
 
 const router = createBrowserRouter (
@@ -23,6 +24,7 @@ const router = createBrowserRouter (
       <Route path="/ForgotPassword" element={<ForgotPassword />} />
       <Route element={<ProtectedRoutes />}>
         <Route path="/Dashboard" element={<Dashboard />} /> 
+        <Route path="/ReviewerRequest/:id" element={<ReviewerRequest />} />
       </Route>
       
 

@@ -16,6 +16,7 @@ const saltRounds = 10
 const LibraryUsers = require("./module/libraryusermodel")
 const BooksCatalog = require("./module/bookmodel")
 const BooksSuggestions = require("./module/booksuggestions")
+const AdminMessages = require("./module/adminmessages.model")
 
 const app = express()
 app.use(express.json())
@@ -183,6 +184,36 @@ app.post("/reviewerinput", async (req, res) => {
         res.status(500).json({ message: "Internal server issue" });
     }
 });
+
+app.post("/usermessage", async (req, res) => {
+    try {
+        const { bioAndBooksRead, userAgeChecked, id } = req.body;
+
+        console.log("Received Data", req.body);
+
+        const newMessage = {
+            userId: id,
+            msg: bioAndBooksRead[0],
+            avgbooksread: bioAndBooksRead[1],
+            userage: userAgeChecked,
+            timestamp: new Date()
+        };
+
+        const results = await AdminMessages.findByIdAndUpdate(
+            id,
+            { $push: { reviewerrequestmsgs: newMessage } },
+            { new: true }
+        );
+
+        console.log("Updated document:", results);
+
+        res.status(200).json({ message: "Data inserted successfully" });
+    } catch (error) {
+        console.log("Error inserting data", error);
+        return res.status(500).json({ message: "Internal server issue" });
+    }
+});
+
 
 app.post("/registerlibraryusers", upload.single("profilepic"), async (req, res) => {
     try {

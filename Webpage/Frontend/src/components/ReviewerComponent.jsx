@@ -1,14 +1,13 @@
 import { Star, Tag, MessageCircle, ArrowRight, Heart, Glasses, BookImage, Search } from 'lucide-react';
 
 import shelvestyle from "../styles/shelvestyle.module.css"
-import { NavLink } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import axios from "axios"
 import Cookies from 'js-cookie';
 import { useAuth } from './AuthContext';
 
 import Rating from './Rating';
-import ReviewerRequestModal from './ReviewerRequestModal';
 
 
 const ReviewerComponent = () => {
@@ -26,17 +25,13 @@ const ReviewerComponent = () => {
         review: "",
     })
 
-    //User Error Message display
+    console.log(filterBookData)
+
+    //User Message display
     const [alreadyReviewedErrorMsg, setalreadyReviewedErrorMsg] = useState('')
     const [genericErrorMsg, setGenericErrorMsg] = useState('')
+    const [thanks, setThanks] = useState("")
 
-    //Module State
-    const [showModal, setShowModal] = useState(false)
-
-    //Function to handle module
-    const handleModule = () => {
-        setShowModal(true)
-    }
 
     //Function to handle review state
     const handleReviewInput = (e) => {
@@ -88,17 +83,16 @@ const ReviewerComponent = () => {
 
         formData.append("review", review.review);
 
-        filterBookData.map((elem) => {
-            formData.append("bookId", elem._id)
-        })
+        if (filterBookData.length > 0) {
+            formData.append("bookId", filterBookData[0]._id);
+        }
+        
 
         formData.append("rating", parentRating);
 
-        const recommended = recommendationCheckBox.recommend ? "Yes" : (recommendationCheckBox.recommend ? "No" : "");
-        formData.append("recommend", recommended)
+        formData.append("recommend", recommendationCheckBox.recommend ? "Yes" : "No");
 
-        const readingCurrently = currentlyreadingCheckBox.currentlyreading ? "Yes" : (currentlyreadingCheckBox.currentlyreading ? "No" : "")
-        formData.append("currentlyreading", readingCurrently)
+        formData.append("currentlyreading", currentlyreadingCheckBox.currentlyreading ? "Yes" : "No");
 
         formData.append("userid", member.user.id);
 
@@ -108,7 +102,13 @@ const ReviewerComponent = () => {
             })
 
             if(response.status === 200) {
-                console.log("Inserted reviewer data successfully")
+
+                setThanks("Thanks. Review another book.")
+
+                setTimeout(() => {
+                    setThanks("")
+                }, 5000);
+
 
                 setFilterBookData("")
                 setSearchTitle("")
@@ -214,10 +214,12 @@ const ReviewerComponent = () => {
         fetchBooks()
     }, [])
 
+
+
     return (
         <div className={shelvestyle.reviewerComponentMainContainer}>
 
-            {member && member.user && member.user.reviewer === !true ? (
+            {member && member.user && member.user.reviewer !== true ? (
                 <div className={shelvestyle.emptyShelfWrapper}>
                     <div className={shelvestyle.reviewerComponentHeader}>
                         <h2>Get Started</h2>
@@ -229,11 +231,13 @@ const ReviewerComponent = () => {
                         <p>Write reviews, rate titles, add tags and comments, create recommendation, and more...</p>
                     </div>
                     <div className={shelvestyle.buttonWrapper}>
-                        <button onClick={handleModule}> Register <ArrowRight /></button>
+                        <NavLink to={`/ReviewerRequest/${member.user.id}`}>
+                            <button> Register <ArrowRight /></button>
+                        </NavLink>
                     </div>
-                    {showModal && (< ReviewerRequestModal memberId={member.user.id} closeModal={setShowModal} />)}
+                    
                 </div> 
-            ): (
+            ):(
                 <form onSubmit={handleReviewerFromInputData} encType='multipart/form-data' method='POST'>
                     <fieldset>
                         <div className={shelvestyle.userNameAndTextInputContainer}>
@@ -288,9 +292,11 @@ const ReviewerComponent = () => {
                     </div>
                     {alreadyReviewedErrorMsg && (<p style={{color:"red", fontSize:"2rem", zIndex:"9999", margin:"1rem 0 1rem 2rem "}}>{alreadyReviewedErrorMsg}</p>)}
                     {genericErrorMsg && (<p style={{color:"red", fontSize:"2rem", zIndex:"9999", margin:"1rem 0 1rem 2rem "}}>{genericErrorMsg}</p>)}
-
+                    {thanks && (<p style={{color:"red", fontSize:"2rem", zIndex:"9999", margin:"1rem 0 1rem 2rem "}}>{thanks}</p>)}
                 </form>
             )}
+
+            <Outlet />
 
         </div>
     )

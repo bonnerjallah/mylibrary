@@ -57,7 +57,6 @@ const Register = () => {
             formData.append("profilepic", UserProfilePicUrl, UserProfilePicUrl.name )
         }
 
-        console.log("data being sent", formData)
 
         try {
             const response = await axios.post("http://localhost:3001/registerlibraryusers", formData, {
