@@ -219,3 +219,126 @@
     justify-content: center;
 }
 
+.addedBooksShelfMainContainer{
+    display:flex;
+    flex-direction: column;
+    padding: .5rem 1rem;
+}
+
+.addBookShelfButtonWrapper{
+    border-bottom: 1px solid black;
+    padding: .5rem 0 ;
+}
+
+.addBookShelfButtonWrapper button{
+    width: 8rem;
+    height: 2rem;
+    background-color: rgb(24, 78, 119);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: .2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addBookShelfButtonWrapper button:hover{
+    color: black;
+    border-radius: 1rem;
+    transition: all 300ms ease-in-out;
+}
+
+.shelfContainer{
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    column-gap: 10rem;
+    margin-top: 1rem;
+    padding: 0 1rem;
+}
+
+.shelfContainer p{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.shelfWrapper{
+    border: .5px solid black;
+}
+
+.sortWrapper{
+    padding: .5rem 1rem;
+}
+
+.booksOnShelfWrapper{
+    background-color:#ced4da ;
+    margin-top: .5rem;
+    padding: 1rem;
+}
+
+.radioContainer{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    row-gap: .5rem;
+}
+
+.radioContainer label{
+    display: flex;
+    column-gap: .3rem;
+}
+
+.radioContainer label input{
+    cursor: pointer;
+}
+
+.filterByAuthorAndGenreContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.byAuthorWrapper{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: .5rem 0;
+}
+
+.byAuthorWrapper p{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.byGenreWrapper{
+    border-bottom: 1px solid black;
+    padding: .5rem 0;
+}
+
+.byGenreWrapper p{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
+    cursor: pointer;
+}
+
+.authorWrapper,
+.genereWrapper{
+    display: none;
+}
+
+.showAuthorWrapper{
+    display: block;
+    animation: showFilter 500ms ease-in-out 1 normal forwards;
+}
+
+.showGenreWrapper{
+    display: block;
+    animation: showFilter 500ms ease-in-out 1 normal forwards;
+}
+
+@keyframes showFilter {
+    0%{margin-top:-1rem; opacity: 0;}
+    100%{marign-top: 0; opacity: 1;}
+}
+
