@@ -16,7 +16,7 @@ const saltRounds = 10
 const LibraryUsers = require("./module/libraryusermodel")
 const BooksCatalog = require("./module/bookmodel")
 const BooksSuggestions = require("./module/booksuggestions")
-const AdminMessages = require("./module/adminmessages.model")
+const ReviewRequestMsg = require("./module/reviewrequest")
 
 const app = express()
 app.use(express.json())
@@ -139,8 +139,6 @@ app.post("/reviewerinput", async (req, res) => {
     try {
         const { review, bookId, rating, recommend, currentlyreading, userid } = req.body;
 
-        console.log(req.body);
-
         // Create an object to update the document
         const updateObject = {};
 
@@ -185,34 +183,37 @@ app.post("/reviewerinput", async (req, res) => {
     }
 });
 
-app.post("/usermessage", async (req, res) => {
+app.post("/reviewerrequest", async (req, res) => {
     try {
-        const { bioAndBooksRead, userAgeChecked, id } = req.body;
+        const { bio, avgbooksread, oldenough, id } = req.body;
 
-        console.log("Received Data", req.body);
+        if (!bio || !oldenough) {
+            return res.status(400).json({ message: "Fill all required fields" });
+        }
 
-        const newMessage = {
-            userId: id,
-            msg: bioAndBooksRead[0],
-            avgbooksread: bioAndBooksRead[1],
-            userage: userAgeChecked,
-            timestamp: new Date()
-        };
+        const existingRequest = await ReviewRequestMsg.findOne({ userId: id });
+        if (existingRequest) {
+            return res.status(400).json({ message: "Application is already under review" });
+        }
 
-        const results = await AdminMessages.findByIdAndUpdate(
-            id,
-            { $push: { reviewerrequestmsgs: newMessage } },
-            { new: true }
+        const results = await ReviewRequestMsg.create(
+            {
+                shortbio: bio,
+                avgbooksread: avgbooksread,
+                overage: oldenough,
+                userId : id
+            }
         );
 
         console.log("Updated document:", results);
 
-        res.status(200).json({ message: "Data inserted successfully" });
+        return res.status(200).json({ message: "Data inserted successfully" });
     } catch (error) {
         console.log("Error inserting data", error);
         return res.status(500).json({ message: "Internal server issue" });
     }
 });
+
 
 
 app.post("/registerlibraryusers", upload.single("profilepic"), async (req, res) => {
@@ -221,8 +222,6 @@ app.post("/registerlibraryusers", upload.single("profilepic"), async (req, res) 
 
         const profilepic = req.file ? path.basename(req.file.path) : ''; // Extracts only the file name
         
-        console.log("Request Body:", req.body);
-        console.log("Uploaded File:", req.file);
         
         if(!firstname || !lastname || !birthday || !address || !city || !state || !postalcode || !email || !username || !password) {
             return res.status(400).json({message: "All fields Required"});
