@@ -101,8 +101,8 @@
 }
 
 @keyframes openModal {
-    0%{width: 2rem }
-    100%{width: 100%; height:100vh}
+    0%{width: 2rem; border-radius: 50% }
+    100%{width: 100%; height:100vh; border-radius: 0;}
 }
 
 .closeModalX {
@@ -115,6 +115,7 @@
     padding: .5rem;
     font-size: 3rem;
     opacity: 0;
+    transition: all 800ms ease-in-out;
     animation: openSearch 1s ease-in-out 1s  1 normal forwards;
 }
 
@@ -157,6 +158,64 @@
     cursor: pointer;
 }
 
-.searchIconWrapper:hover{
-    color: white;
+.searchIconWrapper button{
+    height: 4rem;
+    cursor: pointer;
 }
+
+.searchIconWrapper button:hover{
+    color: white;
+    background-color: #457b9d;
+    border: none;
+}
+
+.booksContainer{
+    display: flex;
+    flex-direction: column;
+    margin-top: .2rem;
+    row-gap: 1rem;
+}
+
+.booksWrapperWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid black;
+    padding: .5rem .5rem;
+}
+
+.bookWrapper{
+    display: flex;
+    column-gap: .5rem;
+}
+
+.addToWrapper p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    width: 5rem;
+    transition: all 500ms ease-in-out;
+}
+
+.addToWrapper p:hover{
+    color: white;
+    cursor: pointer;
+    border: 1px solid white;
+}
+
+.pageNumberWrapper{
+    display: flex;
+    column-gap: .5rem;
+    justify-content: flex-end;
+}
+
+.pageNumberWrapper li{
+    list-style: none;
+    cursor: pointer;
+    border: 1px solid black;
+    width: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
