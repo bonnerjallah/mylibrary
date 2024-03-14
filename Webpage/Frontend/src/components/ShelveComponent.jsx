@@ -19,7 +19,7 @@ const ShelveComponent = () => {
                 </div>
             </div>
             <div className={shelvestyle.buttonWrapper}>
-                <NavLink>
+                <NavLink to="/Shelf">
                     <button>Go To Shelf <ArrowRight /></button>
                 </NavLink>
             </div>
