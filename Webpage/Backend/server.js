@@ -66,6 +66,7 @@ const upload = multer({
     }
 })
 
+//Get books form catalog
 app.get("/catalogbooks", async (req, res) => {
     try {
         const results = await BooksCatalog.find().exec()
@@ -78,6 +79,7 @@ app.get("/catalogbooks", async (req, res) => {
     }
 })
 
+//Get suggested books
 app.get("/suggestedBooks", async (req, res) => {
     try {
         const results = await BooksSuggestions.find().exec()
@@ -90,6 +92,7 @@ app.get("/suggestedBooks", async (req, res) => {
     }
 })
 
+//Get users you following
 app.get("/usersToFollow", async(req, res) => {
     try {
         const results = await LibraryUsers.find().select("_id username profilepic reviewer").exec()
@@ -102,6 +105,7 @@ app.get("/usersToFollow", async(req, res) => {
     }
 })
 
+//Follow other users logic
 app.post("/followRequest", async (req, res) => {
     const { _id, followerId } = req.body;
 
@@ -119,7 +123,6 @@ app.post("/followRequest", async (req, res) => {
             { new: true }
         );
 
-
         const userBeingFollowed = await LibraryUsers.findByIdAndUpdate(
             _id,
             { $push: { followers:  followerId} } ,
@@ -133,6 +136,37 @@ app.post("/followRequest", async (req, res) => {
         return res.status(500).json({ message: "Internal server issue" });
     }
 });
+
+//Set user shelf
+app.post("/setbookshelf", async(req, res) => {
+    try {
+        const {userid, bookid} = req.body
+
+        // Check if the user exists
+        const user = await LibraryUsers.findById(userid);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Check if the book is already on the shelf
+        const bookExists = user.shelf.some(item => item.bookid === bookid);
+        if (bookExists) {
+            return res.status(400).json({ message: "Book already added to your shelf" });
+        }
+
+        const result = await LibraryUsers.findByIdAndUpdate(userid, {$push:{ shelf:{ bookid }}}, {new:true})
+
+        if(!result) {
+            return res.status(404).json({message: "User not found"})
+        }
+
+        return res.status(200).json({result})
+
+    } catch (error) {
+        console.log("Error inserting user books to shelf", error)
+        return res.status(500).json({message:"Internal server issue"})
+    }
+})
 
 //Updating multiple fields in the document
 app.post("/reviewerinput", async (req, res) => {
@@ -183,6 +217,7 @@ app.post("/reviewerinput", async (req, res) => {
     }
 });
 
+//reviewer request logic
 app.post("/reviewerrequest", async (req, res) => {
     try {
         const { bio, avgbooksread, oldenough, id } = req.body;
@@ -214,6 +249,7 @@ app.post("/reviewerrequest", async (req, res) => {
     }
 });
 
+//register library user
 app.post("/registerlibraryusers", upload.single("profilepic"), async (req, res) => {
     try {
         const {firstname, lastname, birthday, address, city, state, postalcode, phonenumber, email, username, password} = req.body;
@@ -242,6 +278,7 @@ app.post("/registerlibraryusers", upload.single("profilepic"), async (req, res) 
     }
 })
 
+//login library user
 app.post("/loginlibraryusers", async(req, res) => {
     try {
         const {username, password} = req.body
