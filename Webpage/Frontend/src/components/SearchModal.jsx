@@ -1,4 +1,4 @@
-import { Plus, Search } from "lucide-react"
+import { ArrowBigRight, Plus, Search } from "lucide-react"
 import shelfstyle from "../styles/shelfstyle.module.css"
 import { useAuth } from "./AuthContext"
 import Cookies from "js-cookie"
@@ -57,6 +57,7 @@ const SearchModal = ({closeModal}) => {
                     headers:{"Content-Type": "application/json", "Authorization": `Bearer${token}`}
                 })
                 response.data.valid ? setMember(response.data) : console.error("Error fetching from database", response.data)
+
             } catch (error) {
                 console.error("Error fetching user data", error)
             }
@@ -64,10 +65,13 @@ const SearchModal = ({closeModal}) => {
         fetchUserData()
     }, [])
 
-    //Fetch Books On Shelf
-    useEffect(() => {
-        
-    }, [])
+    // const booksOnShelf = allBooks.filter(elem => {
+    //     return member.user.shelf.some(userElem => userElem.bookid === elem.id);
+    // });
+    
+
+    console.log(bookIsOnShelf)
+    console.log(allBooks)
 
 
     const lastBookIndex = currentPage * booksPerPage
@@ -190,10 +194,17 @@ const SearchModal = ({closeModal}) => {
                                         {elem.bookTitle}
                                     </div>
                                 </div>
+
+                                {member.user && member.user.shelf && member.user.shelf.some(shelfItem => shelfItem.bookid === elem._id) ? (
+                                    <div className={shelfstyle.goToShelfButtonWrapper}>
+                                        <p>Go to shelf<ArrowBigRight/></p>
+                                    </div>
+                                ) : (
+                                    <div className={shelfstyle.addToWrapper} onClick={(e) => {handleAddToShelves(e, elem._id)}}>
+                                        <p ><Plus size={28} className={shelfstyle.addBookPlus}/> Add</p>
+                                    </div>
+                                )}
                                 
-                                <div className={shelfstyle.addToWrapper} onClick={(e) => {handleAddToShelves(e, elem._id)}}>
-                                    <p ><Plus size={28} className={shelfstyle.addBookPlus}/> Add</p>
-                                </div>
                             </div>
                         ))}
                     </div>

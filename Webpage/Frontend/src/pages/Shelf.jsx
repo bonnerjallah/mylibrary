@@ -1,8 +1,8 @@
-import { ArrowDown, ArrowLeft, LibraryBig, Plus} from "lucide-react"
+import { ArrowDown, ArrowLeft, BookOpenText, LibraryBig, Plus} from "lucide-react"
 import { NavLink } from "react-router-dom"
 import { useAuth } from "../components/AuthContext"
 import { useEffect, useState } from "react"
-import axios from "axios"
+import axios, { Axios } from "axios"
 import Cookies from "js-cookie"
 import { ChevronDown } from "lucide-react"
 
@@ -15,6 +15,7 @@ const Shelf = () => {
 
     const user = useAuth()
 
+    const [allBooks, setAllBooks] = useState([])
     const [member, setMember] = useState('')
     const [showModal, setShowModal] = useState(false)
 
@@ -29,7 +30,12 @@ const Shelf = () => {
         setShowGenreWrapper(!showGenre)
     }
 
+    const [showManage, setManage] = useState(false)
+    const handleManageShowing = () => {
+        setManage(!showManage)
+    }
 
+    //Fetch user data
     axios.defaults.withCredentials = true
     useEffect(() => {
         const fetchUserData = async () => {
@@ -53,6 +59,53 @@ const Shelf = () => {
         setShowModal(true)
     }
 
+    //Fetch all Books
+    useEffect(() => {
+        const fetchBooksData = async () => {
+            try {
+                const catalogResponse = await axios.get("http://localhost:3001/catalogbooks")
+                const bookCatalog = (catalogResponse.data)
+
+                const formattedData = bookCatalog.map((elem) => {
+                    const originalDate = new Date(elem.bookPublishDate)
+                    const formattedDate = originalDate.toLocaleDateString("en-US", {
+                        year: 'numeric',
+                        month: "2-digit",
+                        day: "2-digit"
+                    });
+
+                    elem.publishDate = formattedDate
+                    return elem
+                })
+
+                const suggestedBooksResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const suggestedBooks = (suggestedBooksResponse.data)
+
+                const formattedSuggestedData = suggestedBooks.map((elem) => {
+                    const originalDate = new Date(elem.bookPublishDate)
+                    const formattedDate = originalDate.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day:"2-digit"
+                    })
+
+                    elem.publishDate = formattedDate
+                    return elem
+                })
+
+                const combineBooks = [...formattedData, ...formattedSuggestedData]
+
+                setAllBooks(combineBooks)
+
+            } catch (error) {
+                console.log("Error fetching book", error)
+            }
+        }
+        fetchBooksData()
+    }, [])
+
+    console.log(allBooks)
+
 
     return (
         <>
@@ -72,19 +125,14 @@ const Shelf = () => {
                     <div className={shelfstyle.completedInProgressForLaterWrapper}>
                         <p>Completed (0)</p>
                         <p>In Progress (0)</p>
-                        <p>For Later (0)</p>
+                        {member && member.user.shelf && (<p>For Later ({member.user.shelf.length})</p>)}
+                        
                     </div>
                 </div>
             </div>
 
-            {/* <div className={shelfstyle.mainContainer}>
-                <LibraryBig size={48} />
-                <h2>Your shelf is empty</h2>
-                <p>Add titles to your shelf to keep track of items you want to read, listen to, and watch in the future</p>
-                <button onClick={handleshowmodal}><Plus />Add a title</button>
-            </div> */}
-
-            <div className={shelfstyle.addedBooksShelfMainContainer}>
+            {member && member.user.shelf.length > 0 ? (
+                <div className={shelfstyle.addedBooksShelfMainContainer}>
                 <div className={shelfstyle.addBookShelfButtonWrapper}>
                     <button onClick={handleshowmodal}><Plus />Add a title</button>
                 </div>
@@ -130,14 +178,62 @@ const Shelf = () => {
                                 </select>
                         </div>
                         <div className={shelfstyle.booksOnShelfWrapper}>
-                            <div className={shelfstyle.booksAddedWrapper}>
-                                book data
-                            </div>
+                            {allBooks && member.user && member.user.shelf.length > 0 && member.user.shelf.map((shelfItem, index) => {
+                                const book = allBooks.find(book => book._id === shelfItem.bookid);
+                                if (!book) {
+                                    console.log(`Book with id ${shelfItem.bookid} not found in allBooks`);
+                                    return null; 
+                                }
+
+                                return (
+                                    <div key={index} className={shelfstyle.shelfBooksWrapper}>
+                                        <div style={{ display: "flex", columnGap: ".5rem" }}>
+                                            <img src={`http://localhost:3001/booksimages/${book.bookImageUrl}`} alt="book image" width="100" height="150" />
+                                            <div style={{display:"flex", flexDirection:"column", rowGap:".5rem"}}>
+                                                <div>
+                                                    {book.bookTitle}
+                                                </div>
+                                                <div>
+                                                    <span style={{color:"blue"}}>by:</span> {book.bookAuthor}
+                                                </div>
+                                                <div>
+                                                    <p style={{fontSize:'1rem', display:"flex", alignItems:"center", columnGap:".5rem"}}><span style={{fontSize:'1rem', display:"flex", alignItems:"center"}}><BookOpenText size={15}/></span> Publish - <small>{book.publishDate}</small></p>
+                                                </div>
+                                                <div>
+                                                    {book.bookAvailability === "Yes" ? (<p style={{fontSize:"1rem", color:"green"}}>Available</p>) : (<p style={{fontSize:"1rem", color:"red"}}>Not Available</p>)}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={shelfstyle.manageButtonWrapper}>
+                                            <div className={shelfstyle.manageListWrapperButton} onClick={handleManageShowing}>
+                                                Manage Item <ChevronDown/>
+                                            </div>
+                                            <ul name="" id="" className={`${shelfstyle.manageBook} ${showManage ? shelfstyle.showmanagevisible : ""}`} >
+                                                <li>Completed</li>
+                                                <li>In Progress</li>
+                                                <li>Remove form shelves</li>
+                                                <li>I Own this</li>
+                                            </ul> 
+                                            
+                                            <p style={{ backgroundColor: "green" }}>Place hold</p>
+                                            <small>Date Added</small>   
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
+
                     </div>
                 </div>
             </div>
-
+            ):(
+                <div className={shelfstyle.mainContainer}>
+                <LibraryBig size={48} />
+                <h2>Your shelf is empty</h2>
+                <p>Add titles to your shelf to keep track of items you want to read, listen to, and watch in the future</p>
+                <button onClick={handleshowmodal}><Plus />Add a title</button>
+            </div>
+            )}
 
 
             {showModal && (<SearchModal closeModal={setShowModal} />)}

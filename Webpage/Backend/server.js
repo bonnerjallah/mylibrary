@@ -305,6 +305,8 @@ app.post("/loginlibraryusers", async(req, res) => {
                     following: results.following,
                     messages: results.messages,
                     reviewer: results.reviewer,
+                    reviewandrating: results.reviewandrating,
+                    shelf: results.shelf
                 }
 
                 //Generate Jwt Token

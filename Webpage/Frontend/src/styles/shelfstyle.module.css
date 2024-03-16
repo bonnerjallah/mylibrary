@@ -189,6 +189,16 @@
     column-gap: .5rem;
 }
 
+.goToShelfButtonWrapper p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    width: 7rem;
+    column-gap: .4rem;
+    transition: all 500ms ease-in-out;
+}
+
 .addToWrapper p{
     display: flex;
     justify-content: center;
@@ -198,7 +208,8 @@
     transition: all 500ms ease-in-out;
 }
 
-.addToWrapper p:hover{
+.addToWrapper p:hover,
+.goToShelfButtonWrapper p:hover{
     color: white;
     cursor: pointer;
     border: 1px solid white;
@@ -272,9 +283,68 @@
 
 .booksOnShelfWrapper{
     background-color:#ced4da ;
+    display: flex;
+    flex-direction: column;
     margin-top: .5rem;
     padding: 1rem;
+    row-gap: 1rem;
+    height: 24rem;
+    overflow: scroll;
+    scroll-behavior: smooth;
 }
+
+.manageBook{
+    display: none;
+}
+
+.showmanagevisible {
+    display: block;
+}
+
+.showmanagevisible ul li{
+    display: flex;
+    flex-direction: column;
+    transition: all 500ms ease-in-out;
+
+}
+
+.manageButtonWrapper ul{
+    z-index: 999;
+    margin-bottom: -5rem;
+    list-style: none;
+    background-color: #457b9d;
+    padding: 0 .5rem;
+}
+
+.manageButtonWrapper ul li:hover{
+    color: white;
+    cursor: pointer;
+}
+
+.shelfBooksWrapper{
+    display: flex;
+    align-items: center;
+    padding: .5rem  ;
+    background-color: white;
+    justify-content: space-between;
+}
+
+.manageButtonWrapper{
+    display: flex;
+    flex-direction: column;
+    row-gap: .5rem;
+    width: 10rem;
+}
+
+.manageListWrapperButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+
 
 .radioContainer{
     display: flex;
