@@ -33,7 +33,7 @@ app.use(cookieParser())
 
 app.use(cors ({
     origin: ['http://localhost:5173'],
-    methods: ["POST, GET, PUT"],
+    methods: ["POST, GET, PUT, DELETE"],
     credentials: true
 }))
 
@@ -103,6 +103,35 @@ app.get("/usersToFollow", async(req, res) => {
         console.log("Error fetching all users form database", error)
         return res.status(500).json({message: "Internal server issue"})
     }
+})
+
+app.delete("/deletefromshelves/:bookid/:_id", async(req, res) => {
+    try {
+        const {bookid, _id} = req.params
+
+        console.log(bookid)
+
+        if(!mongoose.Types.ObjectId.isValid(_id)) {
+            return res.status(404).json({message: "Invalid objectId format"})
+        }
+
+        const user = await LibraryUsers.findById(_id)
+
+        if(!user) {
+            return res.status(404).json({message: "user not found"})
+        }
+
+        user.shelf = user.shelf.filter(item => item.bookid !== bookid)
+
+        const result = await user.save()
+
+        return res.json(result)
+        
+    } catch (error) {
+        console.log("error deleting book", error)
+        return res.status(500).json({message: "Internal server error"})
+    }
+
 })
 
 //Follow other users logic

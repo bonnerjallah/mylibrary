@@ -95,6 +95,10 @@ const libraryUsersSchema = new mongoose.Schema({
         iown: String,
         forlater: String,
         placeholder: String,
+        date: {
+            type: Date,
+            default: Date.now
+        }
     }]
 
 })

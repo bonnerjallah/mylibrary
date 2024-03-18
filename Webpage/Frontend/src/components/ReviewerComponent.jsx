@@ -25,8 +25,6 @@ const ReviewerComponent = () => {
         review: "",
     })
 
-    console.log(filterBookData)
-
     //User Message display
     const [alreadyReviewedErrorMsg, setalreadyReviewedErrorMsg] = useState('')
     const [genericErrorMsg, setGenericErrorMsg] = useState('')

@@ -13,11 +13,14 @@ import shelfstyle from "../styles/shelfstyle.module.css"
 
 const Shelf = () => {
 
-    const user = useAuth()
+    const {user} = useAuth()
+    const {updateUser} = useAuth()
 
     const [allBooks, setAllBooks] = useState([])
     const [member, setMember] = useState('')
     const [showModal, setShowModal] = useState(false)
+
+    const [message, setMessage] = useState('')
 
 
     const [isAuthorWrapperVisible, setIsAuthorWrapperVisible] = useState(false)
@@ -104,7 +107,37 @@ const Shelf = () => {
         fetchBooksData()
     }, [])
 
-    console.log(allBooks)
+    console.log(member)
+
+
+    const handleDeleteBookFromShelves =  async (bookid) => {
+
+        const _id = member.user.id
+
+        try {
+            const response = await axios.delete(`http://localhost:3001/deletefromshelves/${bookid}/${_id}`, {
+                headers: {"Content-Type": "application/json"}
+            })
+            
+            if(response.status === 200) {
+                console.log("deleted book successfully")
+            }
+
+            setMessage("Deleted book form shelves")
+
+            setTimeout(() => {
+                setMessage("")
+
+            }, 2000);
+
+            updateUser()
+
+        } catch (error) {
+            console.log("error deleting book form shelf", error)
+        }
+    }
+
+
 
 
     return (
@@ -187,38 +220,46 @@ const Shelf = () => {
 
                                 return (
                                     <div key={index} className={shelfstyle.shelfBooksWrapper}>
-                                        <div style={{ display: "flex", columnGap: ".5rem" }}>
-                                            <img src={`http://localhost:3001/booksimages/${book.bookImageUrl}`} alt="book image" width="100" height="150" />
-                                            <div style={{display:"flex", flexDirection:"column", rowGap:".5rem"}}>
-                                                <div>
-                                                    {book.bookTitle}
-                                                </div>
-                                                <div>
-                                                    <span style={{color:"blue"}}>by:</span> {book.bookAuthor}
-                                                </div>
-                                                <div>
-                                                    <p style={{fontSize:'1rem', display:"flex", alignItems:"center", columnGap:".5rem"}}><span style={{fontSize:'1rem', display:"flex", alignItems:"center"}}><BookOpenText size={15}/></span> Publish - <small>{book.publishDate}</small></p>
-                                                </div>
-                                                <div>
-                                                    {book.bookAvailability === "Yes" ? (<p style={{fontSize:"1rem", color:"green"}}>Available</p>) : (<p style={{fontSize:"1rem", color:"red"}}>Not Available</p>)}
+                                        <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", width:"100%"}}>
+                                            <div style={{ display: "flex", columnGap: ".5rem" }}>
+                                                <img src={`http://localhost:3001/booksimages/${book.bookImageUrl}`} alt="book image" width="100" height="150" />
+                                                <div style={{display:"flex", flexDirection:"column", rowGap:".5rem"}}>
+                                                    <div>
+                                                        {shelfItem.bookTitle}
+                                                    </div>
+                                                    <div>
+                                                        <span style={{color:"blue"}}>by:</span> {book.bookAuthor}
+                                                    </div>
+                                                    <div>
+                                                        <p style={{fontSize:'1rem', display:"flex", alignItems:"center", columnGap:".5rem"}}><span style={{fontSize:'1rem', display:"flex", alignItems:"center"}}><BookOpenText size={15}/></span> Publish - <small>{book.publishDate}</small></p>
+                                                    </div>
+                                                    <div>
+                                                        {book.bookAvailability === "Yes" ? (<p style={{fontSize:"1rem", color:"green"}}>Available</p>) : (<p style={{fontSize:"1rem", color:"red"}}>Not Available</p>)}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className={shelfstyle.manageButtonWrapper}>
-                                            <div className={shelfstyle.manageListWrapperButton} onClick={handleManageShowing}>
-                                                Manage Item <ChevronDown/>
+                                            <div className={shelfstyle.manageButtonWrapper}>
+                                                <div className={shelfstyle.manageListWrapperButton} onClick={handleManageShowing}>
+                                                    Manage Item <ChevronDown/>
+                                                </div>
+                                                <ul name="" id="" className={`${shelfstyle.manageBook} ${showManage ? shelfstyle.showmanagevisible : ""}`} >
+                                                    <li>Completed</li>
+                                                    <li>In Progress</li>
+                                                    <li>Remove form shelves</li>
+                                                    <li>I Own this</li>
+                                                </ul> 
+                                                
+                                                <p className={shelfstyle.placeHoldButton}>Place hold</p>
+                                                <span> <strong style={{color:"goldenrod"}}>Added:</strong> {new Date(shelfItem.date).toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" }).replace(/\//g,'-')}</span>
                                             </div>
-                                            <ul name="" id="" className={`${shelfstyle.manageBook} ${showManage ? shelfstyle.showmanagevisible : ""}`} >
-                                                <li>Completed</li>
-                                                <li>In Progress</li>
-                                                <li>Remove form shelves</li>
-                                                <li>I Own this</li>
-                                            </ul> 
-                                            
-                                            <p style={{ backgroundColor: "green" }}>Place hold</p>
-                                            <small>Date Added</small>   
                                         </div>
+                                        <div className={shelfstyle.deleteButtonWrapper}>
+                                            <button onClick={() => handleDeleteBookFromShelves(shelfItem.bookid)} className={shelfstyle.deleteButton}>Delete</button>
+                                        </div>
+                                        {message && (<p className={shelfstyle.deletingBookMessage}>{message}</p>)}
+                                        
                                     </div>
+                                    
                                 );
                             })}
                         </div>

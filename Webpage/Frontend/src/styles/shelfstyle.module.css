@@ -82,6 +82,19 @@
     color: white;
 }
 
+.deletingBookMessage {
+    color: red;
+    font-size: 10rem;
+    z-index: 9999;
+    position: fixed;
+    transform: translate(60%, 60%); 
+    top: 50%;
+    bottom: 50%;
+    background-color: #8baec4;
+    height: max-content;
+}
+
+
 /*
 !Search Modal Style
 */
@@ -302,10 +315,8 @@
 }
 
 .showmanagevisible ul li{
-    display: flex;
     flex-direction: column;
     transition: all 500ms ease-in-out;
-
 }
 
 .manageButtonWrapper ul{
@@ -313,7 +324,11 @@
     margin-bottom: -5rem;
     list-style: none;
     background-color: #457b9d;
-    padding: 0 .5rem;
+    height: 6.5rem;
+}
+
+.manageButtonWrapper ul li{
+    margin: .4rem .5rem;
 }
 
 .manageButtonWrapper ul li:hover{
@@ -327,6 +342,7 @@
     padding: .5rem  ;
     background-color: white;
     justify-content: space-between;
+    position: relative;
 }
 
 .manageButtonWrapper{
@@ -334,6 +350,21 @@
     flex-direction: column;
     row-gap: .5rem;
     width: 10rem;
+}
+
+.deleteButton{
+    border: none;
+    padding: 0 .5rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    color: white;
+    background-color: red;
+}
+
+.deleteButtonWrapper{
+    position: absolute;
+    bottom: .3rem;
+    right: .5rem;
 }
 
 .manageListWrapperButton{
@@ -344,7 +375,16 @@
     cursor: pointer;
 }
 
+.placeHoldButton{
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
 
+.placeHoldButton:hover{
+    color: white;
+}
 
 .radioContainer{
     display: flex;
