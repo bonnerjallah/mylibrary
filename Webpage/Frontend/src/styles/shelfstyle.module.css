@@ -361,6 +361,10 @@
     background-color: red;
 }
 
+.deleteButton:hover{
+    color: black;
+}
+
 .deleteButtonWrapper{
     position: absolute;
     bottom: .3rem;

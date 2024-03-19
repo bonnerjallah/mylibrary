@@ -50,6 +50,8 @@ const Dashboard = () => {
         setShowInfo(!showInfo)
     }
 
+    console.log(member.user)
+
     return (
         <div className={dashboardstyle.mainContainer}>
             <div className={dashboardstyle.headerContainer}>
@@ -60,9 +62,9 @@ const Dashboard = () => {
                             <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt="" style={{ borderRadius: "50%", maxWidth: "100%", maxHeight: "100%" }} />
                         </div>
                     ) : (
-                        <div className={dashboardstyle.profilePicWrapper}>
-                            {member && member.user && member.user.firstname && member.user.lastname ? (
-                                `${member.user.firstname.charAt(0).toUpperCase()}${member.user.lastname.charAt(0).toUpperCase()}`
+                        <div className={dashboardstyle.profilePicWrapper} style={{fontSize:"7rem", borderRadius:"50%", padding:"1rem", display:"flex", justifyContent:"center", alignItems:"center", backgroundColor:"#d8e2dc"}}>
+                            {member && member.user && member.user.firstName && member.user.lastName ? (
+                                `${member.user.firstName.charAt(0).toUpperCase()}${member.user.lastName.charAt(0).toUpperCase()}`
                             ) : (
                                 'Unknown'
                             )}

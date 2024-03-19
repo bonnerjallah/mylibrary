@@ -1,7 +1,7 @@
 import { ArrowDown, ArrowLeft, BookOpenText, LibraryBig, Plus} from "lucide-react"
 import { NavLink } from "react-router-dom"
 import { useAuth } from "../components/AuthContext"
-import { useEffect, useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 import axios, { Axios } from "axios"
 import Cookies from "js-cookie"
 import { ChevronDown } from "lucide-react"
@@ -22,6 +22,7 @@ const Shelf = () => {
 
     const [message, setMessage] = useState('')
 
+    const [reducerValue = forceUpdate] = useReducer(x => x + 1, 0)
 
     const [isAuthorWrapperVisible, setIsAuthorWrapperVisible] = useState(false)
     const handleAuthorWrapper = () => {
@@ -33,10 +34,11 @@ const Shelf = () => {
         setShowGenreWrapper(!showGenre)
     }
 
-    const [showManage, setManage] = useState(false)
-    const handleManageShowing = () => {
-        setManage(!showManage)
-    }
+    const [showManage, setManage] = useState(null); // Initialize showManage with null
+
+    const handleManageShowing = (shelfItemId) => {
+        setManage(prevState => prevState === shelfItemId ? null : shelfItemId);
+    };
 
     //Fetch user data
     axios.defaults.withCredentials = true
@@ -56,7 +58,7 @@ const Shelf = () => {
             }
         }
         fetchUserData()
-    }, [])
+    }, [reducerValue])
 
     const handleshowmodal = () => {
         setShowModal(true)
@@ -123,6 +125,8 @@ const Shelf = () => {
                 console.log("deleted book successfully")
             }
 
+
+
             setMessage("Deleted book form shelves")
 
             setTimeout(() => {
@@ -130,14 +134,29 @@ const Shelf = () => {
 
             }, 2000);
 
-            updateUser()
 
         } catch (error) {
             console.log("error deleting book form shelf", error)
         }
     }
 
+    const handleManageBook = async (e, bookid) => {
+        const manageAction = e.target.textContent
+        const _id = member.user.id
 
+        try {
+            const response = await axios.put(`http://localhost:3001/updatebookonshelves/${bookid}/${_id}`, {Action: manageAction})
+
+            if(response.status === 200) {
+                console.log("updated book successfully")
+            }
+
+            // forceUpdate()
+
+        } catch (error) {
+            console.log("error updating book on shelves", error)
+        }
+    }
 
 
     return (
@@ -239,18 +258,16 @@ const Shelf = () => {
                                                 </div>
                                             </div>
                                             <div className={shelfstyle.manageButtonWrapper}>
-                                                <div className={shelfstyle.manageListWrapperButton} onClick={handleManageShowing}>
-                                                    Manage Item <ChevronDown/>
-                                                </div>
-                                                <ul name="" id="" className={`${shelfstyle.manageBook} ${showManage ? shelfstyle.showmanagevisible : ""}`} >
-                                                    <li>Completed</li>
-                                                    <li>In Progress</li>
-                                                    <li>Remove form shelves</li>
-                                                    <li>I Own this</li>
-                                                </ul> 
-                                                
-                                                <p className={shelfstyle.placeHoldButton}>Place hold</p>
-                                                <span> <strong style={{color:"goldenrod"}}>Added:</strong> {new Date(shelfItem.date).toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" }).replace(/\//g,'-')}</span>
+                                        <div className={shelfstyle.manageListWrapperButton} onClick={() => handleManageShowing(shelfItem.shelfItemId)}>
+                                            Manage Item <ChevronDown/>
+                                        </div>
+                                            <ul name="" id="" className={`${shelfstyle.manageBook} ${showManage === shelfItem.shelfItemId ? shelfstyle.showmanagevisible : ""}`} >
+                                                <li onClick={(e) => handleManageBook(e, shelfItem.bookid)}>Completed</li>
+                                                <li onClick={(e) => handleManageBook(e, shelfItem.bookid)}>In Progress</li>
+                                                <li onClick={(e) => handleManageBook(e, shelfItem.bookid)}>I own this</li>
+                                            </ul> 
+                                            <p className={shelfstyle.placeHoldButton}>Place hold</p>
+                                            <span> <strong style={{color:"goldenrod"}}>Added:</strong> {new Date(shelfItem.date).toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" }).replace(/\//g,'-')}</span>
                                             </div>
                                         </div>
                                         <div className={shelfstyle.deleteButtonWrapper}>

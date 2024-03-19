@@ -32,7 +32,7 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5174'],
     methods: ["POST, GET, PUT, DELETE"],
     credentials: true
 }))
@@ -101,6 +101,42 @@ app.get("/usersToFollow", async(req, res) => {
 
     } catch (error) {
         console.log("Error fetching all users form database", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
+
+app.put("/updatebookonshelves/:bookid/:_id", async(req, res) => {
+    try {
+        const {_id, bookid} = req.params
+        const {Action} = req.body
+
+        console.log(req.body)
+
+        user = await LibraryUsers.findById(_id)
+
+        user.shelf.forEach(item => {
+            if(Action === "Completed"){
+                item.completed = bookid;
+                item.forlater = ""
+            } else if(Action === "In Progress") {
+                item.inprogress = bookid;
+                item.forlater = "";
+            } else if(Action === "I own this") {
+                item.iown = bookid;
+            } else {
+                return
+            }
+        })
+
+        user.markModified('shelf');
+
+        const result = await user.save()
+
+        return res.json(result)
+
+        
+    } catch (error) {
+        console.log("errro updating book", error)
         return res.status(500).json({message: "Internal server issue"})
     }
 })
@@ -183,7 +219,25 @@ app.post("/setbookshelf", async(req, res) => {
             return res.status(400).json({ message: "Book already added to your shelf" });
         }
 
-        const result = await LibraryUsers.findByIdAndUpdate(userid, {$push:{ shelf:{ bookid }}}, {new:true})
+        const result = await LibraryUsers.findByIdAndUpdate(
+            userid,
+            {
+                $push: {
+                    shelf: {
+                        bookid,
+                        // Initialize other fields if necessary
+                        completed: "",
+                        inprogress: "",
+                        iown: "",
+                        forlater: bookid,
+                        placeholder: "",
+                        date: new Date()
+                    }
+                }
+            },
+            { new: true }
+        );
+        
 
         if(!result) {
             return res.status(404).json({message: "User not found"})
