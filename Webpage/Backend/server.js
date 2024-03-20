@@ -32,7 +32,7 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5174'],
     methods: ["POST, GET, PUT, DELETE"],
     credentials: true
 }))
@@ -115,17 +115,20 @@ app.put("/updatebookonshelves/:bookid/:_id", async(req, res) => {
         user = await LibraryUsers.findById(_id)
 
         user.shelf.forEach(item => {
-            if(Action === "Completed"){
-                item.completed = bookid;
-                item.forlater = ""
-            } else if(Action === "In Progress") {
-                item.inprogress = bookid;
-                item.forlater = "";
-            } else if(Action === "I own this") {
-                item.iown = bookid;
-            } else {
-                return
+            if(item.bookid === bookid) {
+                if(Action === "Completed"){
+                    item.completed = bookid;
+                    item.forlater = ""
+                } else if(Action === "In Progress") {
+                    item.inprogress = bookid;
+                    item.forlater = "";
+                } else if(Action === "I own this") {
+                    item.iown = bookid;
+                } else {
+                    return
+                }
             }
+
         })
 
         user.markModified('shelf');
