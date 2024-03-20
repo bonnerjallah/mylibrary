@@ -75,6 +75,7 @@ const Dashboard = () => {
                         <p>{member && member.user && member.user.firstName} {member && member.user && member.user.lastName}</p>
                     </div>
                 </div>
+
                 <div className={dashboardstyle.usernameAndFollowersContainer}>
                     <div className={dashboardstyle.usernameWrapper}>
                         <div className={dashboardstyle.firstNameAndLastnameWrapper}>
@@ -93,6 +94,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
+                
             </div>
 
             <div className={dashboardstyle.secondMainContainerHeader}>

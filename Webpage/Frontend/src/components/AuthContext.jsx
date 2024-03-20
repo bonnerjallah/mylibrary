@@ -72,12 +72,7 @@ export const AuthProvider = ({children}) => {
         setToken(token)
     }
 
-    const updateUser = (userData, token) => {
-        setUser(userData)
-        window.localStorage.setItem("token", token)
-        setToken(token)
-        console.log("updated user")
-    }
+
 
     const logOut = () => {
         setLoggedIn(false)
@@ -88,7 +83,7 @@ export const AuthProvider = ({children}) => {
     }
 
     return (
-        <AuthContext.Provider value={{ loggedIn, login, logOut, user, updateUser, token }}>
+        <AuthContext.Provider value={{ loggedIn, login, logOut, user, token }}>
             {children}
         </AuthContext.Provider>
 
