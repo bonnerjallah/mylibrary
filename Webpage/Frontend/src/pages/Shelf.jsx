@@ -10,16 +10,41 @@ import { ChevronDown } from "lucide-react"
 import SearchModal from "../components/SearchModal"
 import Footer from "../components/Footer"
 import shelfstyle from "../styles/shelfstyle.module.css"
+import Completed from "../components/Completed"
+import Inprogress from "../components/Inprogress"
+import Forlater from "../components/Forlater"
 
 const Shelf = () => {
 
     const {user} = useAuth()
 
-    const [allBooks, setAllBooks] = useState([])
     const [member, setMember] = useState('')
+    
     const [showModal, setShowModal] = useState(false)
 
-    const [message, setMessage] = useState('')
+    const [showCompleted, setShowCompleted] = useState(false)
+    const handleShowCompleted = () => {
+        setShowCompleted(true);
+        setShowInprogress(false); 
+        setShowForlater(false);   
+    }
+    
+
+    const [showInprogress, setShowInprogress] = useState(false)
+    const handleShowInprogress = () => {
+        console.log("In progress clicked")
+        setShowCompleted(false);  
+        setShowInprogress(true);
+        setShowForlater(false);   
+    }
+
+    const [showForLater, setShowForlater] = useState(false)
+    const handleShowForLater = () => {
+        console.log("for later clicked")
+        setShowCompleted(false);  
+        setShowInprogress(false); 
+        setShowForlater(true);
+    }
 
     const [isAuthorWrapperVisible, setIsAuthorWrapperVisible] = useState(false)
     const handleAuthorWrapper = () => {
@@ -30,20 +55,6 @@ const Shelf = () => {
     const handleShowGenreWrapper = () => {
         setShowGenreWrapper(!showGenre)
     }
-
-    const [showManage, setShowManage] = useState({});
-
-    const handleManageShowing = (shelfItemId) => {
-        setShowManage(prevState => {
-            const newState = {
-                ...prevState,
-                [shelfItemId]: !prevState[shelfItemId] // Toggle visibility
-            };
-            return newState;
-        });
-    };
-        
-
 
     //Fetch user data
     axios.defaults.withCredentials = true
@@ -111,78 +122,17 @@ const Shelf = () => {
                 setAllBooks(combineBooks)
 
             } catch (error) {
-                console.log("Error fetching book", error)
             }
         }
         fetchBooksData()
     }, [])
 
-    console.log(member)
 
+    const [sortBy, setSortBy] = useState(false)
 
-    const handleDeleteBookFromShelves =  async (bookid) => {
-
-        const _id = member.user.id
-
-        try {
-            const response = await axios.delete(`http://localhost:3001/deletefromshelves/${bookid}/${_id}`, {
-                headers: {"Content-Type": "application/json"}
-            })
-            
-            if(response.status === 200) {
-                console.log("deleted book successfully")
-
-                const updatedUser = { ...member.user };
-                updatedUser.shelf = updatedUser.shelf.filter(item => item.bookid !== bookid);
-                setMember({ ...member.user, user: updatedUser });
-
-            }
-
-            setMessage("Deleted book form shelves")
-
-            setTimeout(() => {
-                setMessage("")
-
-            }, 2000);
-
-        } catch (error) {
-            console.log("error deleting book form shelf", error)
-        }
-    }
-
-    //Shelf Update Function
-    const handleManageBook = async (e, bookid) => {
-        const manageAction = e.target.textContent
-        const _id = member.user.id
-
-        try {
-            const response = await axios.put(`http://localhost:3001/updatebookonshelves/${bookid}/${_id}`, {Action: manageAction})
-
-            if(response.status === 200) {
-                console.log("updated book successfully")
-
-                const updatedUser = { ...member.user };
-                updatedUser.shelf = updatedUser.shelf.filter(item => item.bookid !== bookid);
-                setMember({ ...member, user: updatedUser });
-
-                fetchUserData()
-
-            }
-        } catch (error) {
-            console.log("error updating book on shelves", error)
-        }
-    }
-
-
-    //Shelf Counters
-    const progressCounter = () => {
-        progCount = 0
-        member.user.shelf.forEach(elem => {
-            if(typeof elem === "object" && elem.placeholder === "inprogress") {
-                progCount++
-            }
-        })
-        return progCount
+    const handleSortBy = (e) => {
+        const selectedOption = e.target.value
+        setSortBy(selectedOption)
     }
 
     return (
@@ -201,9 +151,47 @@ const Shelf = () => {
                     <LibraryBig /> 
                     <h2>My Shelves</h2> 
                     <div className={shelfstyle.completedInProgressForLaterWrapper}>
-                        <p>Completed (0)</p>
-                        <p>In Progress({progressCounter})</p>
-                        {member && member.user.shelf && (<p>For Later ({member.user.shelf.length})</p>)}
+                        <p onClick={handleShowCompleted}>Completed: ({
+                            (() => {
+                                let completedCount = 0;
+                                if(member?.user?.shelf) {
+                                    member.user.shelf.forEach(elem => {
+                                        if(typeof elem === "object" && elem.completed) {
+                                            completedCount++
+                                        }
+                                    })
+                                }
+                                return completedCount
+                            })()
+                        })</p>
+
+                        <p onClick={handleShowInprogress}>In Progress: ({
+                            (() => {
+                                let progCount = 0;
+                                if (member?.user?.shelf) {
+                                    member.user.shelf.forEach(elem => {
+                                        if (typeof elem === "object" && elem.inprogress) {
+                                            progCount++;
+                                        }
+                                    });
+                                }
+                                return progCount;
+                            })()
+                        })</p>
+
+                        <p onClick={handleShowForLater}>For Later: ({
+                            (() => {
+                                let forlaterCount = 0
+                                if(member?.user?.shelf) {
+                                    member.user.shelf.forEach(elem => {
+                                        if(typeof elem === "object" && elem.forlater) {
+                                            forlaterCount++
+                                        }
+                                    })
+                                }
+                                return forlaterCount
+                            })()
+                        })</p>
                         
                     </div>
                 </div>
@@ -242,68 +230,29 @@ const Shelf = () => {
                                 <p onClick={handleShowGenreWrapper}>Genre <span><ChevronDown /></span></p>
                                 <span className={`${shelfstyle.genereWrapper} ${showGenre ? shelfstyle.showGenreWrapper : ""}`}>GenreHere (2)</span>
                             </div>
-                            
                         </div>
                     </div>
                     
                     <div className={shelfstyle.shelfWrapper}>
                         <div className={shelfstyle.sortWrapper}>
                             Sort by:
-                                <select style={{marginLeft:".5rem"}}>
+                                <select style={{marginLeft:".5rem"}} onChange={(e) => {handleSortBy(e)}}>
                                     <option value="dateAdded">Date Added</option>
                                     <option value="title">Title</option>
                                     <option value="author">Author</option>
                                 </select>
                         </div>
                         <div className={shelfstyle.booksOnShelfWrapper}>
-                            {allBooks && member.user && member.user.shelf.length > 0 && member.user.shelf.map((shelfItem, index) => {
-                                const book = allBooks.find(book => book._id === shelfItem.bookid);
-                                if (!book) {
-                                    console.log(`Book with id ${shelfItem.bookid} not found in allBooks`);
-                                    return null;
-                                }
 
-                                return (
-                                    <div key={index} className={shelfstyle.shelfBooksWrapper}>
-                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-                                            <div style={{ display: "flex", columnGap: ".5rem" }}>
-                                                <img src={`http://localhost:3001/booksimages/${book.bookImageUrl}`} alt="book image" width="100" height="150" />
-                                                <div style={{ display: "flex", flexDirection: "column", rowGap: ".5rem" }}>
-                                                    <div>{shelfItem.bookTitle}</div>
-                                                    <div><span style={{ color: "blue" }}>by:</span> {book.bookAuthor}</div>
-                                                    <div>
-                                                        <p style={{ fontSize: '1rem', display: "flex", alignItems: "center", columnGap: ".5rem" }}>
-                                                            <span style={{ fontSize: '1rem', display: "flex", alignItems: "center" }}>Publish - <small>{book.publishDate}</small></span>
-                                                        </p>
-                                                    </div>
-                                                    <div>
-                                                        {book.bookAvailability === "Yes" ? (<p style={{ fontSize: "1rem", color: "green" }}>Available</p>) : (<p style={{ fontSize: "1rem", color: "red" }}>Not Available</p>)}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className={shelfstyle.manageButtonWrapper}>
-                                                <div className={shelfstyle.manageListWrapperButton} onClick={() => handleManageShowing(shelfItem._id)}>
-                                                    Manage Item <ChevronDown/>
-                                                </div>
-                                                <ul name="" id="" className={`${shelfstyle.manageBook} ${showManage[shelfItem._id] ? shelfstyle.showmanagevisible : ""}`}>
-                                                    <li onClick={(e) => handleManageBook(e, shelfItem.bookid)}>Completed</li>
-                                                    <li onClick={(e) => handleManageBook(e, shelfItem.bookid)}>In Progress</li>
-                                                    <li onClick={(e) => handleManageBook(e, shelfItem.bookid)}>I own this</li>
-                                                </ul>
-                                                <p className={shelfstyle.placeHoldButton}>Place hold</p>
-                                                <span> <strong style={{ color: "goldenrod" }}>Added:</strong> {new Date(shelfItem.date).toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" }).replace(/\//g, '-')}</span>
-                                            </div>
-                                        </div>
-                                        <div className={shelfstyle.deleteButtonWrapper}>
-                                            <button onClick={() => handleDeleteBookFromShelves(shelfItem.bookid)} className={shelfstyle.deleteButton}>Delete</button>
-                                        </div>
-                                        {message && (<p className={shelfstyle.deletingBookMessage}>{message}</p>)}
-                                    </div>
-                                );
-                            })}
+                        {showCompleted ? (
+                            <Completed  sortBy={sortBy} />
+                        ) : showInprogress ? (
+                            <Inprogress sortBy={sortBy} />
+                        ) : (
+                            <Forlater sortBy={sortBy} />
+                        )}
+                            
                         </div>
-
-
 
                     </div>
                 </div>
