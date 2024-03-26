@@ -9,7 +9,7 @@ import shelfstyle from "../styles/shelfstyle.module.css"
 
 
 
-const Forlater = ({sortBy}) => {
+const Forlater = ({sortBy, onBookIdChange}) => {
     const {user} = useAuth()
 
     const [allBooks, setAllBooks] = useState([])
@@ -17,6 +17,15 @@ const Forlater = ({sortBy}) => {
     const [message, setMessage] = useState('')
     const [userShelf, setUserShelf] = useState([])
 
+
+    const handleShelfBookid = () => {
+        const bookid = userShelf.map(elem => elem.bookid)
+        onBookIdChange(bookid)
+    }
+
+    useEffect(() => {
+        handleShelfBookid()
+    }, [userShelf])
 
     const [showManage, setShowManage] = useState({});
 

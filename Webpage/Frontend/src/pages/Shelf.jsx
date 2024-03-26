@@ -1,7 +1,7 @@
 import { ArrowDown, ArrowLeft, BookOpenText, LibraryBig, Plus} from "lucide-react"
 import { NavLink } from "react-router-dom"
 import { useAuth } from "../components/AuthContext"
-import { useEffect, useReducer, useState } from "react"
+import { useCallback, useEffect, useReducer, useState } from "react"
 import axios, { Axios } from "axios"
 import Cookies from "js-cookie"
 import { ChevronDown } from "lucide-react"
@@ -19,7 +19,17 @@ const Shelf = () => {
     const {user} = useAuth()
 
     const [member, setMember] = useState('')
-    
+    const [allBooks, setAllBooks] = useState([])
+    const [sortBy, setSortBy] = useState(false)
+    const [shelfBookid, setShelfBookid] = useState([])
+
+    const handleShelfBookid = (bookid) => {
+        setShelfBookid(bookid)
+    }
+
+    console.log("book id", bookid)
+
+
     const [showModal, setShowModal] = useState(false)
 
     const [showCompleted, setShowCompleted] = useState(false)
@@ -128,12 +138,13 @@ const Shelf = () => {
     }, [])
 
 
-    const [sortBy, setSortBy] = useState(false)
-
     const handleSortBy = (e) => {
         const selectedOption = e.target.value
         setSortBy(selectedOption)
     }
+
+
+
 
     return (
         <>
@@ -249,9 +260,9 @@ const Shelf = () => {
                         ) : showInprogress ? (
                             <Inprogress sortBy={sortBy} />
                         ) : (
-                            <Forlater sortBy={sortBy} />
+                            <Forlater sortBy={sortBy} onBookIdChange={handleShelfBookid} />
                         )}
-                            
+
                         </div>
 
                     </div>
