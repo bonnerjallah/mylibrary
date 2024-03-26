@@ -23,12 +23,6 @@ const Shelf = () => {
     const [sortBy, setSortBy] = useState(false)
     const [shelfBookid, setShelfBookid] = useState([])
 
-    const handleShelfBookid = (bookid) => {
-        setShelfBookid(bookid)
-    }
-
-    console.log("book id", bookid)
-
 
     const [showModal, setShowModal] = useState(false)
 
@@ -137,14 +131,18 @@ const Shelf = () => {
         fetchBooksData()
     }, [])
 
-
+    //Book sorting function
     const handleSortBy = (e) => {
         const selectedOption = e.target.value
         setSortBy(selectedOption)
     }
 
+    //Call back function for setting bookids
+    const handleShelfBookid = (shelfBookIds) => {
+        setShelfBookid(shelfBookIds)
+    }
 
-
+    console.log(allBooks)
 
     return (
         <>
@@ -235,11 +233,22 @@ const Shelf = () => {
                         <div className={shelfstyle.filterByAuthorAndGenreContainer}>
                             <div className={shelfstyle.byAuthorWrapper}>
                                 <p onClick={handleAuthorWrapper}>Author <span><ChevronDown /></span></p>
-                                <span className={`${shelfstyle.authorWrapper} ${isAuthorWrapperVisible ? shelfstyle.showAuthorWrapper : ""}`}>AuthorName (1)</span>
+                                <span className={`${shelfstyle.authorWrapper} ${isAuthorWrapperVisible ? shelfstyle.showAuthorWrapper : ""}`}>{allBooks && shelfBookid &&(
+                                    <p style={{display:"flex", flexDirection:"column"}}>{shelfBookid.map(elem => {
+                                        const book = allBooks.find(book => book._id === elem) 
+                                        return book ? <span key={elem} className={shelfstyle.authorNames}>{book.bookAuthor}</span> : null
+                                })}</p>)}</span>
                             </div>
                             <div className={shelfstyle.byGenreWrapper}>
                                 <p onClick={handleShowGenreWrapper}>Genre <span><ChevronDown /></span></p>
-                                <span className={`${shelfstyle.genereWrapper} ${showGenre ? shelfstyle.showGenreWrapper : ""}`}>GenreHere (2)</span>
+                                <span className={`${shelfstyle.genereWrapper} ${showGenre ? shelfstyle.showGenreWrapper : ""}`}> {allBooks && shelfBookid && (<small>
+                                    {shelfBookid.map(elem => {
+                                        const book = allBooks.find(book => book._id === elem)
+                                        return book ? <span key={elem}>{book.bookGenre.map((genre, index) => (
+                                            <span key={index} className={shelfstyle.bookgenres}>{genre.split(' ').slice(0,1).join(' ')}</span>
+                                        ))}</span> : null
+                                    })}
+                                </small>)} </span>
                             </div>
                         </div>
                     </div>

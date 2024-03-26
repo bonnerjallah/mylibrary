@@ -94,7 +94,6 @@
     height: max-content;
 }
 
-
 /*
 !Search Modal Style
 */
@@ -415,7 +414,25 @@
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     padding: .5rem 0;
+    position: relative;
 }
+
+.authorNames{
+    font-size: 1rem;
+    font-weight: normal;
+    margin: .2rem 0;
+}
+
+.bookgenres{
+    margin: 0 .2rem;
+    cursor: pointer;
+}
+
+.authorNames:hover,
+.bookgenres:hover{
+    color: blue;
+}
+
 
 .byAuthorWrapper p{
     display: flex;

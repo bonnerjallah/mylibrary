@@ -16,16 +16,19 @@ const Forlater = ({sortBy, onBookIdChange}) => {
     const [member, setMember] = useState('')
     const [message, setMessage] = useState('')
     const [userShelf, setUserShelf] = useState([])
+    const [shelfBookIds, setShelfBookIds] = useState([]);
 
-
-    const handleShelfBookid = () => {
-        const bookid = userShelf.map(elem => elem.bookid)
-        onBookIdChange(bookid)
-    }
 
     useEffect(() => {
-        handleShelfBookid()
+        setShelfBookIds(userShelf.map(elem => elem.bookid))
     }, [userShelf])
+    
+    useEffect(() => {
+        onBookIdChange(shelfBookIds);
+    }, [shelfBookIds])
+    
+
+    console.log("forlater", shelfBookIds)
 
     const [showManage, setShowManage] = useState({});
 
