@@ -23,6 +23,21 @@ const Shelf = () => {
     const [sortBy, setSortBy] = useState(false)
     const [shelfBookid, setShelfBookid] = useState([])
 
+    const [shelfAuthorFilter, setShelfAuthorFilter] = useState()
+
+
+    //Shelf filter function
+    const handleFilterAuthor = (e) => {
+        const filterBy = e.target.textContent
+        const booksToFilter = allBooks.filter(elem => {
+            return shelfBookid.includes(elem._id) && elem.bookAuthor === filterBy
+        })
+
+        setShelfAuthorFilter(booksToFilter)
+    }
+
+    console.log("shelf filter books", shelfAuthorFilter)
+
 
     const [showModal, setShowModal] = useState(false)
 
@@ -142,7 +157,7 @@ const Shelf = () => {
         setShelfBookid(shelfBookIds)
     }
 
-    console.log(allBooks)
+    
 
     return (
         <>
@@ -213,30 +228,14 @@ const Shelf = () => {
                 </div>
                 <div className={shelfstyle.shelfContainer}>
                     <div className={shelfstyle.filterByContainer}>
-                        <p>Filter your result by...</p>
-                        <div className={shelfstyle.radioContainer}>
-                            <label htmlFor="AllItems">
-                                <input type="radio" name="allitems" id="AllItems" />
-                                All Items
-                            </label>
-
-                            <label htmlFor="PrivateItems">
-                                <input type="radio" name="privateitems" id="PrivateItems" />
-                                My Private Items
-                            </label>
-
-                            <label htmlFor="MySharedItems">
-                                <input type="radio" name="shareditems" id="MySharedItems" />
-                                My Shared Items
-                            </label>
-                        </div>
+                        <p style={{marginBottom:"2rem"}}>Filter your result by...</p>
                         <div className={shelfstyle.filterByAuthorAndGenreContainer}>
                             <div className={shelfstyle.byAuthorWrapper}>
                                 <p onClick={handleAuthorWrapper}>Author <span><ChevronDown /></span></p>
                                 <span className={`${shelfstyle.authorWrapper} ${isAuthorWrapperVisible ? shelfstyle.showAuthorWrapper : ""}`}>{allBooks && shelfBookid &&(
                                     <p style={{display:"flex", flexDirection:"column"}}>{shelfBookid.map(elem => {
                                         const book = allBooks.find(book => book._id === elem) 
-                                        return book ? <span key={elem} className={shelfstyle.authorNames}>{book.bookAuthor}</span> : null
+                                        return book ? <span key={elem} className={shelfstyle.authorNames} onClick={(e) => handleFilterAuthor(e)}>{book.bookAuthor}</span> : null
                                 })}</p>)}</span>
                             </div>
                             <div className={shelfstyle.byGenreWrapper}>
@@ -245,7 +244,7 @@ const Shelf = () => {
                                     {shelfBookid.map(elem => {
                                         const book = allBooks.find(book => book._id === elem)
                                         return book ? <span key={elem}>{book.bookGenre.map((genre, index) => (
-                                            <span key={index} className={shelfstyle.bookgenres}>{genre.split(' ').slice(0,1).join(' ')}</span>
+                                            <span key={index} className={shelfstyle.bookgenres} >{genre.split(' ').slice(0,1).join(' ')}</span>
                                         ))}</span> : null
                                     })}
                                 </small>)} </span>
@@ -263,13 +262,13 @@ const Shelf = () => {
                                 </select>
                         </div>
                         <div className={shelfstyle.booksOnShelfWrapper}>
-
+                                    
                         {showCompleted ? (
-                            <Completed  sortBy={sortBy} />
+                            <Completed  sortBy={sortBy} filterAuthorBooks={shelfAuthorFilter} />
                         ) : showInprogress ? (
-                            <Inprogress sortBy={sortBy} />
+                            <Inprogress sortBy={sortBy} filterAuthorBooks={shelfAuthorFilter} />
                         ) : (
-                            <Forlater sortBy={sortBy} onBookIdChange={handleShelfBookid} />
+                            <Forlater sortBy={sortBy} onBookIdChange={handleShelfBookid} filterAuthorBooks={shelfAuthorFilter} />
                         )}
 
                         </div>
