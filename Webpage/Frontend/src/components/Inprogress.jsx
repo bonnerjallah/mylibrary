@@ -8,7 +8,7 @@ import Cookies from "js-cookie"
 import shelfstyle from "../styles/shelfstyle.module.css"
 
 
-const Inprogress = ({sortBy, filterAuthorBooks}) => {
+const Inprogress = ({sortBy, filterAuthorBooks, filterBooksByGenre}) => {
     const {user} = useAuth()
 
     const [allBooks, setAllBooks] = useState([])
@@ -235,6 +235,46 @@ const Inprogress = ({sortBy, filterAuthorBooks}) => {
                 </div>
                 ))}
             </div>
+            ) : filterBooksByGenre ? (
+                <div>
+                    {filterBooksByGenre.map((elem, id) => (
+                    <div key={id} className={shelfstyle.shelfBooksWrapper}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+                            <div style={{ display: "flex", columnGap: ".5rem" }}>
+                                <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="100" height="150" />
+                                <div style={{ display: "flex", flexDirection: "column", rowGap: ".5rem" }}>
+                                    <div>{elem.bookTitle}</div>
+                                    <div><span style={{ color: "blue" }}>by:</span> {elem.bookAuthor}</div>
+                                    <div>
+                                        <p style={{ fontSize: '1rem', display: "flex", alignItems: "center", columnGap: ".5rem" }}>
+                                            <span style={{ fontSize: '1rem', display: "flex", alignItems: "center" }}>Publish:  <small style={{marginLeft: ".5rem"}}>{elem.publishDate}</small></span>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        {elem.bookAvailability === "Yes" ? (<p style={{ fontSize: "1rem", color: "green" }}>Available</p>) : (<p style={{ fontSize: "1rem", color: "red" }}>Not Available</p>)}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={shelfstyle.manageButtonWrapper}>
+                                <div className={shelfstyle.manageListWrapperButton} onClick={() => handleManageShowing(elem._id)}>
+                                    Manage Item <ChevronDown/>
+                                </div>
+                                <ul name="" id="" className={`${shelfstyle.manageBook} ${showManage[elem._id] ? shelfstyle.showmanagevisible : ""}`}>
+                                    <li onClick={(e) => handleManageBook(e, elem.bookid)}>Completed</li>
+                                    <li onClick={(e) => handleManageBook(e, elem.bookid)}>In Progress</li>
+                                    <li onClick={(e) => handleManageBook(e, elem.bookid)}>I own this</li>
+                                </ul>
+                                <p className={shelfstyle.placeHoldButton}>Place hold</p>
+                                <span> <strong style={{ color: "goldenrod" }}>Added:</strong> {new Date(elem.date).toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" }).replace(/\//g, '-')}</span>
+                            </div>
+                        </div>
+                        <div className={shelfstyle.deleteButtonWrapper}>
+                            <button onClick={() => handleDeleteBookFromShelves(elem.bookid)} className={shelfstyle.deleteButton}>Delete</button>
+                        </div>
+                        {message && (<p className={shelfstyle.deletingBookMessage}>{message}</p>)}
+                    </div>
+                    ))}
+                </div>
             ) : (
                 allBooks && userShelf.length > 0 && userShelf.map((shelfItem, index) => {
                                 

@@ -2,9 +2,11 @@ import { ArrowDown, ArrowLeft, BookOpenText, LibraryBig, Plus} from "lucide-reac
 import { NavLink } from "react-router-dom"
 import { useAuth } from "../components/AuthContext"
 import { useCallback, useEffect, useReducer, useState } from "react"
-import axios, { Axios } from "axios"
+import axios from "axios"
 import Cookies from "js-cookie"
 import { ChevronDown } from "lucide-react"
+import ScrollToTop from "../components/ScrollToTop"
+
 
 
 import SearchModal from "../components/SearchModal"
@@ -23,22 +25,11 @@ const Shelf = () => {
     const [sortBy, setSortBy] = useState(false)
     const [shelfBookid, setShelfBookid] = useState([])
 
-    const [shelfAuthorFilter, setShelfAuthorFilter] = useState()
+    const [shelfAuthorFilter, setShelfAuthorFilter] = useState('')
+    const [shelfGenreFilter, setShelfGenreFilter] = useState('')
 
 
-    //Shelf filter function
-    const handleFilterAuthor = (e) => {
-        const filterBy = e.target.textContent
-        const booksToFilter = allBooks.filter(elem => {
-            return shelfBookid.includes(elem._id) && elem.bookAuthor === filterBy
-        })
-
-        setShelfAuthorFilter(booksToFilter)
-    }
-
-    console.log("shelf filter books", shelfAuthorFilter)
-
-
+    
     const [showModal, setShowModal] = useState(false)
 
     const [showCompleted, setShowCompleted] = useState(false)
@@ -47,7 +38,6 @@ const Shelf = () => {
         setShowInprogress(false); 
         setShowForlater(false);   
     }
-    
 
     const [showInprogress, setShowInprogress] = useState(false)
     const handleShowInprogress = () => {
@@ -157,10 +147,33 @@ const Shelf = () => {
         setShelfBookid(shelfBookIds)
     }
 
+    //Shelf filter function
+    const handleFilterAuthor = (e) => {
+        const filterBy = e.target.textContent
+        const booksToFilter = allBooks.filter(elem => {
+            return shelfBookid.includes(elem._id) && elem.bookAuthor === filterBy
+        })
+
+        setShelfAuthorFilter(booksToFilter)
+    }
+
+    //Genre filter function
+    const handleGenreFilter = (e) => {
+        const genre = e.target.textContent 
+        
+        const genreFilterBy = allBooks.filter(elem => {
+            return shelfBookid.includes(elem._id) && elem.bookGenre[0].split(' ')[0] === genre
+        })
+
+        setShelfGenreFilter(genreFilterBy)
+    }
+
+    
     
 
     return (
         <>
+            <ScrollToTop />
             <div className={shelfstyle.userNameContainer}>
                 <div className={shelfstyle.usernameWrapper}>
                     {member && (<p style={{backgroundColor:"#720026", borderRadius:"50%", color:"white", padding:" 0 .5rem", fontSize:"2rem"}}>{member.user.userName.charAt(0).toUpperCase()}</p>)}
@@ -244,7 +257,7 @@ const Shelf = () => {
                                     {shelfBookid.map(elem => {
                                         const book = allBooks.find(book => book._id === elem)
                                         return book ? <span key={elem}>{book.bookGenre.map((genre, index) => (
-                                            <span key={index} className={shelfstyle.bookgenres} >{genre.split(' ').slice(0,1).join(' ')}</span>
+                                            <span key={index} className={shelfstyle.bookgenres} onClick={(e) => handleGenreFilter(e)}>{genre.split(' ').slice(0,1).join(' ')}</span>
                                         ))}</span> : null
                                     })}
                                 </small>)} </span>
@@ -264,11 +277,11 @@ const Shelf = () => {
                         <div className={shelfstyle.booksOnShelfWrapper}>
                                     
                         {showCompleted ? (
-                            <Completed  sortBy={sortBy} filterAuthorBooks={shelfAuthorFilter} />
+                            <Completed  sortBy={sortBy} filterAuthorBooks={shelfAuthorFilter} filterBooksByGenre={shelfGenreFilter} />
                         ) : showInprogress ? (
-                            <Inprogress sortBy={sortBy} filterAuthorBooks={shelfAuthorFilter} />
+                            <Inprogress sortBy={sortBy} filterAuthorBooks={shelfAuthorFilter} filterBooksByGenre={shelfGenreFilter} />
                         ) : (
-                            <Forlater sortBy={sortBy} onBookIdChange={handleShelfBookid} filterAuthorBooks={shelfAuthorFilter} />
+                            <Forlater sortBy={sortBy} onBookIdChange={handleShelfBookid} filterAuthorBooks={shelfAuthorFilter} filterBooksByGenre={shelfGenreFilter} />
                         )}
 
                         </div>

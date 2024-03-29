@@ -6,6 +6,24 @@
     position: relative;
 }
 
+.componentMainContainer{
+    overflow: scroll;
+    scroll-behavior: smooth;
+}
+
+.bookwrapper{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.books{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+}
+
 .componentHeader,
 .followMainContainerHeader{
     background-color: rgba(21, 42, 49, 0.5);

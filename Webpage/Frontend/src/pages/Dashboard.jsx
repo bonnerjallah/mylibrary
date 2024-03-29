@@ -25,6 +25,7 @@ const Dashboard = () => {
     const [member, setMember] = useState('')
     const [showInfo, setShowInfo] = useState(false)
 
+    //Fetch user function
     axios.defaults.withCredentials = true
     useEffect(() => {
         const fetchUserData = async () => {
@@ -46,11 +47,12 @@ const Dashboard = () => {
     }, [])
 
 
+    //Drop down function
     const handleShowInfo = () => {
         setShowInfo(!showInfo)
     }
 
-    console.log(member.user)
+
 
     return (
         <div className={dashboardstyle.mainContainer}>
