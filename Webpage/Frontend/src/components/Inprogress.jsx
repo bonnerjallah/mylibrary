@@ -224,7 +224,7 @@ const Inprogress = ({sortBy, filterAuthorBooks, filterBooksByGenre}) => {
                                 <li onClick={(e) => handleManageBook(e, elem.bookid)}>In Progress</li>
                                 <li onClick={(e) => handleManageBook(e, elem.bookid)}>I own this</li>
                             </ul>
-                            <p className={shelfstyle.placeHoldButton}>Place hold</p>
+                            <p className={shelfstyle.placeHoldButton} onClick={(e) => handleManageBook(e, elem.bookid)}>Place hold</p>
                             <span> <strong style={{ color: "goldenrod" }}>Added:</strong> {new Date(elem.date).toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" }).replace(/\//g, '-')}</span>
                         </div>
                     </div>
@@ -264,7 +264,7 @@ const Inprogress = ({sortBy, filterAuthorBooks, filterBooksByGenre}) => {
                                     <li onClick={(e) => handleManageBook(e, elem.bookid)}>In Progress</li>
                                     <li onClick={(e) => handleManageBook(e, elem.bookid)}>I own this</li>
                                 </ul>
-                                <p className={shelfstyle.placeHoldButton}>Place hold</p>
+                                <p className={shelfstyle.placeHoldButton} onClick={(e) => handleManageBook(e, elem.bookid)}>Place hold</p>
                                 <span> <strong style={{ color: "goldenrod" }}>Added:</strong> {new Date(elem.date).toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" }).replace(/\//g, '-')}</span>
                             </div>
                         </div>
@@ -311,7 +311,7 @@ const Inprogress = ({sortBy, filterAuthorBooks, filterBooksByGenre}) => {
                                             <li onClick={(e) => handleManageBook(e, shelfItem.bookid)}>In Progress</li>
                                             <li onClick={(e) => handleManageBook(e, shelfItem.bookid)}>I own this</li>
                                         </ul>
-                                        <p className={shelfstyle.placeHoldButton}>Place hold</p>
+                                        <p className={shelfstyle.placeHoldButton} onClick={(e) => handleManageBook(e, shelfItem.bookid)}>Place hold</p>
                                         <span> <strong style={{ color: "goldenrod" }}>Added:</strong> {new Date(shelfItem.date).toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" }).replace(/\//g, '-')}</span>
                                     </div>
                                 </div>

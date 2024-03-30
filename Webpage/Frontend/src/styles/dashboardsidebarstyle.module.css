@@ -49,6 +49,10 @@
     margin-top: 1rem;
 }
 
+.laterProgressCompletedWrapper a{
+    color: black;
+}
+
 .laterProgressCompletedWrapper h3{
     display: flex;
     justify-content: space-between;

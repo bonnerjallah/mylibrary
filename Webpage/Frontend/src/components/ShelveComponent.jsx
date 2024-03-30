@@ -107,9 +107,11 @@ const ShelveComponent = () => {
                                 <NavLink to="/shelf">
                                     <div style={{cursor:"pointer"}}>
                                         <img src={`http://localhost:3001/booksimages/${allBooks.find(book => book._id === shelfItem.bookid).bookImageUrl}`} alt="book image" width="100" height="150" />
+                                        <div>
+                                            
+                                        </div>
                                     </div>
                                 </NavLink>
-                                
                             )}
                         </div>
                     ))}
