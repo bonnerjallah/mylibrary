@@ -1,0 +1,32 @@
+.mainContainer {
+    border: 2px solid black;
+    font-size: 10rem;
+    z-index: 9999;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #8baec4;
+    height: 35rem;
+    /* max-width: max-content; */
+    width: 60vw;
+    overflow: scroll;
+    scroll-behavior: smooth;
+}
+
+.closeButtonWrapper{
+    width: 100%;
+    position: relative;
+}
+
+.closeButton{
+    position: absolute;
+    right: 1rem;
+    font-size: 2rem;
+    color: red;
+    cursor: pointer;    
+}
+
+.bookContainer{
+    border: 2px solid red;
+}

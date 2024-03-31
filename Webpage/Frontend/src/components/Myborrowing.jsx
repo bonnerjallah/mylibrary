@@ -65,26 +65,31 @@ const Myborrowing = () => {
 
 
     return (
-        <div className={dashboardsidebarstyle.borrowMainContainer}>
-            <div className={dashboardsidebarstyle.borrowingHeader}>
-                <h2><Barcode size={28} /> My Borrowing</h2>
+        <>
+            <div className={dashboardsidebarstyle.borrowMainContainer}>
+                <div className={dashboardsidebarstyle.borrowingHeader}>
+                    <h2><Barcode size={28} /> My Borrowing</h2>
+                </div>
+                <div className={dashboardsidebarstyle.CheckOutHoldFeesWrapper}>
+                    <div>
+                        <p>Checked Out</p>
+                        <span>0 <ChevronRight /></span>
+                    </div>
+                    <div onClick={handleShowOnHoldModal}>
+                        <p>On Hold</p>
+                        <span> {booksOnHold.length} <ChevronRight /></span>
+                    </div>
+                    <div>
+                        <p>Fees</p>
+                        <span>$0.00 <ChevronRight /></span>
+                    </div>
+                </div>
             </div>
-            <div className={dashboardsidebarstyle.CheckOutHoldFeesWrapper}>
-                <div>
-                    <p>Checked Out</p>
-                    <span>0 <ChevronRight /></span>
-                </div>
-                <div onClick={handleShowOnHoldModal}>
-                    <p>On Hold</p>
-                    <span> {booksOnHold.length} <ChevronRight /></span>
-                </div>
-                <div>
-                    <p>Fees</p>
-                    <span>$0.00 <ChevronRight /></span>
-                </div>
-            </div>
+            
             {showOnHoldModal && (<OnHoldModal  closeModal={setShowOnHoldModal}/>)}
-        </div>
+
+        </>
+        
     )
 }
 
