@@ -118,12 +118,28 @@ app.put("/updatebookonshelves/:bookid/:_id", async(req, res) => {
             if(item.bookid === bookid) {
                 if(Action === "Completed"){
                     item.completed = bookid;
-                    item.forlater = ""
+                    item.forlater = "";
+                    item.inprogress = "";
+                    item.iown = "";
+                    item.placeholder = ""
                 } else if(Action === "In Progress") {
                     item.inprogress = bookid;
                     item.forlater = "";
+                    item.completed = "";
+                    item.iown = "";
+                    item.placeholder = "";
                 } else if(Action === "I own this") {
                     item.iown = bookid;
+                    item.forlater = "";
+                    item.completed = "";
+                    item.inprogress = "";
+                    item.placeholder = "";
+                } else if(Action === "Place hold") {
+                    item.placeholder = bookid;
+                    item.forlater = "";
+                    item.completed = "";
+                    item.inprogress = "";
+                    item.iown = "";
                 } else {
                     return
                 }

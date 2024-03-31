@@ -3,7 +3,6 @@ import { LibraryBig, ArrowRight } from 'lucide-react';
 import axios from "axios"
 import Cookies from "js-cookie";
 import { useAuth } from "./AuthContext";
-import ScrollToTop from "../components/ScrollToTop"
 
 
 import shelvestyle from "../styles/shelvestyle.module.css"
@@ -40,7 +39,6 @@ const ShelveComponent = () => {
         fetchUserData()
     }, [])
 
-    console.log("member", member)
 
     //Fetch all books function
     useEffect(() => {
@@ -89,11 +87,8 @@ const ShelveComponent = () => {
 
 
 
-
-
     return (
         <div className={shelvestyle.componentMainContainer}>
-        <ScrollToTop />
 
         {allBooks && userShelfBookIds.length > 0 ? (
             < div className={shelvestyle.bookwrapper}>
@@ -105,10 +100,24 @@ const ShelveComponent = () => {
                         <div key={index} >
                             {allBooks.find(book => book._id === shelfItem.bookid) && (
                                 <NavLink to="/shelf">
-                                    <div style={{cursor:"pointer"}}>
+                                    <div style={{cursor:"pointer", display:"flex", flexDirection:"column"}}>
                                         <img src={`http://localhost:3001/booksimages/${allBooks.find(book => book._id === shelfItem.bookid).bookImageUrl}`} alt="book image" width="100" height="150" />
-                                        <div>
-                                            
+                                        <div style={{textAlign:"center", color:"black"}}>
+                                            {shelfItem.hasOwnProperty("completed") && shelfItem.completed && (
+                                                <span>Completed</span>
+                                            )}
+                                            {shelfItem.hasOwnProperty("inprogress") && shelfItem.inprogress && (
+                                                <span>In Progress</span>
+                                            )}
+                                            {shelfItem.hasOwnProperty("iown") && shelfItem.iown && (
+                                                <span> Own </span>
+                                            )}
+                                            {shelfItem.hasOwnProperty("forlater") && shelfItem.forlater && (
+                                                <span>For Later</span>
+                                            )}
+                                            {shelfItem.hasOwnProperty("placeholder") && shelfItem.placeholder && (
+                                                <span>On Hold</span>
+                                            )}
                                         </div>
                                     </div>
                                 </NavLink>
