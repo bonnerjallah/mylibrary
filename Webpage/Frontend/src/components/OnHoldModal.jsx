@@ -112,8 +112,35 @@ const OnHoldModal = ({closeModal}) => {
             <div className={onholdmodalstyle.closeButtonWrapper}>
                 <p onClick={(e) => {closeModal(false)}} className={onholdmodalstyle.closeButton}>x</p>
             </div>
-            <div>
-                
+            <div className={onholdmodalstyle.bookContainer}>
+                {allBooks && booksOnHold && booksOnHold.map((elem, id) => {
+                    const bookOnHold = allBooks.find(book => book._id === elem) 
+
+                    return (
+                        <div key={id}>
+                            {bookOnHold && (
+                                <>
+                                    <div className={onholdmodalstyle.bookWrapper}>
+                                        <div>
+                                            <img src={`http://localhost:3001/booksimages/${bookOnHold.bookImageUrl}`} alt="book image" width="100" height="150" />
+                                        </div>
+                                        <div>
+                                            <p style={{fontSize:"1.5rem", color:"#f3ffbd"}}>Title: <span style={{fontSize:"1rem", color:"black"}}>{bookOnHold.bookTitle}</span></p>
+                                            <p style={{fontSize:"1.5rem", color:"#f3ffbd"}}>Author: <span style={{fontSize:"1rem", color:"black"}}>{bookOnHold.bookAuthor}</span></p>
+                                            <p style={{fontSize:"1.5rem", color:"#f3ffbd"}}>Rating: </p>
+                                            <p style={{fontSize:"1rem", color:"black"}}>{bookOnHold.bookDiscription.split(" ").slice(0, 15).join(' ')}...</p>
+                                        </div>
+                                        
+                                        <button className={onholdmodalstyle.buttonWrapper}>Check Out</button>
+                                    
+                                    </div>
+                                    
+                                </>
+                                
+                            )}
+                        </div>
+                    )
+                })}
             </div>
 
         </div>
