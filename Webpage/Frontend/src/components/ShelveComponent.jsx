@@ -93,14 +93,16 @@ const ShelveComponent = () => {
         {allBooks && userShelfBookIds.length > 0 ? (
             < div className={shelvestyle.bookwrapper}>
                 <div className={shelvestyle.componentHeader}>
-                    <h2>Book Shelf</h2>
+                    <NavLink to="/shelf">
+                        <h2>Edit Book Shelf</h2>
+                    </NavLink>
                 </div>
                 <div className={shelvestyle.books}>
                     {userShelfBookIds.map((shelfItem, index) => (
-                        <div key={index} >
+                        <div key={index}>
                             {allBooks.find(book => book._id === shelfItem.bookid) && (
-                                <NavLink to="/shelf">
-                                    <div style={{cursor:"pointer", display:"flex", flexDirection:"column"}}>
+                                <NavLink to={`/BookDetails:${shelfItem._id}`}>
+                                    <div style={{display:"flex", flexDirection:"column"}}>
                                         <img src={`http://localhost:3001/booksimages/${allBooks.find(book => book._id === shelfItem.bookid).bookImageUrl}`} alt="book image" width="100" height="150" />
                                         <div style={{textAlign:"center", color:"black"}}>
                                             {shelfItem.hasOwnProperty("completed") && shelfItem.completed && (
@@ -121,8 +123,10 @@ const ShelveComponent = () => {
                                         </div>
                                     </div>
                                 </NavLink>
+                                
                             )}
                         </div>
+                        
                     ))}
                 </div>
                 

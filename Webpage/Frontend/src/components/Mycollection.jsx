@@ -22,7 +22,7 @@ const Mycollection = () => {
                 <NavLink to="/shelf">
                     <h3>In Progress <span><ArrowRight /></span></h3>
                 </NavLink>
-                <NavLink to="/shlef">
+                <NavLink to="/shelf">
                     <h3>Completed <span><ArrowRight /></span></h3>
                 </NavLink>
             </div>

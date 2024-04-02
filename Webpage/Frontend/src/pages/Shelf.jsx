@@ -5,6 +5,7 @@ import { useCallback, useEffect, useReducer, useState } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import { ChevronDown } from "lucide-react"
+import ScrollToTop from "../components/ScrollToTop"
 
 
 
@@ -172,6 +173,7 @@ const Shelf = () => {
 
     return (
         <>
+            <ScrollToTop />
             <div className={shelfstyle.userNameContainer}>
                 <div className={shelfstyle.usernameWrapper}>
                     {member && (<p style={{backgroundColor:"#720026", borderRadius:"50%", color:"white", padding:" 0 .5rem", fontSize:"2rem"}}>{member.user.userName.charAt(0).toUpperCase()}</p>)}

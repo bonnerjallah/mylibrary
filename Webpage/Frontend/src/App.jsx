@@ -12,6 +12,8 @@ import Dashboard from "./pages/Dashboard"
 import ProtectedRoutes from "./components/ProtectedRoutes"
 import ReviewerRequest from "./pages/ReviewerRequest"
 import Shelf from "./pages/Shelf"
+import CheckOutBooks from "./pages/CheckOutBooks"
+import BookDetails from "./pages/BookDetails"
 
 
 const router = createBrowserRouter (
@@ -27,6 +29,8 @@ const router = createBrowserRouter (
         <Route path="/Dashboard" element={<Dashboard />} /> 
         <Route path="/ReviewerRequest/:id" element={<ReviewerRequest />} />
         <Route path="/Shelf" element={<Shelf /> } />
+        <Route path="/CheckOutBooks" element={<CheckOutBooks />} />
+        <Route path="/BookDetails:bookid" element={<BookDetails />} />
       </Route>
       
 

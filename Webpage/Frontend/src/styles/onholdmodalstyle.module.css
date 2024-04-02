@@ -8,7 +8,6 @@
     transform: translate(-50%, -50%);
     background-color: #8baec4;
     height: 35rem;
-    /* max-width: max-content; */
     width: 60vw;
     overflow: scroll;
     scroll-behavior: smooth;
@@ -17,6 +16,9 @@
 .closeButtonWrapper{
     width: 100%;
     position: relative;
+    margin-bottom: 1rem;
+    height: 2rem;
+    border-bottom: 2px solid black;
 }
 
 .closeButton{
@@ -24,32 +26,43 @@
     right: 1rem;
     font-size: 2rem;
     color: red;
-    cursor: pointer;    
+    cursor: pointer; 
+    height: 2rem; 
 }
 
 .bookContainer{
+    display: flex;
     gap: 1rem;
     margin: 2.5rem 1rem;
-    flex-wrap: wrap;    
+    flex-wrap: wrap; 
 }
 
 .bookWrapper{
     display: flex;
     column-gap: .5rem;
     position: relative;
+    width: 100%;
 }
 
-.buttonWrapper{
+.bookWrapper .button {
     height: 2rem;
     position: absolute;
-    right: 1rem;
+    width: max-content;
+    right: .2rem;
+    top: .2rem;
     background-color: green;
     border: none;
     color: white;
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: .5rem;
+    cursor: pointer;
+}
+
+
+.button:hover{
+    background-color: white;
+    color: green;
+    border-radius: 10rem;
+    transition: all 400ms ease-in-out;
 }
 
 

@@ -24,11 +24,26 @@
     padding: 1rem;
 }
 
-.componentHeader,
 .followMainContainerHeader{
     background-color: rgba(21, 42, 49, 0.5);
     width: max-content;
     padding: .5rem;
+    color: white;
+}
+
+.componentHeader{
+    background-color: #ffa62b;
+    width: max-content;
+    padding: .5rem;
+    color: white;
+}
+
+.componentHeader:hover{
+    background-color: green;
+    transition: all 300ms ease-in-out;
+}
+
+.componentHeader h2{
     color: white;
 }
 
