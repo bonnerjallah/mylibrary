@@ -4,6 +4,7 @@ import axios from "axios"
 import ScrollToTop from "../components/ScrollToTop"
 
 import discoverstyle from "../styles/discoverstyle.module.css"
+import { NavLink } from "react-router-dom"
 
 
 const Discover = () => {
@@ -64,9 +65,11 @@ const Discover = () => {
                 <div className={discoverstyle.booksContainer}>
                     {currentSuggestedBook && currentSuggestedBook.map((elem, index) => (
                         <div key={index} className={discoverstyle.booksWrapper}>
-                            <div className={discoverstyle.bookImageWrapper}>
-                                <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="200" height="300" style={{margin:" .2rem.2rem"}} />
-                            </div>
+                            <NavLink to={`/BookDetails:elem._id`} >
+                                <div className={discoverstyle.bookImageWrapper}>
+                                    <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="200" height="300" style={{margin:" .2rem.2rem"}} />
+                                </div>
+                            </NavLink>
                             <div>
                                 <div className={discoverstyle.bookTitleWrapper}>
                                     <p>Title: <span>{elem.bookTitle}</span> </p>

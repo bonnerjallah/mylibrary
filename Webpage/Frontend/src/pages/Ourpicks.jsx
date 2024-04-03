@@ -5,6 +5,7 @@ import Footer from "../components/Footer"
 import ScrollToTop from "../components/ScrollToTop"
 
 import ourpicksstyle from "../styles/ourpicksstyle.module.css"
+import { NavLink } from "react-router-dom"
 
 const Ourpicks = () => {
 
@@ -66,9 +67,11 @@ const Ourpicks = () => {
                 <div className={ourpicksstyle.booksContainer}> 
                     {catalogOfBooks && currentBooks.map((elem, id) => (
                         <div key={id} className={ourpicksstyle.booksWrapper}> 
-                            <div className={ourpicksstyle.bookImageWrapper}>
-                                <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="200" height="300" style={{margin:" .2rem.2rem"}} />
-                            </div>
+                            <NavLink to={`/BookDetails.elem._id`} >
+                                <div className={ourpicksstyle.bookImageWrapper}>
+                                    <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="200" height="300" style={{margin:" .2rem.2rem"}} />
+                                </div>
+                            </NavLink>
                             <div>
                                 <div className={ourpicksstyle.bookTitleWrapper}>
                                     <p>Title: <span>{elem.bookTitle}</span> </p>

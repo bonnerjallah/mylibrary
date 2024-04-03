@@ -169,7 +169,7 @@ const HomeBase = () => {
       day: "numeric",
       month: "long",
       year: "numeric"
-    }; //Option to get the name of the day, date, month, year
+    }; 
     const dayOfWeek = today.toLocaleDateString("en-US", options)
     setCurrentDay(dayOfWeek)
   }, [])
@@ -194,18 +194,18 @@ const HomeBase = () => {
         <div className={homestyle.weeklybookContainer}>
           {bookOfTheWeek && (
             <div className={homestyle.weeklybookWrapper}>
-              <NavLink>
+              <NavLink to={`/BookDetails:bookOfTheWeek._id`}>
                 <img src={`http://localhost:3001/booksimages/${bookOfTheWeek.bookImageUrl}`} alt="Book Image" width="300" height="400" />
               </NavLink>
               <div className={homestyle.bookDiscriptions}>
-                <p>Title: <NavLink><span>{bookOfTheWeek.bookTitle}</span></NavLink></p>
+                <p>Title: <NavLink to={`/BookDetails:bookOfTheWeek._id`}><span>{bookOfTheWeek.bookTitle}</span></NavLink></p>
                 <div className={homestyle.bookAuthorAndRatingsWrapper}>
                   <p>Author: <span>{bookOfTheWeek.bookAuthor}</span></p>
                   {bookOfTheWeek.Ratings}
                 </div>
                 <div className={homestyle.bookSummeryWrapper}>
                   {bookOfTheWeek && bookOfTheWeek.bookDiscription &&(
-                    <NavLink style={{color: "black"}}>
+                    <NavLink style={{color: "black"}} to={`/BookDetails:bookOfTheWeek._id`}>
                       <div>
                       {bookOfTheWeek.bookDiscription.split(/\s+/).slice(0, 50).join(' ')}....
                       </div>

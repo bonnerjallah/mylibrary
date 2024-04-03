@@ -51,9 +51,7 @@ const OnHoldModal = ({closeModal}) => {
 
     }, [userShelf])
 
-    console.log(member)
-    console.log(userShelf)
-    console.log(booksOnHold)
+    
 
     //fetch allbooks 
     useEffect(() => {
@@ -102,8 +100,6 @@ const OnHoldModal = ({closeModal}) => {
         fetchBooks()
     }, [])
 
-
-    console.log(allBooks)
 
 
 
