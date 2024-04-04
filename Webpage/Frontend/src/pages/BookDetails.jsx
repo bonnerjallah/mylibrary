@@ -19,9 +19,8 @@ const BookDetails = () => {
     const [allBooks, setAllBooks] = useState([])
     const [readMore, setReadMore] = useState(false)
 
-    const handleReadMore = () => {
-        setReadMore(!readMore)
-    }
+    const [userErrorMessage, setUserErrorMsg] = useState('')
+    const [userSuccessMsg, setUserSuccesMsg] = useState('')
 
 
     //Fetch user
@@ -89,6 +88,48 @@ const BookDetails = () => {
         fetchAllBooks()
     }, [])
 
+    const handleReadMore = () => {
+        setReadMore(!readMore)
+    }
+
+    const handleAddToForLater = async (e, _id) => {
+        e.preventDefault()
+
+        const requestObject = {
+            userid : member.user.id,
+            bookid : _id
+        }
+        
+
+        try {
+            const response = await axios.post("http://localhost:3001/setbookshelf", requestObject , {
+                headers: {"Content-Type": "application/json"}
+            })
+
+            if(response.status === 200) {
+                setUserSuccesMsg("Book added to your shelf")
+
+                setTimeout(() => {
+                    setUserSuccesMsg("")
+                }, 2000);
+            }
+
+
+            
+        } catch (error) {
+            console.log("error updating book on shelves", error)
+            if(error.response && error.response.data && error.response.data.message) {
+                setUserErrorMsg(error.response.data.message)
+                setTimeout(() => {
+                    setUserErrorMsg("")
+                }, 2000);
+            }
+        }
+
+    }
+
+
+
 
     // console.log(member)
     console.log(allBooks)
@@ -107,16 +148,16 @@ const BookDetails = () => {
                         <div key={index} className={bookdetailsstyle.mainContainer}>
                             <div className={bookdetailsstyle.bookDiscriptionContainer}>
                                 <div>
-                                    <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" />                                    
+                                    <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="400" height="550" />                                    
                                 </div>
                                 <div className={bookdetailsstyle.aboutBookWrapper}>
                                     <h1>Title: <span style={{fontWeight:"normal"}}>{elem.bookTitle}</span></h1>
                                     <h3>Author: <span style={{fontWeight:"normal"}}>{elem.bookAuthor}</span></h3>
                                     <div>
-                                        <h4>Rating: <span style={{fontWeight:"normal"}}>{elem.rating}</span>****</h4>
+                                        <h3>Rating: <span style={{fontWeight:"normal"}}>{elem.rating}</span>****</h3>
                                     </div>
                                     <div>
-                                        {<h4>Publish Date: <span style={{fontWeight:"normal"}}>{elem.bookPublishDate}</span></h4>}
+                                        {<h3>Publish Date: <span style={{fontWeight:"normal"}}>{elem.bookPublishDate}</span></h3>}
                                     </div>
                                     <div >
                                         {readMore ? elem.bookDiscription : elem.bookDiscription.split(' ').slice(0, 100).join(' ')}
@@ -129,20 +170,12 @@ const BookDetails = () => {
                                     <div>
                                         <h2>{elem.bookAvailability === "Yes" ? (<span style={{color:"green"}}>Availible </span>):(<span style={{color:"red"}}>Not Availible</span>)}</h2>
                                         <div style={{display:"flex", justifyContent:"space-around", margin:"1rem"}}>
-                                            <p>Copies {1}</p>
-                                            <p>Available {1}</p>
+                                            <p>Copies: {1}</p>
+                                            <p>Available: {elem.bookAvailability === "Yes" ? "1" : "0"}</p>
                                         </div>
                                     </div>
                                     <div className={bookdetailsstyle.manageBookWrapper}>
-                                        <button className={elem.bookAvailability === "Yes" ? bookdetailsstyle.holdButton : bookdetailsstyle.holdNotAvailable}>Place Hold</button>
-                                        <div className={bookdetailsstyle.manageButton}>
-                                            <p>For later</p><Bookmark />
-                                        </div>
-                                        <ul>
-                                            <li></li>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
+                                        <button className={elem.bookAvailability === "Yes" ? bookdetailsstyle.holdButton : bookdetailsstyle.holdNotAvailable} onClick={(e) => {handleAddToForLater(e, elem._id)}}><p>For later</p><Bookmark /></button>
                                     </div>
                                 </div>
                             </div>
@@ -172,6 +205,9 @@ const BookDetails = () => {
                 }
                 return null
             })}
+
+                {userSuccessMsg && (<p className={bookdetailsstyle.successfullyAdded}>{userSuccessMsg}</p>)}
+                {userErrorMessage && (<p className={bookdetailsstyle.userErrorMessage}>{userErrorMessage}</p>)}
         </div>
     )
 }

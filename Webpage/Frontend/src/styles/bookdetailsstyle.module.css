@@ -23,6 +23,7 @@
 .bookDiscriptionContainer{
     display: flex;
     column-gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 .aboutBookWrapper{
@@ -34,7 +35,7 @@
 
 .manageBook{
     border: 1px solid black;
-    height: 15rem;
+    height: max-content;
     width: 20%;
     text-align: center;
     padding: 1rem 0 1rem 0;
@@ -55,10 +56,19 @@
     border: none;
     cursor: pointer;
     transition: all 500ms ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: .5rem;
 }
 
-.holdButton:hover{
-    background-color: 16697a;
+.holdButton p{
+    display: flex;
+}
+
+.holdButton:hover,
+.holdNotAvailable:hover{
+    background-color: 16697;
     color: white;
     border-radius: 2rem;
 }
@@ -68,20 +78,16 @@
     height: 2rem;
     background-color: red;
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: .5rem;
+    cursor: pointer;
+    transition: all 500ms ease-in-out;
 }
 
-.manageButton{
-    width: 10rem;
-    height: 2rem;
-    border: 1px solid black;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1rem;
-    column-gap: 1rem;
-    transition: all 400ms ease-in-out;
-}
+
+
 
 .manageButton:hover{
     background-color: rgb(211, 209, 209);
@@ -101,4 +107,28 @@
 .readMoreButton span{
     display: flex;
     align-items: center;
+}
+
+.successfullyAdded {
+    font-size: 2rem;
+    color: blue;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(16, 13, 13);
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.userErrorMessage{
+    font-size: 2rem;
+    color: red;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(16, 13, 13);
+    padding: 1rem;
+    border-radius: 1rem;
 }

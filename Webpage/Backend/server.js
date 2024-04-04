@@ -32,7 +32,7 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5174'],
     methods: ["POST, GET, PUT, DELETE"],
     credentials: true
 }))
@@ -105,14 +105,16 @@ app.get("/usersToFollow", async(req, res) => {
     }
 })
 
-app.put("/updatebookonshelves/:bookid/:_id", async(req, res) => {
+app.put("/updatebookonshelves/:bookid/:userId", async(req, res) => {
     try {
-        const {_id, bookid} = req.params
+        const {userId, bookid} = req.params
         const {Action} = req.body
 
         console.log(req.body)
+        console.log("userId", userId)
+        console.log("bookid", bookid)
 
-        user = await LibraryUsers.findById(_id)
+        user = await LibraryUsers.findById(userId)
 
         user.shelf.forEach(item => {
             if(item.bookid === bookid) {

@@ -146,10 +146,10 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
     //Shelf Update Function
     const handleManageBook = async (e, bookid) => {
         const manageAction = e.target.textContent;
-        const _id = member.user.id;
+        const userId = member.user.id;
     
         try {
-            const response = await axios.put(`http://localhost:3001/updatebookonshelves/${bookid}/${_id}`, { Action: manageAction });
+            const response = await axios.put(`http://localhost:3001/updatebookonshelves/${bookid}/${userId}`, { Action: manageAction });
         
             if (response.status === 200) {
                 console.log("Updated book successfully");
