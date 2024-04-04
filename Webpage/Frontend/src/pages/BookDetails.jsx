@@ -3,7 +3,7 @@ import { useAuth } from "../components/AuthContext"
 import Cookies from "js-cookie"
 import axios from "axios"
 import { NavLink, useParams } from "react-router-dom"
-import { MoveLeft } from "lucide-react"
+import { Bookmark, Carrot, ChevronDown, ChevronUp, MoveLeft } from "lucide-react"
 import bookdetailsstyle from "../styles/bookdetailsstyle.module.css"
 
 const BookDetails = () => {
@@ -17,6 +17,11 @@ const BookDetails = () => {
 
     const [member, setMember] = useState('')
     const [allBooks, setAllBooks] = useState([])
+    const [readMore, setReadMore] = useState(false)
+
+    const handleReadMore = () => {
+        setReadMore(!readMore)
+    }
 
 
     //Fetch user
@@ -85,71 +90,88 @@ const BookDetails = () => {
     }, [])
 
 
-    console.log(member)
+    // console.log(member)
     console.log(allBooks)
 
     return (
         <div>
-
             <NavLink to="/Dashboard">
                 <div className={bookdetailsstyle.backbutton}>
                     <p> <MoveLeft /> My Dashboard</p>
                 </div>
             </NavLink>
-            
-            <div>
-                <div>
 
+            {allBooks && _id && allBooks.map((elem, index) => {
+                if(elem._id === _id) {
+                    return (
+                        <div key={index} className={bookdetailsstyle.mainContainer}>
+                            <div className={bookdetailsstyle.bookDiscriptionContainer}>
+                                <div>
+                                    <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" />                                    
+                                </div>
+                                <div className={bookdetailsstyle.aboutBookWrapper}>
+                                    <h1>Title: <span style={{fontWeight:"normal"}}>{elem.bookTitle}</span></h1>
+                                    <h3>Author: <span style={{fontWeight:"normal"}}>{elem.bookAuthor}</span></h3>
+                                    <div>
+                                        <h4>Rating: <span style={{fontWeight:"normal"}}>{elem.rating}</span>****</h4>
+                                    </div>
+                                    <div>
+                                        {<h4>Publish Date: <span style={{fontWeight:"normal"}}>{elem.bookPublishDate}</span></h4>}
+                                    </div>
+                                    <div >
+                                        {readMore ? elem.bookDiscription : elem.bookDiscription.split(' ').slice(0, 100).join(' ')}
+                                        <div className={bookdetailsstyle.readMoreButton} >
+                                            {readMore ? <span onClick={handleReadMore}>Read Less <ChevronUp/></span> : <span onClick={handleReadMore}>Read More <ChevronDown/></span> }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={bookdetailsstyle.manageBook}>
+                                    <div>
+                                        <h2>{elem.bookAvailability === "Yes" ? (<span style={{color:"green"}}>Availible </span>):(<span style={{color:"red"}}>Not Availible</span>)}</h2>
+                                        <div style={{display:"flex", justifyContent:"space-around", margin:"1rem"}}>
+                                            <p>Copies {1}</p>
+                                            <p>Available {1}</p>
+                                        </div>
+                                    </div>
+                                    <div className={bookdetailsstyle.manageBookWrapper}>
+                                        <button className={elem.bookAvailability === "Yes" ? bookdetailsstyle.holdButton : bookdetailsstyle.holdNotAvailable}>Place Hold</button>
+                                        <div className={bookdetailsstyle.manageButton}>
+                                            <p>For later</p><Bookmark />
+                                        </div>
+                                        <ul>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
 
-                    
-                </div>
-                <div>
-                    <h1>booktitle</h1>
-                    <h3>Author, <span>Publish date</span> </h3>
-                    <div>
-                        <p>rating</p>
-                        <p>your rating</p>
-                    </div>
-                    <div>
-                        Paper back
-                    </div>
-                    <div>
-                        book discription
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <h2>Availble</h2>
-                        <p>Copies</p>
-                    </div>
-                    <div>
-                        <button>Place Hold</button>
-                        <p></p>
-                    </div>
-                </div>
-            </div>
+                            <div>
+                                <h3>About</h3>
+                                <div>
+                                    <h4>About the author</h4>
+                                </div>
+                            </div>
 
-            <div>
-                <h3>About</h3>
-                <div>
-                    <h4>About the author</h4>
-                </div>
-            </div>
-
-            <div>
-                <h3>Opinion</h3>
-                <div>
-                    <h4>From reviewers</h4>
-                </div>
-                <div>
-                    <h4>From the Community</h4>
-                    <form>
-                        <label htmlFor="comment">What did you think about this title?</label>
-                        <input type="text" name="" id="comment" placeholder="Add comment" />
-                    </form>
-                </div>
-            </div>
-
+                            <div>
+                                <h3>Opinion</h3>
+                                <div>
+                                    <h4>From reviewers</h4>
+                                </div>
+                                <div>
+                                    <h4>From the Community</h4>
+                                    <form>
+                                        <label htmlFor="comment">What did you think about this title?</label>
+                                        <input type="text" name="" id="comment" placeholder="Add comment" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div> 
+                    )
+                }
+                return null
+            })}
         </div>
     )
 }

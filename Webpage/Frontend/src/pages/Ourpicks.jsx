@@ -67,7 +67,7 @@ const Ourpicks = () => {
                 <div className={ourpicksstyle.booksContainer}> 
                     {catalogOfBooks && currentBooks.map((elem, id) => (
                         <div key={id} className={ourpicksstyle.booksWrapper}> 
-                            <NavLink to={`/BookDetails.elem._id`} >
+                            <NavLink to={`/BookDetails/${elem._id}`} >
                                 <div className={ourpicksstyle.bookImageWrapper}>
                                     <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="200" height="300" style={{margin:" .2rem.2rem"}} />
                                 </div>
@@ -87,7 +87,7 @@ const Ourpicks = () => {
                 </div>
                 <div className={ourpicksstyle.paginationWrapper} style={{borderTop:"1px solid #168aad"}}>
                     {pageNumbers.map((nextPage) => (
-                        <li tabindex="0" key={nextPage} onClick={() => handleNextPage(nextPage)} style={{backgroundColor:currentPage === nextPage ? "#000000" : "#22c1c3", color: currentPage === nextPage ? "orange" : "" }}>
+                        <li key={nextPage} onClick={() => handleNextPage(nextPage)} style={{backgroundColor:currentPage === nextPage ? "#000000" : "#22c1c3", color: currentPage === nextPage ? "orange" : "" }}>
                             {nextPage}
                         </li>
                     ))}

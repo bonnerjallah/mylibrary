@@ -30,7 +30,7 @@ const router = createBrowserRouter (
         <Route path="/ReviewerRequest/:id" element={<ReviewerRequest />} />
         <Route path="/Shelf" element={<Shelf /> } />
         <Route path="/CheckOutBooks" element={<CheckOutBooks />} />
-        <Route path="/BookDetails:_id" element={<BookDetails />} />
+        <Route path="/BookDetails/:_id" element={<BookDetails />} />
       </Route>
       
 

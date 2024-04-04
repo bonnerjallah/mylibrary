@@ -65,7 +65,7 @@ const Discover = () => {
                 <div className={discoverstyle.booksContainer}>
                     {currentSuggestedBook && currentSuggestedBook.map((elem, index) => (
                         <div key={index} className={discoverstyle.booksWrapper}>
-                            <NavLink to={`/BookDetails:elem._id`} >
+                            <NavLink to={`/BookDetails/${elem._id}`} >
                                 <div className={discoverstyle.bookImageWrapper}>
                                     <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="200" height="300" style={{margin:" .2rem.2rem"}} />
                                 </div>

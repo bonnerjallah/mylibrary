@@ -194,7 +194,7 @@ const HomeBase = () => {
         <div className={homestyle.weeklybookContainer}>
           {bookOfTheWeek && (
             <div className={homestyle.weeklybookWrapper}>
-              <NavLink to={`/BookDetails:bookOfTheWeek._id`}>
+              <NavLink to={`/BookDetails/${bookOfTheWeek._id}`}>
                 <img src={`http://localhost:3001/booksimages/${bookOfTheWeek.bookImageUrl}`} alt="Book Image" width="300" height="400" />
               </NavLink>
               <div className={homestyle.bookDiscriptions}>

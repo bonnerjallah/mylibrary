@@ -101,7 +101,7 @@ const ShelveComponent = () => {
                     {userShelfBookIds.map((shelfItem, index) => (
                         <div key={index}>
                             {allBooks.find(book => book._id === shelfItem.bookid) && (
-                                <NavLink to={`/BookDetails:${shelfItem.bookid}`}>
+                                <NavLink to={`/BookDetails/${shelfItem.bookid}`}>
                                     <div style={{display:"flex", flexDirection:"column"}}>
                                         <img src={`http://localhost:3001/booksimages/${allBooks.find(book => book._id === shelfItem.bookid).bookImageUrl}`} alt="book image" width="100" height="150" />
                                         <div style={{textAlign:"center", color:"black"}}>

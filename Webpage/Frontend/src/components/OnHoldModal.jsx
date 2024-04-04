@@ -119,7 +119,7 @@ const OnHoldModal = ({closeModal}) => {
                                 {bookOnHold && (
                                     <>
                                         <div className={onholdmodalstyle.bookWrapper}>
-                                            <NavLink to={`/BookDetails:${bookOnHold._id}`} >
+                                            <NavLink to={`/BookDetails/${bookOnHold._id}`} >
                                                 <div>
                                                     <img src={`http://localhost:3001/booksimages/${bookOnHold.bookImageUrl}`} alt="book image" width="100" height="150" />
                                                 </div>
