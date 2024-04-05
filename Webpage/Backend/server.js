@@ -17,6 +17,7 @@ const LibraryUsers = require("./module/libraryusermodel")
 const BooksCatalog = require("./module/bookmodel")
 const BooksSuggestions = require("./module/booksuggestions")
 const ReviewRequestMsg = require("./module/reviewrequest")
+const BookSuggestions = require("./module/booksuggestions")
 
 const app = express()
 app.use(express.json())
@@ -40,6 +41,7 @@ app.use(cors ({
 app.use("/booksimages", express.static(path.join(__dirname, "../../shared-assets/public/booksimages")))
 
 app.use("/libraryusersprofilepics", express.static(path.join(__dirname, "../../shared-assets/public/libraryusersprofilepics")))
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -274,43 +276,48 @@ app.post("/setbookshelf", async(req, res) => {
 
 //Updating multiple fields in the document
 app.post("/reviewerinput", async (req, res) => {
+
+    console.log(req.body)
+
     try {
         const { review, bookId, rating, recommend, currentlyreading, userid } = req.body;
+
+
+        
+
+        
 
         // Create an object to update the document
         const updateObject = {};
 
         // Check if the fields are present and add them to the update object accordingly
-        if (review || bookId || rating || recommend || currentlyreading) {
+        if (review || bookId || rating || recommend || currentlyreading || userid) {
             updateObject.$push = {
                 reviewandrating: {
-                    bookId: bookId,
                     review: review,
                     rating: rating,
                     recommend: recommend,
-                    currentlyreading: currentlyreading
+                    currentlyreading: currentlyreading,
+                    reviewerId : userid
                 }
             };
         }
 
-        const alreadyReviewed = await LibraryUsers.findOne({
-            _id: userid,
-            reviewandrating : {$elemMatch : {bookId : bookId}}
-        })
+        // Check if the book exists in the BooksCatalog collection
+        const bookExistsInCatalog = await BooksCatalog.findOne({_id: bookId});
 
-        if(alreadyReviewed) {
-            return res.status(400).json({message: "Already reviewed this book"})
-        }
-
-        // Update the user document
-        const updatedUser = await LibraryUsers.findByIdAndUpdate(
-            userid,
-            updateObject,
-            { new: true }
-        );
-
-        if (!updatedUser) {
-            return res.status(404).json({ message: "User not found" });
+        let updatedBook;
+        if(bookExistsInCatalog) {
+            updatedBook = await BooksCatalog.findByIdAndUpdate(bookId, updateObject, {new: true});
+        } else {
+            // If the book doesn't exist in the BooksCatalog collection, try updating it in the BookSuggestions collection
+            const bookExistsInSuggestions = await BookSuggestions.findOne({_id: bookId});
+            if (bookExistsInSuggestions) {
+                updatedBook = await BookSuggestions.findByIdAndUpdate(bookId, updateObject, {new: true});
+            } else {
+                // Handle the case where the book doesn't exist in either collection
+                return res.status(404).json({ message: "Book not found" });
+            }
         }
 
         res.status(200).json({ message: "Review submitted successfully" });
@@ -320,6 +327,7 @@ app.post("/reviewerinput", async (req, res) => {
         res.status(500).json({ message: "Internal server issue" });
     }
 });
+
 
 //reviewer request logic
 app.post("/reviewerrequest", async (req, res) => {

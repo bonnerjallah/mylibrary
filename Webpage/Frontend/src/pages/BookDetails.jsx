@@ -18,6 +18,7 @@ const BookDetails = () => {
     const [member, setMember] = useState('')
     const [allBooks, setAllBooks] = useState([])
     const [readMore, setReadMore] = useState(false)
+    const [authorReadMore, setAuthorReadMore] = useState(false)
 
     const [userErrorMessage, setUserErrorMsg] = useState('')
     const [userSuccessMsg, setUserSuccesMsg] = useState('')
@@ -90,6 +91,10 @@ const BookDetails = () => {
 
     const handleReadMore = () => {
         setReadMore(!readMore)
+    }
+
+    const handleAuthorReadMore = () => {
+        setAuthorReadMore(!authorReadMore)
     }
 
     const handleAddToForLater = async (e, _id) => {
@@ -180,24 +185,46 @@ const BookDetails = () => {
                                 </div>
                             </div>
 
-                            <div>
-                                <h3>About</h3>
-                                <div>
-                                    <h4>About the author</h4>
+                            <div className={bookdetailsstyle.aboutWrapper}>
+                                <h2>About</h2>
+                                <div className={bookdetailsstyle.authorDisWrapper}>
+                                    <div className={bookdetailsstyle.authorImageWrapper}>
+                                        <img src={`http://localhost:3001/booksimages/${elem.authorImage}`} alt="author image" style={{ borderRadius: "50%", maxWidth: "100%", maxHeight: "100%" }} />
+                                        <h3>About Author</h3>
+                                    </div>
+                                    <div >
+                                        {authorReadMore ? elem.bookDiscription : elem.aboutAuthor.split(' ').slice(0, 100).join(' ')}
+                                        <div className={bookdetailsstyle.readMoreButton} >
+                                            {authorReadMore ? <span onClick={handleAuthorReadMore}>Read Less <ChevronUp/></span> : <span onClick={handleAuthorReadMore}>Read More <ChevronDown/></span> }
+                                        </div>
+                                    </div>
+                                    <div className={bookdetailsstyle.detailsWrapper}>
+                                        <h2>Details</h2>
+                                        <h4>Publish Date: <span style={{fontSize:"1rem", fontWeight:"normal"}}>{elem.bookPublishDate}</span></h4>
+                                        <h4>Genre: <span style={{fontSize:"1rem", fontWeight:"normal"}}>{elem.bookGenre}</span> </h4>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div>
-                                <h3>Opinion</h3>
+                            <div className={bookdetailsstyle.opinionWrapper}>
+                                <h2>Opinion</h2>
                                 <div>
-                                    <h4>From reviewers</h4>
-                                </div>
-                                <div>
-                                    <h4>From the Community</h4>
-                                    <form>
-                                        <label htmlFor="comment">What did you think about this title?</label>
-                                        <input type="text" name="" id="comment" placeholder="Add comment" />
-                                    </form>
+                                    <div>
+                                        <h4>From reviewers</h4>
+                                        <div>
+                                            <p>View All</p>
+                                            <div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4>From the Community</h4>
+                                        <form>
+                                            <label htmlFor="comment">What did you think about this title?</label>
+                                            <input type="text" name="" id="comment" placeholder="Add comment" />
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div> 

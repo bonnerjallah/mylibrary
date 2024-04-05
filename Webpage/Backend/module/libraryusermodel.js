@@ -79,15 +79,6 @@ const libraryUsersSchema = new mongoose.Schema({
         default: false
     },
 
-    
-    reviewandrating : [{
-        bookId: String,
-        review: String,
-        rating: Number,
-        recommend: String,
-        currentlyreading: String
-    }],
-
     shelf:[{
         bookid: String,
         completed: String,

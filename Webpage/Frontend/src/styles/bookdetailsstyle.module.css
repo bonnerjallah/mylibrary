@@ -86,9 +86,6 @@
     transition: all 500ms ease-in-out;
 }
 
-
-
-
 .manageButton:hover{
     background-color: rgb(211, 209, 209);
 }
@@ -131,4 +128,38 @@
     background-color: rgba(16, 13, 13);
     padding: 1rem;
     border-radius: 1rem;
+}
+
+.aboutWrapper{
+    display: flex;
+    column-gap: 23rem;
+    border-top: 1px solid black;
+    padding-top: .5rem;
+    row-gap: 3rem;
+    margin-bottom: 1rem;
+}
+
+.authorDisWrapper{
+    padding: .5rem;
+}
+
+.authorImageWrapper{
+    border-radius: 50%;
+    height: 9rem;
+    margin-bottom: 2rem;
+}
+
+.detailsWrapper{
+    display: flex;
+    flex-direction: column;
+    row-gap: .5rem;
+    margin-top: 3rem;
+}
+
+.opinionWrapper{
+    display: flex;
+    column-gap: 23rem;
+    border-top: 1px solid black;
+    padding-top: .5rem;
+    row-gap: 3rem;
 }

@@ -71,6 +71,30 @@ const ReviewerComponent = () => {
     const handleRatingChange = useCallback((newRating) => {
         setParentRating(newRating)
     }, [])
+
+
+    //Fetching user data
+    axios.defaults.withCredentials = true
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if(!user) return
+
+            try {
+                const token = Cookies.get("token")
+                const response = await axios.get("http://localhost:3001/libraryusers", {
+                    headers: {"Content-Type": "application/json", "Authorization": `Bearer${token}`}
+                })
+
+                response.data.valid ? setMember(response.data) : console.error("Error fetching user", response.data)
+
+            } catch (error) {
+                console.error("Error fetching user data from database", error)
+            }
+        }
+
+        fetchUserData()
+
+    }, [user])
     
 
     //Function to handle review submit
@@ -144,28 +168,6 @@ const ReviewerComponent = () => {
         }
     }
 
-    //Fetching user data
-    axios.defaults.withCredentials = true
-    useEffect(() => {
-        const fetchUserData = async () => {
-            if(!user) return
-
-            try {
-                const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
-                    headers: {"Content-Type": "application/json", "Authorization": `Bearer${token}`}
-                })
-
-                response.data.valid ? setMember(response.data) : console.error("Error fetching user", response.data)
-
-            } catch (error) {
-                console.error("Error fetching user data from database", error)
-            }
-        }
-
-        fetchUserData()
-
-    }, [user])
 
     //Fetching books data
     useEffect(() => {
