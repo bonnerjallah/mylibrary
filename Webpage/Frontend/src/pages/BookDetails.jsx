@@ -6,6 +6,8 @@ import { NavLink, useParams } from "react-router-dom"
 import { Bookmark, Star, ChevronDown, ChevronUp, MoveLeft } from "lucide-react"
 import bookdetailsstyle from "../styles/bookdetailsstyle.module.css"
 
+import Fotter from "../components/Footer"
+
 const BookDetails = () => {
 
     const {_id} = useParams()
@@ -191,10 +193,11 @@ const BookDetails = () => {
                                 <div className={bookdetailsstyle.authorDisWrapper}>
                                     <div className={bookdetailsstyle.authorImageWrapper}>
                                         <img src={`http://localhost:3001/booksimages/${elem.authorImage}`} alt="author image" style={{ borderRadius: "50%", maxWidth: "100%", maxHeight: "100%" }} />
-                                        <h3>About Author</h3>
+                                        <h2>{elem.bookAuthor}</h2>
                                     </div>
+                                    <h3>About Author</h3>
                                     <div >
-                                        {authorReadMore ? elem.bookDiscription : elem.aboutAuthor.split(' ').slice(0, 100).join(' ')}
+                                        {authorReadMore ? elem.aboutAuthor : elem.aboutAuthor.split(' ').slice(0, 100).join(' ')}
                                         <div className={bookdetailsstyle.readMoreButton} >
                                             {authorReadMore ? <span onClick={handleAuthorReadMore}>Read Less <ChevronUp/></span> : <span onClick={handleAuthorReadMore}>Read More <ChevronDown/></span> }
                                         </div>
@@ -211,7 +214,7 @@ const BookDetails = () => {
                                 <h2>Opinion</h2>
                                 <div>
                                     <div className={bookdetailsstyle.reviewerMainContainer}>
-                                        <h4>From reviewers</h4>
+                                        <h4>From Reviewers</h4>
                                         <div className={bookdetailsstyle.reviewersContainer}>
                                             {elem.reviewandrating.map((reviewElem, index) => (
                                                 <div key={index} className={bookdetailsstyle.reviewWrapper}>
@@ -221,7 +224,7 @@ const BookDetails = () => {
                                                             {reviewElem.username}
                                                         </div>
                                                     </div>
-                                                    <div style={{display:"flex", columnGap:".5rem", alignItems:"center"}}>
+                                                    <div>
                                                         <p style={{fontSize:"1.1rem"}}>
                                                             {new Date(reviewElem.date).toLocaleDateString("en-Us",{
                                                                 year:"numeric",
@@ -229,54 +232,54 @@ const BookDetails = () => {
                                                                 day:"2-digit"
                                                             })}
                                                         </p> 
-                                                        <p>
-                                                            {reviewElem.rating && (
-                                                                (() => {
-                                                                    switch(parseInt(reviewElem.rating)) {
-                                                                        case 1:
-                                                                            return <Star fill="#ffc600" stroke="none" size={20} />
-                                                                        case 2:
-                                                                            return (
-                                                                                <>
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                </>
-                                                                            )
-                                                                        case 3:
-                                                                            return (
-                                                                                <>
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                </>
-                                                                            )
-                                                                        case 4:
-                                                                            return (
-                                                                                <>
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                </>
-                                                                            )
-                                                                        case 5: 
-                                                                            return (
-                                                                                <>
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                </>
-                                                                            )
-                                                                        default:
-                                                                            return null
-                                                                    }
-                                                                })()
-                                                            )}
-                                                        </p>
-
                                                     </div>
+                                                    <p style={{display:"flex", columnGap:".5rem", alignItems:"center"}}> <strong>Reviewer Rating:</strong>
+                                                        {reviewElem.rating && (
+                                                            (() => {
+                                                                switch(parseInt(reviewElem.rating)) {
+                                                                    case 1:
+                                                                        return <Star fill="#ffc600" stroke="none" size={20} />
+                                                                    case 2:
+                                                                        return (
+                                                                            <>
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                            </>
+                                                                        )
+                                                                    case 3:
+                                                                        return (
+                                                                            <>
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                            </>
+                                                                        )
+                                                                    case 4:
+                                                                        return (
+                                                                            <>
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                            </>
+                                                                        )
+                                                                    case 5: 
+                                                                        return (
+                                                                            <>
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                <Star fill="#ffc600" stroke="none" size={20} />
+                                                                            </>
+                                                                        )
+                                                                    default:
+                                                                        return null
+                                                                }
+                                                            })()
+                                                        )}
+                                                    </p>
+
                                                     <div>
                                                         <p><strong>Currently Reading:</strong> <span>{reviewElem.currentlyreading}</span></p>
                                                         <p><strong>Recommend:</strong> {reviewElem.recommend}</p>
@@ -284,29 +287,53 @@ const BookDetails = () => {
                                                             {reviewReadMore ? (
                                                                 <>
                                                                     {reviewElem.review}
-                                                                    <span onClick={handleReviewerReadMore} className={bookdetailsstyle.reviewerReadmore}>Read Less <ChevronUp/></span>
+                                                                    <span onClick={handleReviewerReadMore} className={bookdetailsstyle.reviewerReadmore}>Read less <ChevronUp/></span>
                                                                 </>
                                                             ) : (
                                                                 <>
                                                                     {reviewElem.review.split(' ').slice(0, 20).join(' ')}... 
-                                                                    <span onClick={handleReviewerReadMore} className={bookdetailsstyle.reviewerReadmore}>Read More <ChevronDown/></span>
+                                                                    <span onClick={handleReviewerReadMore} className={bookdetailsstyle.reviewerReadmore}>Read more <ChevronDown/></span>
                                                                 </>
                                                             )}
                                                         </div>
-
                                                     </div>
-                                                    
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
-                                    <div>
-                                        <h4>From the Community</h4>
+
+                                    <div className={bookdetailsstyle.cummunityContainer}>
+                                        <h4>From Community</h4>
                                         <form>
-                                            <label htmlFor="comment">What did you think about this title?</label>
-                                            <input type="text" name="" id="comment" placeholder="Add comment" />
+                                            <label htmlFor="CommunityComment">What did you think about this title?</label>
+                                            <textarea name="comment" id="CommunityComment" cols="30" rows="10" placeholder="Add Comment"></textarea>
+                                            <div className={bookdetailsstyle.communityratingWrapper}>
+                                                <label htmlFor="CommunityRating">
+                                                    <Star />
+                                                    <Star />
+                                                    <Star />
+                                                    <Star />
+                                                    <Star />                                                    
+                                                </label>
+                                                <select name="commRate" id="CommunityRating">
+                                                    <option>Rate This</option>
+                                                    <option value="1"> 1 star</option>                                                    <option value="2"> 2 stars</option>
+                                                    <option value="3"> 3 stars</option>
+                                                    <option value="4"> 4 stars</option>
+                                                    <option value="5"> 5 stars</option>
+                                                </select>
+
+                                                <div className={bookdetailsstyle.communitySubmitButtonWrapper}>
+                                                    <button>Submit</button>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
+
+                                    <div>
+                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae necessitatibus quidem libero. Quis voluptatum dolorum alias ab cumque facilis perferendis aut vitae, sit pariatur maiores non accusantium veritatis ex magnam?</p>
+                                    </div>
+
                                 </div>
                             </div>
                         </div> 
@@ -317,6 +344,11 @@ const BookDetails = () => {
 
                 {userSuccessMsg && (<p className={bookdetailsstyle.successfullyAdded}>{userSuccessMsg}</p>)}
                 {userErrorMessage && (<p className={bookdetailsstyle.userErrorMessage}>{userErrorMessage}</p>)}
+
+            
+            <div>
+                <Fotter />
+            </div>
         </div>
     )
 }

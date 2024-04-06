@@ -146,7 +146,7 @@
 .authorImageWrapper{
     border-radius: 50%;
     height: 9rem;
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
 }
 
 .detailsWrapper{
@@ -193,4 +193,56 @@
     align-items: center;
     width: max-content;
     margin-left: .5rem;
+}
+
+.reviewerReadmore:hover{
+    text-decoration: underline;
+}
+
+.cummunityContainer h4{
+    margin-bottom: 2rem;
+}
+
+
+.cummunityContainer form {
+    background-color: rgb(236, 239, 239);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+    height: max-content;
+}
+
+.cummunityContainer form textarea{
+    align-self: center;
+}
+
+
+.communityratingWrapper{
+    display: flex;
+    align-items: center;
+    column-gap: .3rem;
+    margin-left: 2.3rem;
+    margin-top: 1rem;
+    position: relative;
+}
+
+.communitySubmitButtonWrapper button{
+    margin-left: 2rem;
+    width: 7rem;
+    height: 1.5rem;
+    position: absolute;
+    right: 2.2rem;
+    bottom: .3rem;
+    background-color: green;
+    cursor: pointer;
+    border: none;
+    border-radius: 5%;
+    transition: all 500ms ease-in-out;
+}
+
+.communitySubmitButtonWrapper button:hover{
+    color: white;
+    border-radius: 10rem;
 }
