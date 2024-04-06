@@ -162,4 +162,35 @@
     border-top: 1px solid black;
     padding-top: .5rem;
     row-gap: 3rem;
+
+}
+
+.userImageWrapper{
+    height: 3rem;
+    width: 2rem;
+    display: flex;
+    align-items: center;
+    column-gap: .5rem;
+}
+
+.reviewerMainContainer{
+    width: 45rem;
+}
+
+.reviewersContainer{
+    margin-top: 2rem;
+}
+
+.reviewWrapper{
+    border-bottom: 1px solid black;
+    margin: 2rem 0;
+    padding-bottom: 1rem;
+}
+
+.reviewerReadmore{
+    color: rgb(240, 159, 66);
+    cursor: pointer;
+    align-items: center;
+    width: max-content;
+    margin-left: .5rem;
 }

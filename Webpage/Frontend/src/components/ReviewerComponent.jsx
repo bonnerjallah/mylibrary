@@ -118,6 +118,11 @@ const ReviewerComponent = () => {
 
         formData.append("userid", member.user.id);
 
+        formData.append("username", member.user.userName);
+
+        formData.append("profilepic", member.user.profilepic)
+
+
         try {
             const response = await axios.post("http://localhost:3001/reviewerinput", formData, {
                 headers:{"Content-Type": "application/json"}

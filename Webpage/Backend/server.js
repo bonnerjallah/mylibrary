@@ -274,60 +274,56 @@ app.post("/setbookshelf", async(req, res) => {
     }
 })
 
-//Updating multiple fields in the document
+//Updating book review field
 app.post("/reviewerinput", async (req, res) => {
-
     console.log(req.body)
-
     try {
-        const { review, bookId, rating, recommend, currentlyreading, userid } = req.body;
+        const { review, bookId, rating, recommend, currentlyreading, userid, username, profilepic } = req.body;
 
-
-        
-
-        
-
-        // Create an object to update the document
-        const updateObject = {};
-
-        // Check if the fields are present and add them to the update object accordingly
-        if (review || bookId || rating || recommend || currentlyreading || userid) {
-            updateObject.$push = {
-                reviewandrating: {
-                    review: review,
-                    rating: rating,
-                    recommend: recommend,
-                    currentlyreading: currentlyreading,
-                    reviewerId : userid
-                }
-            };
+        // Check if all required fields are present
+        if (!review || !bookId || !rating || !recommend || !currentlyreading || !userid || !username || !profilepic) {
+            return res.status(400).json({ message: "Missing required fields" });
         }
 
-        // Check if the book exists in the BooksCatalog collection
-        const bookExistsInCatalog = await BooksCatalog.findOne({_id: bookId});
+        // Check if the book exists in either BooksCatalog or BookSuggestions collection
+        const bookExistsInCatalog = await BooksCatalog.exists({ _id: bookId });
+        const bookExistsInSuggestions = await BookSuggestions.exists({ _id: bookId });
 
-        let updatedBook;
-        if(bookExistsInCatalog) {
-            updatedBook = await BooksCatalog.findByIdAndUpdate(bookId, updateObject, {new: true});
-        } else {
-            // If the book doesn't exist in the BooksCatalog collection, try updating it in the BookSuggestions collection
-            const bookExistsInSuggestions = await BookSuggestions.findOne({_id: bookId});
-            if (bookExistsInSuggestions) {
-                updatedBook = await BookSuggestions.findByIdAndUpdate(bookId, updateObject, {new: true});
-            } else {
-                // Handle the case where the book doesn't exist in either collection
-                return res.status(404).json({ message: "Book not found" });
-            }
+        // Handle the case where the book doesn't exist in either collection
+        if (!bookExistsInCatalog && !bookExistsInSuggestions) {
+            return res.status(404).json({ message: "Book not found" });
         }
 
-        res.status(200).json({ message: "Review submitted successfully" });
+        // Get the book document (from either collection)
+        const book = bookExistsInCatalog
+            ? await BooksCatalog.findById(bookId)
+            : await BookSuggestions.findById(bookId);
+
+        // Check if the user has already rated the book
+        if (book.reviewandrating.some(elem => elem.reviewerId === userid)) {
+            return res.status(400).json({ message: "Already reviewed this book" });
+        }
+
+        // Update the book document
+        book.reviewandrating.push({
+            review: review,
+            rating: rating,
+            recommend: recommend,
+            currentlyreading: currentlyreading,
+            reviewerId: userid,
+            username : username,
+            profilepic : profilepic
+        });
+
+        const updatedBook = await book.save();
+
+        res.status(200).json({ message: "Review submitted successfully", updatedBook });
 
     } catch (error) {
         console.error("Error inserting data", error);
         res.status(500).json({ message: "Internal server issue" });
     }
 });
-
 
 //reviewer request logic
 app.post("/reviewerrequest", async (req, res) => {

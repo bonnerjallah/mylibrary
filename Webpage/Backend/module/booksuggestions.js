@@ -44,12 +44,17 @@ const bookSuggestionsSchema = new mongoose.Schema({
         type: String
     },
     reviewandrating : [{
-        bookId: String,
         review: String,
         rating: Number,
         recommend: String,
         currentlyreading: String,
-        reviewerId : String
+        reviewerId : String,
+        username : String,
+        profilepic : String,
+        date : {
+            type: Date,
+            default: Date.now
+        }
     }],
     comments:[{
         user: {
