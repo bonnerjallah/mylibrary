@@ -20,6 +20,7 @@ const BookDetails = () => {
     const [readMore, setReadMore] = useState(false)
     const [authorReadMore, setAuthorReadMore] = useState(false)
     const [reviewReadMore, setReviewerReadMore] = useState(false)
+    const [communityReadMore, setCommunityReadMore] = useState(false)
 
     const [userErrorMessage, setUserErrorMsg] = useState('')
     const [userSuccessMsg, setUserSuccesMsg] = useState('')
@@ -103,6 +104,10 @@ const BookDetails = () => {
         setAuthorReadMore(!authorReadMore)
     }
 
+    const handleCommunityReadMore = () => {
+        setCommunityReadMore(!communityReadMore)
+    }
+
     const handleReviewerReadMore = () => {
         setReviewerReadMore(!reviewReadMore)
     }
@@ -172,19 +177,17 @@ const BookDetails = () => {
                 console.log("Successfully added user comment");
             }
     
-            // setCommunityComment({
-            //     comment: "",
-            //     commRate: ""
-            // });
+            setCommunityComment({
+                comment: "",
+                commRate: ""
+            });
+
+
         } catch (error) {
             console.log("Error inserting user comment", error);
         }
     };
-    
 
-
-    // console.log(member)
-    // console.log(allBooks)
 
     return (
         <div>
@@ -279,51 +282,53 @@ const BookDetails = () => {
                                                             })}
                                                         </p> 
                                                     </div>
-                                                    <p style={{display:"flex", columnGap:".5rem", alignItems:"center"}}> <strong>Reviewer Rating:</strong>
-                                                        {reviewElem.rating && (
-                                                            (() => {
-                                                                switch(parseInt(reviewElem.rating)) {
-                                                                    case 1:
-                                                                        return <Star fill="#ffc600" stroke="none" size={20} />
-                                                                    case 2:
-                                                                        return (
-                                                                            <>
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                            </>
-                                                                        )
-                                                                    case 3:
-                                                                        return (
-                                                                            <>
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                            </>
-                                                                        )
-                                                                    case 4:
-                                                                        return (
-                                                                            <>
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                            </>
-                                                                        )
-                                                                    case 5: 
-                                                                        return (
-                                                                            <>
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                                <Star fill="#ffc600" stroke="none" size={20} />
-                                                                            </>
-                                                                        )
-                                                                    default:
-                                                                        return null
-                                                                }
-                                                            })()
-                                                        )}
+                                                    <p style={{display:"flex", alignItems:"center", width:"max-content"}}> <strong>Reviewer Rating:</strong>
+                                                        <span style={{marginLeft:".5rem"}}>
+                                                            {reviewElem.rating && (
+                                                                (() => {
+                                                                    switch(parseInt(reviewElem.rating)) {
+                                                                        case 1:
+                                                                            return <Star fill="#ffc600" stroke="none" size={20} />
+                                                                        case 2:
+                                                                            return (
+                                                                                <>
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                </>
+                                                                            )
+                                                                        case 3:
+                                                                            return (
+                                                                                <>
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                </>
+                                                                            )
+                                                                        case 4:
+                                                                            return (
+                                                                                <>
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                </>
+                                                                            )
+                                                                        case 5: 
+                                                                            return (
+                                                                                <>
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                    <Star fill="#ffc600" stroke="none" size={20} />
+                                                                                </>
+                                                                            )
+                                                                        default:
+                                                                            return null
+                                                                    }
+                                                                })()
+                                                            )}
+                                                        </span>
                                                     </p>
 
                                                     <div>
@@ -377,7 +382,95 @@ const BookDetails = () => {
                                     </div>
 
                                     <div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae necessitatibus quidem libero. Quis voluptatum dolorum alias ab cumque facilis perferendis aut vitae, sit pariatur maiores non accusantium veritatis ex magnam?</p>
+                                        {elem.comments.map((commentElem, index) => (
+                                            <div key={index}>
+                                                <div className={bookdetailsstyle.userCommentContainer}>
+                                                    <div className={bookdetailsstyle.userNameDateAndRatingContainer}>
+                                                        <div className={bookdetailsstyle.userNameContainer}>
+                                                            <div className={bookdetailsstyle.userNameAbbriv}>
+                                                                <p>{commentElem.username.charAt(0).toUpperCase()}</p>
+                                                            </div>
+                                                            <p>{commentElem.username}</p>
+                                                        </div>
+                                                        <div className={bookdetailsstyle.dateAndRatingWrapper}>
+                                                            <p>{new Date(commentElem.date).toLocaleDateString("en-US", {
+                                                                    year:"numeric",
+                                                                    month:"short",
+                                                                    day:"2-digit"
+                                                                })}
+                                                            </p>
+                                                            <div>
+                                                                {commentElem.userRating && (
+                                                                    (() => {
+                                                                        switch(commentElem.userRating) {
+                                                                            case 1:
+                                                                                return <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                            case 2:
+                                                                                return (
+                                                                                    <>
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                    </>
+                                                                                )
+                                                                            case 3:
+                                                                                return (
+                                                                                    <>
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                    </>
+                                                                                )
+                                                                            case 4: 
+                                                                                return (
+                                                                                    <>
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                    </>
+                                                                                )
+                                                                            case 5: 
+                                                                                return (
+                                                                                    <>
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                        <Star fill="#1e96fc" stroke="none" size={20} />
+                                                                                    </>
+                                                                                )
+                                                                            default:
+                                                                                return null
+                                                                        }
+                                                                    })()
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div>
+                                                        {communityReadMore ? (
+                                                            <>
+                                                                {commentElem.content}
+                                                                <span className={bookdetailsstyle.communityReadMoreButton} onClick={handleCommunityReadMore}>Read less <ChevronUp/></span>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                {commentElem.content.split(" ").slice(0, 20).join(" ")}...
+                                                                <span className={bookdetailsstyle.communityReadMoreButton} onClick={handleCommunityReadMore}>Read more <ChevronDown/></span>
+                                                            </>
+                                                        )
+                                                            
+                                                        }
+                                                    </div>
+                                                    
+                                                </div>
+
+                                                <div>
+
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
 
                                 </div>
