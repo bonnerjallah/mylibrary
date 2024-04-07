@@ -13,6 +13,7 @@ import ShelveComponent from "../components/ShelveComponent";
 import ReviewerComponent from "../components/ReviewerComponent";
 import FollowerComonent from "../components/FollowerComonent";
 import Footer from "../components/Footer";
+import MessageModal from "../components/MessageModal";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faGear, faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -24,6 +25,7 @@ const Dashboard = () => {
 
     const [member, setMember] = useState('')
     const [showInfo, setShowInfo] = useState(false)
+    const [openMessageModal, setOpenMessageModal] = useState(false)
 
     //Fetch user function
     axios.defaults.withCredentials = true
@@ -50,6 +52,11 @@ const Dashboard = () => {
     //Drop down function
     const handleShowInfo = () => {
         setShowInfo(!showInfo)
+    }
+
+    //Message modal function
+    const handleMessageModal = () => {
+        setOpenMessageModal(!openMessageModal)
     }
 
 
@@ -122,7 +129,7 @@ const Dashboard = () => {
                     <div className={dashboardstyle.editIconWrapper}>
                         <div className={dashboardstyle.messageWrapper}>
                             <span>{member && member.user && member.user.messages.length > 0 ? (member.user.message.length) : ""}</span>
-                            <FontAwesomeIcon icon={faBell} className={`${member && member.user && member.user.length > 0 ? usernamestyle.bellIcon : "" }`} />
+                            <FontAwesomeIcon icon={faBell} className={`${member && member.user && member.user.length > 0 ? usernamestyle.bellIcon : "" }`} onClick={handleMessageModal}/>
                         </div>
                         <div>
                             <FontAwesomeIcon icon={faGear}/>
@@ -146,6 +153,7 @@ const Dashboard = () => {
             </div>
 
             <Footer />
+            {openMessageModal && (<MessageModal />)}
 
         </div>
     )

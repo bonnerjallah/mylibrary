@@ -71,7 +71,8 @@ const libraryUsersSchema = new mongoose.Schema({
         userId: String,
         userName: {type: String, required: true},
         profilePic: String,
-        content: String
+        content: String,
+        reminder: String
     }],
 
     reviewer: {

@@ -1,0 +1,27 @@
+.mainContainer{
+    border: 1px solid black;
+    width: 20rem;
+    height: 20rem;
+    background-color: #f9f7f7;
+    z-index: 99999;
+    position: absolute;
+    top: 46rem;
+    right: 2rem;
+}
+
+.headerWrapper{
+    padding-left: .5rem;
+    border-bottom: 1px solid black;
+}
+
+.notifiWrapper{
+    color: #f27373;
+    font-size: 1.3rem;
+    cursor: pointer;
+    text-align: center;
+    border-top: 1px solid black;
+}
+
+.notifiWrapper:hover{
+    color: #a70b0b;
+}

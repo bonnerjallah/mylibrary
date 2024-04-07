@@ -7,6 +7,7 @@ import {Barcode, ChevronRight} from "lucide-react"
 import dashboardsidebarstyle from "../styles/dashboardsidebarstyle.module.css"
 
 import OnHoldModal from "./OnHoldModal"
+import { NavLink } from "react-router-dom"
 
 const Myborrowing = () => {
     const {user} = useAuth()
@@ -71,10 +72,13 @@ const Myborrowing = () => {
                     <h2><Barcode size={28} /> My Borrowing</h2>
                 </div>
                 <div className={dashboardsidebarstyle.CheckOutHoldFeesWrapper}>
-                    <div>
-                        <p>Checked Out</p>
-                        <span>0 <ChevronRight /></span>
-                    </div>
+                    <NavLink to="/CheckOutBooks">
+                        <div style={{color:"black"}}>
+                            <p>Checked Out</p>
+                            <span>0 <ChevronRight /></span>
+                        </div>
+                    </NavLink>
+                    
                     <div onClick={handleShowOnHoldModal}>
                         <p>On Hold</p>
                         <span> {booksOnHold.length} <ChevronRight /></span>

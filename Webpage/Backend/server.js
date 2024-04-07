@@ -107,6 +107,7 @@ app.get("/usersToFollow", async(req, res) => {
     }
 })
 
+//Update user shelf
 app.put("/updatebookonshelves/:bookid/:userId", async(req, res) => {
     try {
         const {userId, bookid} = req.params
@@ -164,6 +165,7 @@ app.put("/updatebookonshelves/:bookid/:userId", async(req, res) => {
     }
 })
 
+//Delete book form shelf
 app.delete("/deletefromshelves/:bookid/:_id", async(req, res) => {
     try {
         const {bookid, _id} = req.params
@@ -190,6 +192,7 @@ app.delete("/deletefromshelves/:bookid/:_id", async(req, res) => {
     }
 })
 
+//Remove book form on hold
 app.delete("/onholddelete/:elem/:_id", async (req, res) => {
     try {
         const {_id, elem} = req.params
