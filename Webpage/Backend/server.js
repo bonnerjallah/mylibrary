@@ -33,7 +33,7 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ['http://localhost:5174'],
+    origin: ['http://localhost:5173'],
     methods: ["POST, GET, PUT, DELETE"],
     credentials: true
 }))
@@ -274,9 +274,48 @@ app.post("/setbookshelf", async(req, res) => {
     }
 })
 
+// Set user comment on books
+app.post("/usercomment", async (req, res) => {
+
+    try {
+        const {username, bookid, comment, commRate } = req.body
+
+        console.log(req.body)
+        
+        if(!username || !bookid || !comment || !commRate) {
+            return res.status(400).json({message: "missing require field"})
+        }
+
+        const bookExistsInCatalog = await BooksCatalog.exists({ _id: bookid });
+        const bookExistsInSuggestions = await BookSuggestions.exists({ _id: bookid });
+
+        if(!bookExistsInCatalog && !bookExistsInSuggestions) {
+            return res.status(400).json({message:"book not found"})
+        }
+
+        const book = bookExistsInCatalog ? await BooksCatalog.findById(bookid) : await BooksSuggestions.findById(bookid)
+
+
+        book.comments.push({
+            username : username,
+            content : comment,
+            userRating: commRate
+        })
+
+        const updatedBook = await book.save()
+
+        res.status(200).json({ message: "comment updated successfully", updatedBook });
+
+    } catch (error) {
+        console.log("Error inserting user comment", error);
+        return res.status(500).json({ message: "Internal server issue" });
+    }
+});
+
+
+
 //Updating book review field
 app.post("/reviewerinput", async (req, res) => {
-    console.log(req.body)
     try {
         const { review, bookId, rating, recommend, currentlyreading, userid, username, profilepic } = req.body;
 

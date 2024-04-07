@@ -57,13 +57,16 @@ const bookSuggestionsSchema = new mongoose.Schema({
         }
     }],
     comments:[{
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "libraryUsers",
+        username: {
+            type: String,
             required: true
         },
         content: String,
-        userRating: Number
+        userRating: Number,
+        date: {
+            type : Date,
+            default : Date.now
+        }
     }]
 });
 

@@ -24,6 +24,11 @@ const BookDetails = () => {
     const [userErrorMessage, setUserErrorMsg] = useState('')
     const [userSuccessMsg, setUserSuccesMsg] = useState('')
 
+    const [communityComment, setCommunityComment] = useState({
+        comment : "",
+        commRate : ""
+    })
+
 
     //Fetch user
     useEffect(() => {
@@ -138,9 +143,48 @@ const BookDetails = () => {
 
     }
 
+    const handleCommunityComment = (e) => {
+        const {name, value} = e.target
+        setCommunityComment((prev) => ({...prev, [name]: value}))
+    }
+
+    const handleCommunitySubmit = async (e, _id) => {
+        e.preventDefault();
+    
+        // Convert commRate to a number
+        const commRateNumber = parseInt(communityComment.commRate);
+    
+        const requestObject = {
+            username: member.user.userName,
+            bookid: _id,
+            comment: communityComment.comment,
+            commRate: commRateNumber  
+        };
+    
+        console.log(requestObject);
+    
+        try {
+            const response = await axios.post("http://localhost:3001/usercomment", requestObject, {
+                headers: { "Content-Type": "application/json" }
+            });
+    
+            if (response.status === 200) {
+                console.log("Successfully added user comment");
+            }
+    
+            // setCommunityComment({
+            //     comment: "",
+            //     commRate: ""
+            // });
+        } catch (error) {
+            console.log("Error inserting user comment", error);
+        }
+    };
+    
+
 
     // console.log(member)
-    console.log(allBooks)
+    // console.log(allBooks)
 
     return (
         <div>
@@ -152,6 +196,7 @@ const BookDetails = () => {
 
             {allBooks && _id && allBooks.map((elem, index) => {
                 if(elem._id === _id) {
+                    console.log(elem)
                     return (
                         <div key={index} className={bookdetailsstyle.mainContainer}>
                             <div className={bookdetailsstyle.bookDiscriptionContainer}>
@@ -206,6 +251,7 @@ const BookDetails = () => {
                                         <h2>Details</h2>
                                         <h4>Publish Date: <span style={{fontSize:"1rem", fontWeight:"normal"}}>{elem.bookPublishDate}</span></h4>
                                         <h4>Genre: <span style={{fontSize:"1rem", fontWeight:"normal"}}>{elem.bookGenre}</span> </h4>
+                                        <h4>Book ISBN: <span style={{fontSize:"1rem", fontWeight:"normal"}}>{elem.bookIsbn}</span> </h4>
                                     </div>
                                 </div>
                             </div>
@@ -304,19 +350,19 @@ const BookDetails = () => {
 
                                     <div className={bookdetailsstyle.cummunityContainer}>
                                         <h4>From Community</h4>
-                                        <form>
-                                            <label htmlFor="CommunityComment">What did you think about this title?</label>
-                                            <textarea name="comment" id="CommunityComment" cols="30" rows="10" placeholder="Add Comment"></textarea>
+                                        <form onSubmit={(e) => handleCommunitySubmit(e, elem._id)} encType="multipart/form-data" method="POST">
+                                            <label htmlFor="CommuComment">What did you think about this title?</label>
+                                            <textarea name="comment" id="CommuComment" cols="30" rows="10" placeholder="Add Comment" value={communityComment.comment} onChange={handleCommunityComment}></textarea>
                                             <div className={bookdetailsstyle.communityratingWrapper}>
-                                                <label htmlFor="CommunityRating">
+                                                <label htmlFor="CommuRating">
                                                     <Star />
                                                     <Star />
                                                     <Star />
                                                     <Star />
                                                     <Star />                                                    
                                                 </label>
-                                                <select name="commRate" id="CommunityRating">
-                                                    <option>Rate This</option>
+                                                <select name="commRate" id="CommuRating" value={communityComment.commRate} onChange={handleCommunityComment}>
+                                                    <option value="">Rate This</option>
                                                     <option value="1"> 1 star</option>                                                    <option value="2"> 2 stars</option>
                                                     <option value="3"> 3 stars</option>
                                                     <option value="4"> 4 stars</option>
@@ -324,7 +370,7 @@ const BookDetails = () => {
                                                 </select>
 
                                                 <div className={bookdetailsstyle.communitySubmitButtonWrapper}>
-                                                    <button>Submit</button>
+                                                    <button type="submit">Submit</button>
                                                 </div>
                                             </div>
                                         </form>

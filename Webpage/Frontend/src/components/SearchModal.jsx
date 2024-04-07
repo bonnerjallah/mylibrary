@@ -70,8 +70,8 @@ const SearchModal = ({closeModal}) => {
     // });
     
 
-    console.log(bookIsOnShelf)
-    console.log(allBooks)
+    // console.log(bookIsOnShelf)
+    // console.log(allBooks)
 
 
     const lastBookIndex = currentPage * booksPerPage
