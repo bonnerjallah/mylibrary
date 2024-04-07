@@ -168,8 +168,6 @@ app.delete("/deletefromshelves/:bookid/:_id", async(req, res) => {
     try {
         const {bookid, _id} = req.params
 
-        console.log(bookid)
-
         if(!mongoose.Types.ObjectId.isValid(_id)) {
             return res.status(404).json({message: "Invalid objectId format"})
         }
@@ -190,7 +188,39 @@ app.delete("/deletefromshelves/:bookid/:_id", async(req, res) => {
         console.log("error deleting book", error)
         return res.status(500).json({message: "Internal server error"})
     }
+})
 
+app.delete("/onholddelete/:elem/:_id", async (req, res) => {
+    try {
+        const {_id, elem} = req.params
+        const bookid = elem
+
+        if(!mongoose.Types.ObjectId.isValid(_id)) {
+            return res.status(404).json({message:"Invalid objectId format"})
+        }
+
+        const user = await LibraryUsers.findById(_id)
+
+        if(!user) {
+            return res.status(404).json({message: "user not found"})
+        }
+
+        user.shelf = user.shelf.map(item => {
+            if(item.placeholder === bookid) {
+                item.placeholder = "",
+                item.forlater = bookid
+            }
+            return item
+        })
+
+        const result = await user.save()
+
+        return res.json(result)
+        
+    } catch (error) {
+        console.log("error deleting book on hold", error)
+        return res.status(500).json({message: "Internal server error"})
+    }
 })
 
 //Follow other users logic
@@ -311,8 +341,6 @@ app.post("/usercomment", async (req, res) => {
         return res.status(500).json({ message: "Internal server issue" });
     }
 });
-
-
 
 //Updating book review field
 app.post("/reviewerinput", async (req, res) => {

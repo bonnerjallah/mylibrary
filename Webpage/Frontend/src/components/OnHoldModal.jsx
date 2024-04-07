@@ -51,8 +51,6 @@ const OnHoldModal = ({closeModal}) => {
 
     }, [userShelf])
 
-    
-
     //fetch allbooks 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -100,7 +98,31 @@ const OnHoldModal = ({closeModal}) => {
         fetchBooks()
     }, [])
 
+    console.log(member)
 
+    const handleDeletingOnHoldBook = async (elem) => {
+
+        const _id = member.user.id
+
+        try {
+            const response = await axios.delete(`http://localhost:3001/onholddelete/${elem}/${_id}`, {
+                headers:{"Content-Type": "application/json"}
+            })
+
+            if(response.status === 200) {
+                console.log("successfully remove book from hold")
+
+                setUserShelf(prevshelf => {
+                    const updatedShelfItems = prevshelf.filter(item => item.placeholder !== elem)
+                    return updatedShelfItems
+                })
+            }
+
+
+        } catch (error) {
+            console.log("error deleting book", error)
+        }
+    }
 
 
 
@@ -108,6 +130,9 @@ const OnHoldModal = ({closeModal}) => {
         <div className={onholdmodalstyle.mainContainer}>
             <div className={onholdmodalstyle.closeButtonWrapper}>
                 <p onClick={(e) => {closeModal(false)}} className={onholdmodalstyle.closeButton}>x</p>
+            </div>
+            <div className={onholdmodalstyle.titleWrapper}>
+                <h1>On Hold</h1>
             </div>
             {booksOnHold ? (
                 <div className={onholdmodalstyle.bookContainer}>
@@ -135,7 +160,7 @@ const OnHoldModal = ({closeModal}) => {
                                             <NavLink to="/CheckOutBooks">
                                                 <button className={onholdmodalstyle.button}>Check Out</button>
                                             </NavLink>
-                                        
+                                            <button className={onholdmodalstyle.removeButton} onClick={() => handleDeletingOnHoldBook(elem)}>Remove</button>
                                         </div>
                                         
                                     </>
