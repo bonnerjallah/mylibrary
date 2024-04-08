@@ -86,3 +86,7 @@
 .recieverName {
     margin-bottom: .5rem;
 }
+
+.recieverName input{
+    height: 2rem;
+}
