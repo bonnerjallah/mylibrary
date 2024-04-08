@@ -97,8 +97,11 @@
     100% { transform: rotateZ(10deg); } /* Adjust angle as needed */
 }
 
+.bellIconWrapper a{
+    color: black;
+}
 
-.bellIconWrapper,
+.bellIconWrapper a,
 .gearIconWrapper{
     font-size: 1.5rem;
     width: 2rem;
@@ -106,7 +109,7 @@
     justify-content: center;
 }
 
-.bellIconWrapper:hover,
+.bellIconWrapper a:hover,
 .gearIconWrapper:hover{
     cursor: pointer;
     color:  white;

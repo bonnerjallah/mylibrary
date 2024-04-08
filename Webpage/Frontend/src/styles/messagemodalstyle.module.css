@@ -14,7 +14,7 @@
     border-bottom: 1px solid black;
 }
 
-.notifiWrapper{
+.notifiWrapper a{
     color: #f27373;
     font-size: 1.3rem;
     cursor: pointer;
@@ -22,6 +22,67 @@
     border-top: 1px solid black;
 }
 
-.notifiWrapper:hover{
+.notifiWrapper a:hover{
     color: #a70b0b;
+}
+
+/*
+!Message Board Styling
+*/
+
+.msgBoardHeaderWrapper,
+.notificationsSectionContainer, 
+.sendMessageContainer{
+    padding: 1rem;
+}
+
+
+.msgBoardHeaderWrapper p{
+    font-size: 3rem;
+}
+
+.notificationsSectionContainer{
+    background-color: #95d5b2;
+}
+
+.notificationsSectionContainer h2,
+.sendMessageContainer h2{
+    margin: 1rem 0;
+    text-align: center;
+    color: white;
+}
+
+.sendMessageContainer{
+    background-color: #1b4332;
+    margin-top: .5rem;
+}
+
+.msgBoardFormWrapper{
+    margin: 1rem 0;
+}
+
+.msgBoardFormWrapper form {
+    display: flex;
+    flex-direction: column;
+}
+
+.msgBoardFormWrapper form button{
+    width: 7rem;
+    height: 2rem;
+    margin-top: .5rem;
+    background-color: green;
+    border: none;
+    border-radius: 5%;
+    transition: all 400ms ease-in-out;
+    cursor: pointer;
+}
+
+.msgBoardFormWrapper form button:hover{
+    color: white;
+    border-radius: 10rem;
+    background-color: #3a5a40;
+}
+
+.recieverName {
+    margin-bottom: .5rem;
 }

@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import { useAuth } from "./AuthContext"
-
-
 import { NavLink } from "react-router-dom"
+
+
 import messagemodalstyle from "../styles/messagemodalstyle.module.css"
 
 
@@ -49,14 +49,14 @@ const MessageModal = () => {
 
             </div>
 
-            <div>
+            <div className={messagemodalstyle.headerWrapper}>
                 <h3>Notifications</h3>
             </div>
-            <NavLink>
                 <div className={messagemodalstyle.notifiWrapper}>
-                    <p>View all notifications</p>
+                    <NavLink to="/MessageBoard">
+                        <p>View all notifications</p>
+                    </NavLink>
                 </div>
-            </NavLink>
         </div>
     )
 }

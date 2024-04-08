@@ -13,8 +13,6 @@ const BookDetails = () => {
     const {_id} = useParams()
     const {user} = useAuth()
 
-    console.log(_id)
-
     const [member, setMember] = useState('')
     const [allBooks, setAllBooks] = useState([])
     const [readMore, setReadMore] = useState(false)
@@ -165,9 +163,7 @@ const BookDetails = () => {
             comment: communityComment.comment,
             commRate: commRateNumber  
         };
-    
-        console.log(requestObject);
-    
+        
         try {
             const response = await axios.post("http://localhost:3001/usercomment", requestObject, {
                 headers: { "Content-Type": "application/json" }
@@ -199,7 +195,6 @@ const BookDetails = () => {
 
             {allBooks && _id && allBooks.map((elem, index) => {
                 if(elem._id === _id) {
-                    console.log(elem)
                     return (
                         <div key={index} className={bookdetailsstyle.mainContainer}>
                             <div className={bookdetailsstyle.bookDiscriptionContainer}>

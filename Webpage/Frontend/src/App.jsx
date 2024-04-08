@@ -14,6 +14,7 @@ import ReviewerRequest from "./pages/ReviewerRequest"
 import Shelf from "./pages/Shelf"
 import CheckOutBooks from "./pages/CheckOutBooks"
 import BookDetails from "./pages/BookDetails"
+import MessageBoard from "./pages/MessageBoard"
 
 
 const router = createBrowserRouter (
@@ -31,6 +32,7 @@ const router = createBrowserRouter (
         <Route path="/Shelf" element={<Shelf /> } />
         <Route path="/CheckOutBooks" element={<CheckOutBooks />} />
         <Route path="/BookDetails/:_id" element={<BookDetails />} />
+        <Route path="/MessageBoard" element={<MessageBoard /> } />
       </Route>
       
 

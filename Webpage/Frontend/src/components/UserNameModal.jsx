@@ -64,7 +64,9 @@ const UserNameModal = ({closemodal}) => {
                     <div className={usernamestyle.usernameIconsWrapper}>
                         <div className={usernamestyle.bellIconWrapper}>
                             <span>{member && member.user && member.user.message.length > 0 ? (member.user.message.length) : ""}</span>
-                            <FontAwesomeIcon icon={faBell} className={`${member && member.user && member.user.length > 0 ? usernamestyle.bellIcon : "" }`} />
+                            <NavLink to="/MessageBoard">
+                                <FontAwesomeIcon icon={faBell} className={`${member && member.user && member.user.length > 0 ? usernamestyle.bellIcon : "" }`} />
+                            </NavLink>
                         </div>
                         <div className={usernamestyle.gearIconWrapper}>
                             <FontAwesomeIcon icon={faGear}/>
