@@ -85,8 +85,48 @@
 
 .recieverName {
     margin-bottom: .5rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .recieverName input{
     height: 2rem;
+}
+
+.recieverMainContainer{
+    display: none;
+}
+
+.displayRecievers{
+    display: block;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    width: max-content;
+    border: 1px solid black;
+}
+
+.recieverWrapper{
+    display: flex;
+    align-items: center;
+    margin: .5rem;
+    column-gap: .5rem;
+    cursor: pointer;
+    width: max-content;
+}
+
+.recieverWrapper:hover{
+    color: white;
+}
+
+.recieverButton{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 400ms ease-in-out;
+    width: max-content;
+}
+
+.recieverButton:hover{
+    color: white;
 }

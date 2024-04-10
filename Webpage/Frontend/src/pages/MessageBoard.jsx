@@ -3,6 +3,8 @@ import axios from "axios"
 import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext"
 
+import { ChevronUp } from 'lucide-react';
+
 
 import messagemodalstyle from "../styles/messagemodalstyle.module.css"
 
@@ -12,6 +14,10 @@ const MessageBoard = () => {
 
     const [member, setMember] = useState('')
     const [allUsers, setAllUsers] = useState('')
+    const [showReciever, setShowRecievers] = useState(false)
+    const [personRecieving, setPersonRecieving] = useState({
+        recv : ""
+    })
 
     //Fetch user data
     axios.defaults.withCredentials = true
@@ -46,8 +52,22 @@ const MessageBoard = () => {
         fetchAllUsers()
     }, [])
 
-    console.log(allUsers)
-    console.log(member)
+    const handleShowRecievers = () => {
+        setShowRecievers(!showReciever)
+    }
+
+    const handlepersonRecieving = (e) => {
+        const person = e.target.textContent
+        setPersonRecieving({recv : person})
+        setTimeout(() => {
+            setShowRecievers(!showReciever)
+        },500)
+    }
+
+
+
+    // console.log(allUsers)
+    // console.log(member)
 
     return (
         <div className={messagemodalstyle.messageBoardMainContainer}>
@@ -66,8 +86,21 @@ const MessageBoard = () => {
                 <div className={messagemodalstyle.msgBoardFormWrapper}>
                     <form>
                         <div className={messagemodalstyle.recieverName}>
-                            <label htmlFor="RecieverName" style={{color:"white", marginRight:".5rem"}}> Send To</label>
-                            <input type="text" name='reciever' id='RecieverName' placeholder='Reciever' />
+                            <>
+                                <div className={showReciever ? messagemodalstyle.displayRecievers : messagemodalstyle.recieverMainContainer}>
+                                    {member && allUsers && (
+                                        <ul>
+                                            {allUsers.filter(user => member.user.following.some(elem => elem === user._id)).map((users, index) => (
+                                                <li key={index} className={messagemodalstyle.recieverWrapper} onClick={(e) => {handlepersonRecieving(e)}}>
+                                                    <img src={`http://localhost:3001/libraryusersprofilepics/${users.profilepic}`}  alt="" width= "25" height="25" style={{borderRadius:"50%"}}/> {users.username}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                                <p className={messagemodalstyle.recieverButton} onClick={handleShowRecievers}>Reciever <ChevronUp /> </p>
+                            </>
+                            <input type="text" name="recv" id="revieverName" placeholder="Reciever" value={personRecieving.recv} onChange={handlepersonRecieving} />
                         </div>
                         <label htmlFor="SendMessage"></label>
                         <textarea name="sendmsg" id="SendMessage" cols="30" rows="10"></textarea>
