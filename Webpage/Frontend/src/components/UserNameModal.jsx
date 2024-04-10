@@ -25,16 +25,17 @@ const UserNameModal = ({closemodal}) => {
 
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryuser", {
+                const response = await axios.get("http://localhost:3001/libraryusers", {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
-                response.data.valid ? setMember(response.data) : console.error("Invalid user data", response.data)
+                response.data.valid ? setMember(response.data) : console.error("error fetching user data", response.data)
 
             } catch (error) {
-                console.error("Error fetching user data", error)
+                console.error("error fetching user data", error)
             }
         }
+        fetchUserData()
     }, [])
 
     const handleLogOut = async () => {
@@ -56,6 +57,8 @@ const UserNameModal = ({closemodal}) => {
         navigate("/")
     }
 
+    console.log("member",member)
+
     return (
         <div className={usernamestyle.UserNameModalMainContainer}>
             <div className={usernamestyle.accountAndLogOutContainer}>
@@ -63,9 +66,9 @@ const UserNameModal = ({closemodal}) => {
                     <h4><NavLink to="/Dashboard">My Account</NavLink></h4>
                     <div className={usernamestyle.usernameIconsWrapper}>
                         <div className={usernamestyle.bellIconWrapper}>
-                            <span>{member && member.user && member.user.message.length > 0 ? (member.user.message.length) : ""}</span>
+                            <span>{member && member.user && member.user.messages.length > 0 ? (member.user.messages.length) : ""}</span>
                             <NavLink to="/MessageBoard">
-                                <FontAwesomeIcon icon={faBell} className={`${member && member.user && member.user.length > 0 ? usernamestyle.bellIcon : "" }`} />
+                                <FontAwesomeIcon icon={faBell} className={`${member && member.user && member.user.messages.length > 0 ? usernamestyle.bellIcon : "" }`} />
                             </NavLink>
                         </div>
                         <div className={usernamestyle.gearIconWrapper}>

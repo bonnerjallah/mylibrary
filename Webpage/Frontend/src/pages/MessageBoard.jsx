@@ -127,7 +127,7 @@ const MessageBoard = () => {
 
 
     // console.log(allUsers)
-    // console.log(member)
+    console.log(member)
 
     return (
         <div className={messagemodalstyle.messageBoardMainContainer}>
@@ -138,7 +138,23 @@ const MessageBoard = () => {
             <div className={messagemodalstyle.notificationsSectionContainer}>
                 <h2>Notifications</h2>
                 <div>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe recusandae odio magnam incidunt repudiandae doloremque numquam, sint quisquam culpa facere!
+                    {member && (
+                        <>
+                            {member.user.messages.map((elem, index) => (
+                                <div key={index}>
+                                    <div style={{display:"flex", alignItems:"center", columnGap:".5rem"}}>
+                                        <img src={`http://localhost:3001/libraryusersprofilepics/${elem.senderProfilePic}`} alt="" width="50" height="50" style={{borderRadius:"50%"}} />
+                                        <p style={{fontSize:"1.5rem"}}>{elem.senderName}</p>
+                                    </div>
+                                    <div>
+                                        <h5>Message</h5>
+                                        <p>{elem.content}</p>
+                                        <button>Delete</button>
+                                    </div>
+                                </div>
+                            ))}
+                        </>
+                    )}
                 </div>
             </div>
             <div className={messagemodalstyle.sendMessageContainer}>

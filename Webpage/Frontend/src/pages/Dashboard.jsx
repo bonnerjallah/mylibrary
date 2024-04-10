@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import dashboardstyle from "../styles/dashboardstyle.module.css"
+import usernamestyle from "../styles/usernamestyle.module.css"
 import { useAuth } from "../components/AuthContext";
 
 import axios from "axios";
@@ -128,8 +129,8 @@ const Dashboard = () => {
                     
                     <div className={dashboardstyle.editIconWrapper}>
                         <div className={dashboardstyle.messageWrapper}>
-                            <span>{member && member.user && member.user.messages.length > 0 ? (member.user.message.length) : ""}</span>
-                            <FontAwesomeIcon icon={faBell} className={`${member && member.user && member.user.length > 0 ? usernamestyle.bellIcon : "" }`} onClick={handleMessageModal}/>
+                            <span>{member && member.user && member.user.messages.length > 0 ? (member.user.messages.length) : ""}</span>
+                            <FontAwesomeIcon icon={faBell} className={`${member && member.user && member.user.messages.length > 0 ? usernamestyle.bellIcon : "" }`} onClick={handleMessageModal}/>
                         </div>
                         <div>
                             <FontAwesomeIcon icon={faGear}/>
