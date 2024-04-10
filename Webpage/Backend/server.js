@@ -345,6 +345,40 @@ app.post("/usercomment", async (req, res) => {
     }
 });
 
+//Set user messages
+app.post("/sendmessage", async (req, res) => {
+    try {   
+        const { senderId, senderName, senderProfilePic, message, receiverId } = req.body;
+        console.log(req.body);
+
+        if (!senderId || !senderName || !senderProfilePic || !message || !receiverId) {
+            return res.status(404).json({ message: "Required field missing" });
+        }
+
+        const user = await LibraryUsers.findById(receiverId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        user.messages.push({
+            senderId: senderId,
+            senderName: senderName,
+            senderProfilePic: senderProfilePic,
+            content: message
+        });
+
+        const updateMessage = await user.save();
+
+        return res.status(200).json({ message: "Message sent", updateMessage });
+        
+    } catch (error) {
+        console.log("Error setting user message", error);
+        return res.status(500).json({ message: "Internal server issue" });
+    }
+});
+
+
 //Updating book review field
 app.post("/reviewerinput", async (req, res) => {
     try {

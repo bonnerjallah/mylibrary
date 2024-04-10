@@ -33,7 +33,7 @@ const Register = () => {
 
     const handleUserInputData = (e) => {
         const {name, value} = e.target
-        setUserInputData(prev => ({...prev, [name] : value}))
+        setUserInputData((prev) => ({...prev, [name] : value}))
     }
 
     const handleDataSubmit = async (e) => {

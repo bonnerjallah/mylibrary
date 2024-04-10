@@ -68,9 +68,9 @@ const libraryUsersSchema = new mongoose.Schema({
     }],
 
     messages:[{
-        userId: String,
-        userName: {type: String, required: true},
-        profilePic: String,
+        senderId: String,
+        senderName: {type: String, required: true},
+        senderProfilePic: String,
         content: String,
         reminder: String
     }],
