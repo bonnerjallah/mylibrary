@@ -41,93 +41,92 @@
     font-size: 3rem;
 }
 
-.notificationsSectionContainer{
-    background-color: #95d5b2;
-}
-
-.notificationsSectionContainer h2,
-.sendMessageContainer h2{
-    margin: 1rem 0;
-    text-align: center;
-    color: white;
-}
-
-.sendMessageContainer{
-    background-color: #1b4332;
-    margin-top: .5rem;
-}
-
-.msgBoardFormWrapper{
-    margin: 1rem 0;
-}
-
-.msgBoardFormWrapper form {
-    display: flex;
-    flex-direction: column;
-}
-
-.msgBoardFormWrapper form button{
-    width: 7rem;
-    height: 2rem;
-    margin-top: .5rem;
-    background-color: green;
-    border: none;
-    border-radius: 5%;
-    transition: all 400ms ease-in-out;
-    cursor: pointer;
-}
-
-.msgBoardFormWrapper form button:hover{
-    color: white;
-    border-radius: 10rem;
-    background-color: #3a5a40;
-}
-
-.recieverName {
-    margin-bottom: .5rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.recieverName input{
-    height: 2rem;
-}
-
-.recieverMainContainer{
-    display: none;
-}
-
-.displayRecievers{
-    display: block;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    width: max-content;
-    border: 1px solid black;
-    padding: 0 .5rem
-}
-
-.recieverWrapper{
+.navbarIcon{
     display: flex;
     align-items: center;
-    margin: .5rem;
     column-gap: .5rem;
     cursor: pointer;
-    width: max-content;
+    color: black;
 }
 
-.recieverWrapper:hover{
+.navbarIcon:hover{
     color: white;
 }
 
-.recieverButton{
+.messageContainer{
+    display: grid;
+    grid-template-columns: 20% 75%;
+    margin: 1rem 2rem;
+    column-gap: 2rem;
+}
+
+.sideBarWrapper{
+    display: flex;
+    flex-direction: column;
+    padding: .5rem;
+    background-color: #a3b18a;
+}
+
+.composeButtonWrapper{
+    width: 80%;
+    align-self: center;
+    margin-bottom: 1rem;
+}
+
+.composeButtonWrapper button{
+    width: 100%;
+    background-color: green;
     display: flex;
     align-items: center;
+    border: none;
+    justify-content: center;
+    column-gap: .5rem;
+    height: 2rem;
     cursor: pointer;
     transition: all 400ms ease-in-out;
+}
+
+.composeButtonWrapper button:hover{
+    color: white;
+    border-radius: 10rem;
+}
+
+.inboxBellContactWrapper{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.inboxBellContactWrapper div{
+    display: flex;
+    column-gap: .5rem;
+    align-items: center;
+    cursor: pointer;
     width: max-content;
 }
 
-.recieverButton:hover{
+.inboxBellContactWrapper div:hover{
     color: white;
 }
+
+.messageWrapper{
+    border: 1px solid black;
+}
+
+.message{
+    display: flex;
+    width: 100%;
+    border: 1px solid red;
+    column-gap: 4rem;
+    padding: 0 3rem;
+    position: relative;
+    margin-top: 1rem;
+}
+
+.message :nth-child(2){
+    display: flex;
+    width: 70%;
+    right: 4rem;
+}
+
+

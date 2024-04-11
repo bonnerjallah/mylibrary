@@ -2,8 +2,9 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext"
+import {NavLink} from "react-router-dom"
 
-import { ChevronUp } from 'lucide-react';
+import { ChevronUp, Home, Pen, Inbox, Bell, Contact, LayoutDashboard, Mail} from 'lucide-react';
 
 
 import messagemodalstyle from "../styles/messagemodalstyle.module.css"
@@ -132,59 +133,56 @@ const MessageBoard = () => {
     return (
         <div className={messagemodalstyle.messageBoardMainContainer}>
             <div className={messagemodalstyle.msgBoardHeaderWrapper}>
-                <h1>My Message Board</h1>
                 <p>Welcome <span style={{backgroundColor:"#720026", borderRadius:"50%", color:"white", padding:" 0 .5rem"}}>B</span> bsmoke !!</p>
+                <h1>My Message Board</h1>
             </div>
-            <div className={messagemodalstyle.notificationsSectionContainer}>
-                <h2>Notifications</h2>
-                <div>
-                    {member && (
-                        <>
-                            {member.user.messages.map((elem, index) => (
-                                <div key={index}>
-                                    <div style={{display:"flex", alignItems:"center", columnGap:".5rem"}}>
-                                        <img src={`http://localhost:3001/libraryusersprofilepics/${elem.senderProfilePic}`} alt="" width="50" height="50" style={{borderRadius:"50%"}} />
-                                        <p style={{fontSize:"1.5rem"}}>{elem.senderName}</p>
-                                    </div>
-                                    <div>
-                                        <h5>Message</h5>
-                                        <p>{elem.content}</p>
-                                        <button>Delete</button>
-                                    </div>
-                                </div>
-                            ))}
-                        </>
-                    )}
+            <div style={{display:"flex", columnGap:"1rem", backgroundColor:"#a3b18a", padding:"1rem", alignItems:"center"}}>
+
+                <NavLink to="/" >
+                    <div className={messagemodalstyle.navbarIcon}><Home />Home</div> 
+                </NavLink>
+                <NavLink to="/Dashboard">
+                    <div className={messagemodalstyle.navbarIcon}><LayoutDashboard />My DashBoard</div>
+                </NavLink>
+            </div>
+
+            <div className={messagemodalstyle.messageContainer}>
+
+                <div className={messagemodalstyle.sideBarWrapper}>
+                    <div className={messagemodalstyle.composeButtonWrapper}>
+                        <button><Pen /> Compose</button>
+                    </div>
+
+                    <div className={messagemodalstyle.inboxBellContactWrapper}>
+                        <div> <Inbox /> Inbox (2)</div>
+                        <div> <Bell /> Notification ()</div>
+                        <div> <Contact /> Contacts</div>
+                    </div>
                 </div>
-            </div>
-            <div className={messagemodalstyle.sendMessageContainer}>
-                <h2>Send Message</h2>
-                <div className={messagemodalstyle.msgBoardFormWrapper}>
-                    <form onSubmit={handleMessageSubmit} encType="form-data" method="POST">
-                        <div className={messagemodalstyle.recieverName}>
-                            <>
-                                <div className={showReciever ? messagemodalstyle.displayRecievers : messagemodalstyle.recieverMainContainer}>
-                                    {member && allUsers && (
-                                        <ul>
-                                            {allUsers.filter(user => member.user.following.some(elem => elem === user._id)).map((users, index) => (
-                                                <li key={index} className={messagemodalstyle.recieverWrapper} onClick={(e) => {handlepersonRecieving(e)}}>
-                                                    <img src={`http://localhost:3001/libraryusersprofilepics/${users.profilepic}`}  alt="" width= "25" height="25" style={{borderRadius:"50%"}}/> {users.username}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </div>
-                                <p className={messagemodalstyle.recieverButton} onClick={handleShowRecievers}>Reciever <ChevronUp /> </p>
-                            </>
-                            <input type="text" name="recv" id="revieverName" placeholder="Reciever" value={personRecieving.recv} onChange={handlepersonRecieving} />
+
+                <div className={messagemodalstyle.messageWrapper}>
+                    <h5 style={{textAlign:"center"}}>Messages</h5>
+                    <div className={messagemodalstyle.message}>
+                        <div style={{display:"flex", alignItems:"center", columnGap:'.5rem'}}>   
+                            <label htmlFor="Select"></label>
+                            <input type="checkbox" name="select" id="Select" />
+                            <Mail size={20} />
                         </div>
-                        <label htmlFor="SendMessage"></label>
-                        <textarea name="sendmsg" id="SendMessage" cols="30" rows="10" onChange={handleInputData} value={inputMessage.sendmsg}></textarea>
-
-                        <button type='submit'>Send</button>
-
-                    </form>
+                        <div style={{display:"flex", justifyContent:"space-between", width:"70%", position:"absolute", right:"4rem"}}>   
+                            <div>
+                                sender name
+                            </div>
+                            <div>
+                                half message
+                            </div>
+                            <div>
+                                message date
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
+
             </div>
         </div>
     )

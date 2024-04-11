@@ -72,6 +72,10 @@ const libraryUsersSchema = new mongoose.Schema({
         senderName: {type: String, required: true},
         senderProfilePic: String,
         content: String,
+        date : {
+            type: Date,
+            default: Date.now
+        },
         reminder: String
     }],
 
