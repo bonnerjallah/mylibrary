@@ -19,17 +19,15 @@ const MessageBoard = () => {
     const [showNotification, setShowNotification] = useState(false)
     const [showInbox, setShowInbox] = useState(false)
     const [showReadMessageModal, setShowReadMessageModal] = useState(false)
-    const [personRecieving, setPersonRecieving] = useState({
-        recv : "",
-    })
-    const [inputMessage, setInputMessage] = useState({
-        sendmsg : ""
-    })
+    const [selectedMessage, setSelectedMessage] = useState(null);
 
 
-    const handleReadMessageModal = () => {
-        setShowReadMessageModal(true)
-    }
+    const handleReadMessageModal = (elem) => {
+        setShowReadMessageModal(true); 
+        setSelectedMessage(elem); 
+    };
+    
+    
 
 
     //Fetch user data
@@ -69,74 +67,20 @@ const MessageBoard = () => {
         setShowContact(!showContact)
     }
 
-    const handlepersonRecieving = (e) => {
-        const person = e.target.textContent.trim(); // Trim leading and trailing whitespace
-        setPersonRecieving((prev) => ({...prev, recv : person}));
 
-        setTimeout(() => {
-            setShowRecievers(!showReciever)
-        }, 100);
-    };
-    
-
-    const handleInputData = (e) => {
-        const {name, value} = e.target
-
-        setInputMessage((prev) => ({...prev, [name]: value}))
-    }
-
-    const handleMessageSubmit = async (e) => {
-        e.preventDefault();
-
-        const reciever = allUsers.find(elem => elem.username === personRecieving.recv)
-        const receiverId = reciever._id
-        
-
-        const requestObject = {
-            senderId : member.user.id,
-            senderName : member.user.userName,
-            senderProfilePic : member.user.profilepic,            
-            message : inputMessage.sendmsg,
-            receiverId 
-        }
-
-        console.log("obje", requestObject)
-
-        try {
-            const response = await axios.post("http://localhost:3001/sendmessage", requestObject, {
-                headers: {"Content-Type": "application/json"}
-            })
-
-            if(response.status === 200) {
-                console.log("successfully sent message")
-            }
-
-            setPersonRecieving({
-                recv: "",
-            })
-
-            setInputMessage({
-                sendmsg:""
-            })
-            
-        } catch (error) {
-            console.log("error sending message", error)
-        }
-    }
 
 
     const handleShowNotification = () => {
         setShowNotification(true)
         setShowInbox(false)
     }
+    
     const handleShowInbox = () => {
         setShowInbox(true)
         setShowNotification(false)
     }
 
 
-    console.log(allUsers)
-    console.log(member)
 
     return (
         <div className={messagemodalstyle.messageBoardMainContainer}>
@@ -188,8 +132,8 @@ const MessageBoard = () => {
                         {member && member.user.messages.map((elem, index) => (
                             <div key={index} className={messagemodalstyle.message}>
                                 <div style={{display:"flex", alignItems:"center", columnGap:'.5rem'}}>   
-                                    <label htmlFor="Select"></label>
-                                    <input type="checkbox" name="select" id="Select" />
+                                    <label htmlFor={`NotifiSelectMsg_${index}`}></label>
+                                    <input type="checkbox" name="select" id={`NotifiSelectMsg_${index}`} />
                                     <Mail size={20} />
                                 </div>
                                 <div style={{fontWeight:"bold"}}>
@@ -216,11 +160,11 @@ const MessageBoard = () => {
                 <div className={ messagemodalstyle.messageWrapper} style={{ display: showInbox ? 'block' : 'none' }}>
                     <h5 style={{textAlign:"center"}}>Messages</h5>                        
                     <div>
-                        {member && member.user.messages.map((elem, index) => (
-                            <div key={index} className={messagemodalstyle.message} onClick={handleReadMessageModal}>
+                        {member && member.user.messages && member.user.messages.map((elem, index) => (
+                            <div key={index} className={messagemodalstyle.message} onClick={() =>handleReadMessageModal(elem)}>
                                 <div style={{display:"flex", alignItems:"center", columnGap:'.5rem'}}>   
-                                    <label htmlFor="Select"></label>
-                                    <input type="checkbox" name="select" id="Select" />
+                                    <label htmlFor={`SelectMsg_${index}`}></label>
+                                    <input type="checkbox" name="select" id={`SelectMsg_${index}`} />
                                     <Mail size={20} />
                                 </div>
                                 <div style={{fontWeight:"bold"}}>
@@ -240,11 +184,10 @@ const MessageBoard = () => {
                                 </div>
                             </div>
                         ))}
-                        
                     </div>
                 </div>
             </div>
-            {showReadMessageModal && (<ReadMessageModal close={setShowReadMessageModal} />)}
+            {showReadMessageModal && (<ReadMessageModal close={setShowReadMessageModal} message={selectedMessage} />)}
         </div>
     )
 }
