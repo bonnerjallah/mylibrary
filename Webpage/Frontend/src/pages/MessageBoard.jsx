@@ -15,7 +15,7 @@ const MessageBoard = () => {
 
     const [member, setMember] = useState('')
     const [allUsers, setAllUsers] = useState('')
-    const [showReciever, setShowRecievers] = useState(false)
+    const [showContact, setShowContact] = useState(false)
     const [personRecieving, setPersonRecieving] = useState({
         recv : "",
     })
@@ -61,8 +61,8 @@ const MessageBoard = () => {
         fetchAllUsers()
     }, [])
 
-    const handleShowRecievers = () => {
-        setShowRecievers(!showReciever)
+    const handleShowContact = () => {
+        setShowContact(!showContact)
     }
 
     const handlepersonRecieving = (e) => {
@@ -127,13 +127,13 @@ const MessageBoard = () => {
 
 
 
-    // console.log(allUsers)
+    console.log(allUsers)
     console.log(member)
 
     return (
         <div className={messagemodalstyle.messageBoardMainContainer}>
             <div className={messagemodalstyle.msgBoardHeaderWrapper}>
-                <p>Welcome <span style={{backgroundColor:"#720026", borderRadius:"50%", color:"white", padding:" 0 .5rem"}}>B</span> bsmoke !!</p>
+                <p>Welcome <span style={{backgroundColor:"#720026", borderRadius:"50%", color:"white", padding:" 0 .5rem"}}>{member && member.user.userName.charAt(0).toUpperCase()}</span> {member && member.user.userName} !!</p>
                 <h1>My Message Board</h1>
             </div>
             <div style={{display:"flex", columnGap:"1rem", backgroundColor:"#a3b18a", padding:"1rem", alignItems:"center"}}>
@@ -154,10 +154,24 @@ const MessageBoard = () => {
                     </div>
 
                     <div className={messagemodalstyle.inboxBellContactWrapper}>
-                        <div> <Inbox /> Inbox (2)</div>
+                        <div> <Inbox /> Inbox ({member && member.user.messages && member.user.messages.length})</div>
                         <div> <Bell /> Notification ()</div>
-                        <div> <Contact /> Contacts</div>
+                        <div onClick={handleShowContact}> <Contact /> Contacts </div>
                     </div>
+                    <div className={showContact ? messagemodalstyle.showcontactsContainer : messagemodalstyle.contactsContainer}>
+                            {member && allUsers && (
+                                <>
+                                    {allUsers.filter(user => member.user.followers.includes(user._id)).map((contactElem, index) => (
+                                        <div key={index} className={messagemodalstyle.contactWrapper}>
+                                            <img src={`http://localhost:3001/libraryusersprofilepics/${contactElem.profilepic}`} alt="user image" width="30" height="30" style={{borderRadius:"50%"}}  />
+                                            <div>
+                                                {contactElem.username}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+                        </div>
                 </div>
 
                 <div className={messagemodalstyle.messageWrapper}>
@@ -168,16 +182,27 @@ const MessageBoard = () => {
                             <input type="checkbox" name="select" id="Select" />
                             <Mail size={20} />
                         </div>
-                        <div style={{display:"flex", justifyContent:"space-between", width:"70%", position:"absolute", right:"4rem"}}>   
-                            <div>
-                                sender name
-                            </div>
-                            <div>
-                                half message
-                            </div>
-                            <div>
-                                message date
-                            </div>
+                        <div style={{display:"flex", justifyContent:"space-between", width:"70%", position:"absolute", right:"4rem"}}>
+                            {member && member.user.messages.map((elem, index) => (
+                                <div key={index} style={{display:"flex", flexDirection:'column'}}>
+                                    <div>
+                                        {elem.senderName}
+                                    </div>
+                                    <div>
+                                        {elem.content}
+                                    </div>
+                                    <div style={{display:"flex"}}>
+                                        {new Date(elem.date).toLocaleString("en-Us", {
+                                            year:"numeric",
+                                            month:"short",
+                                            day:"2-digit",
+                                            hour:"2-digit",
+                                            minute:"numeric"
+                                        })}
+                                    </div>
+                                </div>
+                            ))}
+                            
                         </div>
                         
                     </div>

@@ -129,4 +129,33 @@
     right: 4rem;
 }
 
+.contactsContainer{
+    display: none;
+}
+
+.showcontactsContainer{
+    border: 1px solid rgb(10, 10, 10);
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+    row-gap: .5rem;
+    padding: .5rem;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+
+.contactWrapper{
+    display: flex;
+    column-gap: .5rem;
+    cursor: pointer;
+    width: max-content;
+}
+
+.contactWrapper:hover{
+    color: white;
+}
+
+
+
 
