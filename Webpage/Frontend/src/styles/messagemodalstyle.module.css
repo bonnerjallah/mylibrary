@@ -113,20 +113,20 @@
     border: 1px solid black;
 }
 
+
 .message{
     display: flex;
     width: 100%;
-    border: 1px solid red;
     column-gap: 4rem;
     padding: 0 3rem;
     position: relative;
     margin-top: 1rem;
+    background-color: #a3b18a;
+    cursor: pointer;
 }
 
-.message :nth-child(2){
-    display: flex;
-    width: 70%;
-    right: 4rem;
+.message:hover{
+    color: white;
 }
 
 .contactsContainer{
@@ -156,6 +156,92 @@
     color: white;
 }
 
+/*
+!Message Modal Style
+*/
 
+.msgModalMainContainer{
+    position: fixed;
+    transform: translate(-50% -50%);
+    top: 28%;
+    left: 22%;
+    width: 75%;
+    height: 70vh;
+    background-color: rgb(163, 177, 138);
+    display: flex;
+    flex-direction: column;
+}
 
+.msgModalMainContainer p{
+    position: absolute;
+    right: 1rem;
+    margin: 1rem 0;
+    border: 1px solid black;
+    cursor: pointer;
+}
 
+.msgModalMainContainer p:hover{
+    color: red;
+}
+
+.readContainer{
+    border: 2px solid black;
+    margin-top: 3rem;
+    height: 70%;
+    padding: .5rem;
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    column-gap: 1rem;
+}
+
+.ButtonWrapper{
+    display: flex;
+    column-gap: 1rem;
+    width: max-content;
+    position: absolute;
+    right: 1rem;
+    bottom: 3rem;
+}
+
+.ButtonWrapper button{
+    width: 7rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: .5rem;
+    cursor: pointer;
+    border: none;
+}
+
+.ButtonWrapper button:first-child {
+    color: green;
+    transition: all 400ms ease-in-out;
+}
+
+.ButtonWrapper button:first-child:hover{
+    border-radius: 10rem;
+    color: white;
+    background-color: green;
+}
+
+.ButtonWrapper button:nth-child(2) {
+    color: red;
+    transition: all 400ms ease-in-out;
+}
+
+.ButtonWrapper button:nth-child(2):hover{
+    border-radius: 10rem;
+    color: white;
+    background-color: red;
+}
+
+.senderPicAndNameWrapper{
+    border: 1px solid green;
+    padding: .5rem;
+}
+
+.messageWrapper{
+    background-color: white;
+    padding: .5rem;
+}

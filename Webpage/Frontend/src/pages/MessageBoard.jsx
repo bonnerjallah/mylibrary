@@ -4,10 +4,10 @@ import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext"
 import {NavLink} from "react-router-dom"
 
-import { ChevronUp, Home, Pen, Inbox, Bell, Contact, LayoutDashboard, Mail} from 'lucide-react';
-
-
+import {Home, Pen, Inbox, Bell, Contact, LayoutDashboard, Mail} from 'lucide-react';
 import messagemodalstyle from "../styles/messagemodalstyle.module.css"
+
+import ReadMessageModal from "../components/ReadMessageModal"
 
 const MessageBoard = () => {
 
@@ -16,6 +16,9 @@ const MessageBoard = () => {
     const [member, setMember] = useState('')
     const [allUsers, setAllUsers] = useState('')
     const [showContact, setShowContact] = useState(false)
+    const [showNotification, setShowNotification] = useState(false)
+    const [showInbox, setShowInbox] = useState(false)
+    const [showReadMessageModal, setShowReadMessageModal] = useState(false)
     const [personRecieving, setPersonRecieving] = useState({
         recv : "",
     })
@@ -23,9 +26,10 @@ const MessageBoard = () => {
         sendmsg : ""
     })
 
-    const [messageSent, setMessageSent] = useState({})
 
-
+    const handleReadMessageModal = () => {
+        setShowReadMessageModal(true)
+    }
 
 
     //Fetch user data
@@ -104,10 +108,7 @@ const MessageBoard = () => {
             })
 
             if(response.status === 200) {
-
-                    setTimeout(() => {
-                        setMessageSent("Message sent")
-                    }, 1000);
+                console.log("successfully sent message")
             }
 
             setPersonRecieving({
@@ -124,7 +125,14 @@ const MessageBoard = () => {
     }
 
 
-
+    const handleShowNotification = () => {
+        setShowNotification(true)
+        setShowInbox(false)
+    }
+    const handleShowInbox = () => {
+        setShowInbox(true)
+        setShowNotification(false)
+    }
 
 
     console.log(allUsers)
@@ -154,8 +162,8 @@ const MessageBoard = () => {
                     </div>
 
                     <div className={messagemodalstyle.inboxBellContactWrapper}>
-                        <div> <Inbox /> Inbox ({member && member.user.messages && member.user.messages.length})</div>
-                        <div> <Bell /> Notification ()</div>
+                        <div onClick={handleShowInbox}> <Inbox /> Inbox ({member && member.user.messages && member.user.messages.length})</div>
+                        <div onClick={handleShowNotification}> <Bell /> Notification ()</div>
                         <div onClick={handleShowContact}> <Contact /> Contacts </div>
                     </div>
                     <div className={showContact ? messagemodalstyle.showcontactsContainer : messagemodalstyle.contactsContainer}>
@@ -174,41 +182,69 @@ const MessageBoard = () => {
                         </div>
                 </div>
 
-                <div className={messagemodalstyle.messageWrapper}>
-                    <h5 style={{textAlign:"center"}}>Messages</h5>
-                    <div className={messagemodalstyle.message}>
-                        <div style={{display:"flex", alignItems:"center", columnGap:'.5rem'}}>   
-                            <label htmlFor="Select"></label>
-                            <input type="checkbox" name="select" id="Select" />
-                            <Mail size={20} />
-                        </div>
-                        <div style={{display:"flex", justifyContent:"space-between", width:"70%", position:"absolute", right:"4rem"}}>
-                            {member && member.user.messages.map((elem, index) => (
-                                <div key={index} style={{display:"flex", flexDirection:'column'}}>
-                                    <div>
-                                        {elem.senderName}
-                                    </div>
-                                    <div>
-                                        {elem.content}
-                                    </div>
-                                    <div style={{display:"flex"}}>
-                                        {new Date(elem.date).toLocaleString("en-Us", {
-                                            year:"numeric",
-                                            month:"short",
-                                            day:"2-digit",
-                                            hour:"2-digit",
-                                            minute:"numeric"
-                                        })}
-                                    </div>
+                <div className={messagemodalstyle.messageWrapper} style={{ display: showNotification ? 'block' : 'none' }}>
+                    <h5 style={{textAlign:"center"}}>Notification</h5>                        
+                    <div>
+                        {member && member.user.messages.map((elem, index) => (
+                            <div key={index} className={messagemodalstyle.message}>
+                                <div style={{display:"flex", alignItems:"center", columnGap:'.5rem'}}>   
+                                    <label htmlFor="Select"></label>
+                                    <input type="checkbox" name="select" id="Select" />
+                                    <Mail size={20} />
                                 </div>
-                            ))}
-                            
-                        </div>
+                                <div style={{fontWeight:"bold"}}>
+                                    {elem.senderName}
+                                </div>
+                                <div>
+                                    {elem.content.split(' ').slice(0, 10).join(' ')} ...
+                                </div>
+                                <div style={{display:"flex", position:"absolute", right:"1rem"}}>
+                                    {new Date(elem.date).toLocaleString("en-Us", {
+                                        year:"numeric",
+                                        month:"short",
+                                        day:"2-digit",
+                                        hour:"2-digit",
+                                        minute:"numeric"
+                                    })}
+                                </div>
+                            </div>
+                        ))}
                         
                     </div>
                 </div>
 
+                <div className={ messagemodalstyle.messageWrapper} style={{ display: showInbox ? 'block' : 'none' }}>
+                    <h5 style={{textAlign:"center"}}>Messages</h5>                        
+                    <div>
+                        {member && member.user.messages.map((elem, index) => (
+                            <div key={index} className={messagemodalstyle.message} onClick={handleReadMessageModal}>
+                                <div style={{display:"flex", alignItems:"center", columnGap:'.5rem'}}>   
+                                    <label htmlFor="Select"></label>
+                                    <input type="checkbox" name="select" id="Select" />
+                                    <Mail size={20} />
+                                </div>
+                                <div style={{fontWeight:"bold"}}>
+                                    {elem.senderName}
+                                </div>
+                                <div>
+                                    {elem.content.split(' ').slice(0, 10).join(' ')} ...
+                                </div>
+                                <div style={{display:"flex", position:"absolute", right:"1rem"}}>
+                                    {new Date(elem.date).toLocaleString("en-Us", {
+                                        year:"numeric",
+                                        month:"short",
+                                        day:"2-digit",
+                                        hour:"2-digit",
+                                        minute:"numeric"
+                                    })}
+                                </div>
+                            </div>
+                        ))}
+                        
+                    </div>
+                </div>
             </div>
+            {showReadMessageModal && (<ReadMessageModal close={setShowReadMessageModal} />)}
         </div>
     )
 }
