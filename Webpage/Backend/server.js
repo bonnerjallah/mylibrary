@@ -192,6 +192,35 @@ app.delete("/deletefromshelves/:bookid/:_id", async(req, res) => {
     }
 })
 
+//Delete messages
+app.delete("/deleteMessages/:userId/:msgId", async (req, res) => {
+    try {
+        const {userId, msgId} = req.params
+
+        console.log(req.params)
+
+        if(!userId || !msgId) {
+            return res.status(404).json({message: "Invalid, missing require field"})
+        }
+
+        const user = await LibraryUsers.findById(userId)
+
+        if(!user) {
+            return res.status(400).json({message: "User not found"})
+        }
+
+        user.messages = user.messages.filter(elem => elem._id.toString() !== msgId)
+
+        const result = await user.save()
+
+        return res.json(result)
+
+    } catch (error) {
+        console.log("error deleting message form database", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
+
 //Remove book form on hold
 app.delete("/onholddelete/:elem/:_id", async (req, res) => {
     try {
@@ -377,7 +406,6 @@ app.post("/sendmessage", async (req, res) => {
         return res.status(500).json({ message: "Internal server issue" });
     }
 });
-
 
 //Updating book review field
 app.post("/reviewerinput", async (req, res) => {

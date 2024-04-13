@@ -7,7 +7,7 @@ import { useAuth } from "./AuthContext";
 
 
 
-const ReadMessageModal = ({ close, message}) => {
+const ReadMessageModal = ({ close, message, deletedMessage }) => {
 
     const {user} = useAuth()
     console.log(message)
@@ -18,6 +18,9 @@ const ReadMessageModal = ({ close, message}) => {
         sendMsg : ""
     })
     const [messageSent, setMessageSent] = useState("")
+    const [messageDeleted, setMessageDeleted] = useState(false)
+
+
 
     axios.defaults.withCredentials = true
     useEffect(() => {
@@ -87,6 +90,31 @@ const ReadMessageModal = ({ close, message}) => {
         }
     }
 
+    const handleMessageDelete = async (_id) => {
+        const userId = member.user.id;
+        const msgId = _id;
+    
+    
+        try {
+            const response = await axios.delete(`http://localhost:3001/deleteMessages/${userId}/${msgId}`);
+    
+            if (response.status === 200) {
+                console.log("successfully deleted message");
+                
+                deletedMessage(msgId); // Pass the deleted message ID back to the parent
+            }
+
+            
+
+            close(false)
+    
+        } catch (error) {
+            console.log("error deleting user data", error);
+            // Optionally show an error message to the user
+        }
+    }
+    
+
 
     return (
         <div className={messagemodalstyle.msgModalMainContainer}>
@@ -103,8 +131,8 @@ const ReadMessageModal = ({ close, message}) => {
                         </div>
                     </div>
                     <div className={messagemodalstyle.messageWrapper}>
-                        {message.content}
-
+                        {message.content} 
+                        {inputData.sendMsg}
 
                         {showReplyBox ? (
                             <form onSubmit={handleReplyMessageSubmit} encType="multi-part" method="POST">
@@ -127,7 +155,7 @@ const ReadMessageModal = ({ close, message}) => {
                 {showReplyBox ? ( " " ) : (
                     <div className={messagemodalstyle.ButtonWrapper}>
                     <button onClick={handleShowReplyBox}> <MessageCircleReply size={25}/>Reply</button>
-                    <button> <Trash2 size={25} />Delete</button>
+                    <button onClick={() => handleMessageDelete(message._id)}> <Trash2 size={25} />Delete</button>
                 </div>
                 )}
                 

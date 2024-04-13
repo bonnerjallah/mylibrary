@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext"
@@ -67,9 +67,6 @@ const MessageBoard = () => {
         setShowContact(!showContact)
     }
 
-
-
-
     const handleShowNotification = () => {
         setShowNotification(true)
         setShowInbox(false)
@@ -80,6 +77,22 @@ const MessageBoard = () => {
         setShowNotification(false)
     }
 
+
+    //Callback function to update deleted message state
+    const handleDeleteMessage = (deletedMsgId) => {
+
+        setMember(prevMember => {
+            const updatedMessages = prevMember.user.messages.filter(msg => msg._id !== deletedMsgId)
+            return {
+                ...prevMember,
+                user: {
+                    ...prevMember.user,
+                    messages: updatedMessages
+                }
+            }
+        })
+
+    };
 
 
     return (
@@ -164,7 +177,6 @@ const MessageBoard = () => {
                             <div key={index} className={messagemodalstyle.message} onClick={() =>handleReadMessageModal(elem)}>
                                 <div style={{display:"flex", alignItems:"center", columnGap:'.5rem'}}>   
                                     <label htmlFor={`SelectMsg_${index}`}></label>
-                                    <input type="checkbox" name="select" id={`SelectMsg_${index}`} />
                                     <Mail size={20} />
                                 </div>
                                 <div style={{fontWeight:"bold"}}>
@@ -187,7 +199,7 @@ const MessageBoard = () => {
                     </div>
                 </div>
             </div>
-            {showReadMessageModal && (<ReadMessageModal close={setShowReadMessageModal} message={selectedMessage} />)}
+            {showReadMessageModal && (<ReadMessageModal close={setShowReadMessageModal} message={selectedMessage}  deletedMessage={handleDeleteMessage} />)}
         </div>
     )
 }
