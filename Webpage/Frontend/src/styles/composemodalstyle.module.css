@@ -85,3 +85,14 @@
     border-radius: 10rem;
     color: white;
 }
+
+.userAndContactWrapper{
+    display: grid;
+    grid-template-rows: 20% 1fr ;
+    row-gap: 1rem;
+    padding: .2rem 0;
+}
+
+.contactWrapper{
+    border: 1px solid black;
+}
