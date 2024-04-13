@@ -98,8 +98,9 @@ const MessageBoard = () => {
 
     };
 
-    const handleShowComposeBox = () => {
+    const handleShowComposeBox = (username) => {
         setShowComposeBox(true)
+        setShowContact(false)
     }
 
 
@@ -137,7 +138,7 @@ const MessageBoard = () => {
                                     {allUsers.filter(user => member.user.followers.includes(user._id)).map((contactElem, index) => (
                                         <div key={index} className={messagemodalstyle.contactWrapper}>
                                             <img src={`http://localhost:3001/libraryusersprofilepics/${contactElem.profilepic}`} alt="user image" width="30" height="30" style={{borderRadius:"50%"}}  />
-                                            <div>
+                                            <div onClick={handleShowComposeBox}>
                                                 {contactElem.username}
                                             </div>
                                         </div>
@@ -208,7 +209,7 @@ const MessageBoard = () => {
                 </div>
             </div>
             {showReadMessageModal && (<ReadMessageModal close={setShowReadMessageModal} message={selectedMessage}  deletedMessage={handleDeleteMessage} />)}
-            {showComposeBox && (<ComposeModal closeModal={setShowComposeBox} />)}
+            {showComposeBox && (<ComposeModal closeModal={setShowComposeBox}  />)}
         </div>
     )
 }

@@ -94,7 +94,7 @@ app.get("/suggestedBooks", async (req, res) => {
     }
 })
 
-//Get users you following
+//Get all users
 app.get("/usersToFollow", async(req, res) => {
     try {
         const results = await LibraryUsers.find().select("_id username profilepic reviewer").exec()
