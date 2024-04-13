@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext"
@@ -8,6 +8,7 @@ import {Home, Pen, Inbox, Bell, Contact, LayoutDashboard, Mail} from 'lucide-rea
 import messagemodalstyle from "../styles/messagemodalstyle.module.css"
 
 import ReadMessageModal from "../components/ReadMessageModal"
+import ComposeModal from "../components/ComposeModal"
 
 const MessageBoard = () => {
 
@@ -20,6 +21,7 @@ const MessageBoard = () => {
     const [showInbox, setShowInbox] = useState(false)
     const [showReadMessageModal, setShowReadMessageModal] = useState(false)
     const [selectedMessage, setSelectedMessage] = useState(null);
+    const [showComposeBox, setShowComposeBox] = useState(false)
 
 
     const handleReadMessageModal = (elem) => {
@@ -63,20 +65,22 @@ const MessageBoard = () => {
         fetchAllUsers()
     }, [])
 
+    //Contact state function
     const handleShowContact = () => {
         setShowContact(!showContact)
     }
 
+    //Notification state function
     const handleShowNotification = () => {
         setShowNotification(true)
         setShowInbox(false)
     }
     
+    //Inbox state Function
     const handleShowInbox = () => {
         setShowInbox(true)
         setShowNotification(false)
     }
-
 
     //Callback function to update deleted message state
     const handleDeleteMessage = (deletedMsgId) => {
@@ -93,6 +97,10 @@ const MessageBoard = () => {
         })
 
     };
+
+    const handleShowComposeBox = () => {
+        setShowComposeBox(true)
+    }
 
 
     return (
@@ -115,7 +123,7 @@ const MessageBoard = () => {
 
                 <div className={messagemodalstyle.sideBarWrapper}>
                     <div className={messagemodalstyle.composeButtonWrapper}>
-                        <button><Pen /> Compose</button>
+                        <button onClick={handleShowComposeBox}><Pen /> Compose</button>
                     </div>
 
                     <div className={messagemodalstyle.inboxBellContactWrapper}>
@@ -200,6 +208,7 @@ const MessageBoard = () => {
                 </div>
             </div>
             {showReadMessageModal && (<ReadMessageModal close={setShowReadMessageModal} message={selectedMessage}  deletedMessage={handleDeleteMessage} />)}
+            {showComposeBox && (<ComposeModal closeModal={setShowComposeBox} />)}
         </div>
     )
 }
