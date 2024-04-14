@@ -17,18 +17,23 @@ const ComposeModal = ({closeModal}) => {
     const [allUsers, setAllUsers] = useState([])
     const [openContacts, setOpenContacts] = useState(false)
     const [selectedContact, setSelectedContact] = useState("")
+    const [message, setMessage] = useState({
+        sendMsg : ""
+    })
 
+    const [receiver, setReceiver] = useState('')
+
+    //handle open contact dropdown
     const handleOpenContacts = () => {
         setOpenContacts(!openContacts)
     }
 
+    //select contact function
     const handleSelectedContact = (e) => {
         const selected = e.target.textContent
         setSelectedContact(selected)
         setOpenContacts(false)
     }
-
-
 
     //Fetch user data function
     axios.defaults.withCredentials = true
@@ -66,9 +71,52 @@ const ComposeModal = ({closeModal}) => {
         fetchAllUsers(  )
     }, [])
 
-    console.log(member)
-    // console.log("allusers", allUsers)
-    // console.log("followers", followers)
+    //handle textarea input data
+    const handleComposeInput = (e) => {
+        const {name, value} = e.target
+
+        setMessage((prev) => ({...prev, [name]: value}))
+    }
+
+    console.log(allUsers)
+    console.log(selectedContact)
+
+    const handleComposeFormSubmit = async (e) => {
+        e.preventDefault()
+
+        const reciever = allUsers.find(elem => elem.username === selectedContact)
+
+        const requestObject = {
+            senderId : member.user.id,
+            senderName : member.user.userName,
+            senderProfilePic : member.user.profilepic,
+            message : message.sendMsg,
+            receiverId : reciever._id
+        }
+
+        try {
+            const response = await axios.post("http://localhost:3001/sendmessage", requestObject , {
+                headers: {"Content-Type": "application/json"}
+            })
+        
+            if(response.status === 200) {
+                console.log("successfully send message")
+            }
+
+            setMessage({
+                sendMsg : ""
+            })
+
+            setSelectedContact("")
+            
+        } catch (error) {
+            console.log("error sending message", error)
+        }
+    }
+
+    
+
+    console.log(receiver)
 
     return (
         <div className={composemodalstyle.mainContainer}>
@@ -95,12 +143,12 @@ const ComposeModal = ({closeModal}) => {
                     </div>
                 </div>
                 <div className={composemodalstyle.composeFormWrapper}>
-                    <form >
+                    <form onSubmit={handleComposeFormSubmit} encType='mulitpart/form-data' method='POST' >
                         <h5>To: <span style={{color:"white"}}>{selectedContact} </span></h5>
                         <label htmlFor="ComposeMessage"></label>
-                        <textarea name="sendMsg" id="" cols="30" rows="10"></textarea>
+                        <textarea name="sendMsg" id="" cols="30" rows="10" value={message.sendMsg} onChange={handleComposeInput}></textarea>
                         <div>
-                            <button className={composemodalstyle.sendButton}><Send />Send</button>
+                            <button type='submit' className={composemodalstyle.sendButton}><Send />Send</button>
                             <button className={composemodalstyle.cancleButton}><MessageCircleOff />Cancle</button>
                         </div>
                     </form>
