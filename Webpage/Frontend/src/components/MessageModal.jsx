@@ -51,6 +51,19 @@ const MessageModal = () => {
 
             <div className={messagemodalstyle.headerWrapper}>
                 <h3>Notifications</h3>
+                <>
+                    {member && member.user.messages && (
+                        <div className={messagemodalstyle.modalMessageWrapper}>
+                            {member.user.messages.map((elem, id) => (
+                                <div key={id}>
+                                    <NavLink to="/MessageBoard">
+                                        <p>{elem.content.split(' ').slice(0, 5).join(' ')}...</p>
+                                    </NavLink>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </>
             </div>
                 <div className={messagemodalstyle.notifiWrapper}>
                     <NavLink to="/MessageBoard">

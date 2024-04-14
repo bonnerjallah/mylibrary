@@ -132,7 +132,6 @@ const ReadMessageModal = ({ close, message, deletedMessage }) => {
                     </div>
                     <div className={messagemodalstyle.messageWrapper}>
                         {message.content} 
-                        {inputData.sendMsg}
 
                         {showReplyBox ? (
                             <form onSubmit={handleReplyMessageSubmit} encType="multi-part" method="POST">
@@ -142,7 +141,6 @@ const ReadMessageModal = ({ close, message, deletedMessage }) => {
                                     <button type="submit" style={{border:"none"}} className={messagemodalstyle.sendButton}><Send />Send</button>
                                     <button className={messagemodalstyle.cancleButton} onClick={hadleCloseReply}><MessageCircleOff />Cancle</button>
                                 </div>
-                                
                             </form>
                         ) : (
                             ""

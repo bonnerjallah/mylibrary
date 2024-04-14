@@ -1,7 +1,7 @@
 .mainContainer{
     border: 1px solid black;
     width: 20rem;
-    height: 20rem;
+    height: max-content;
     background-color: #f9f7f7;
     z-index: 99999;
     position: absolute;
@@ -12,6 +12,18 @@
 .headerWrapper{
     padding-left: .5rem;
     border-bottom: 1px solid black;
+    height: max-content;
+}
+
+.modalMessageWrapper div{
+    display: flex;
+    margin-top: .7rem;
+}
+
+.modalMessageWrapper div p:hover{
+    color: rgb(237, 127, 127);
+    cursor: pointer;
+    width: max-content;
 }
 
 .notifiWrapper a{

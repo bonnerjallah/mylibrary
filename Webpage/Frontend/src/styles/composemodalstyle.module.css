@@ -150,3 +150,15 @@
     width: max-content;
     margin-left: .5rem;
 }
+
+.confermMessageSent{
+    font: 1.5rem;
+    background-color: rgb(0, 0, 0, .7);
+    width: max-content;
+    height: 2rem;
+    padding: .5rem;
+    transform: translate(-50% -50%);
+    top: 50%;
+    left: 50%;
+    color: white;
+}

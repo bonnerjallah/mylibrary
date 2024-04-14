@@ -18,7 +18,7 @@ const MessageBoard = () => {
     const [allUsers, setAllUsers] = useState('')
     const [showContact, setShowContact] = useState(false)
     const [showNotification, setShowNotification] = useState(false)
-    const [showInbox, setShowInbox] = useState(false)
+    const [showInbox, setShowInbox] = useState(true)
     const [showReadMessageModal, setShowReadMessageModal] = useState(false)
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [showComposeBox, setShowComposeBox] = useState(false)
@@ -98,7 +98,7 @@ const MessageBoard = () => {
 
     };
 
-    const handleShowComposeBox = (username) => {
+    const handleShowComposeBox = () => {
         setShowComposeBox(true)
         setShowContact(false)
     }

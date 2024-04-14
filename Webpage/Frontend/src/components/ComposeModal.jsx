@@ -21,7 +21,8 @@ const ComposeModal = ({closeModal}) => {
         sendMsg : ""
     })
 
-    const [receiver, setReceiver] = useState('')
+    const [confermMsgSent, setConfermMsgSent] = useState("")
+
 
     //handle open contact dropdown
     const handleOpenContacts = () => {
@@ -101,6 +102,11 @@ const ComposeModal = ({closeModal}) => {
         
             if(response.status === 200) {
                 console.log("successfully send message")
+                setConfermMsgSent("Message sent")
+
+                setTimeout(() => {
+                    setConfermMsgSent("")
+                }, 2000);
             }
 
             setMessage({
@@ -108,15 +114,13 @@ const ComposeModal = ({closeModal}) => {
             })
 
             setSelectedContact("")
+
             
         } catch (error) {
             console.log("error sending message", error)
         }
     }
 
-    
-
-    console.log(receiver)
 
     return (
         <div className={composemodalstyle.mainContainer}>
@@ -154,6 +158,7 @@ const ComposeModal = ({closeModal}) => {
                     </form>
                 </div>
             </div>
+            {confermMsgSent && (<p className={composemodalstyle.confermMessageSent}>{confermMsgSent}</p>)}
         </div>
     )
 }
