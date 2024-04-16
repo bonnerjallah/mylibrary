@@ -1,0 +1,53 @@
+.mainContainer{
+    padding: 1rem;
+}
+
+.mainContainer form {
+    display: grid;
+    grid-template-columns: 40% 40% 1fr;
+    position: relative;
+    column-gap: 2rem;
+    background-color: #344e41;
+    color: white;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+.mainContainer form select{
+    width: 10rem;
+}
+
+.mainContainer form div:first-child{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.checkButtons{
+    grid-area: 2 / span 3;
+    display: flex;
+    margin-top: 2rem;
+}
+
+.checkButtons button{
+    width: 14rem;
+    height: 2rem;
+    margin: auto;
+    cursor: pointer;
+    transition: all 400ms ease-in-out;
+}
+
+.checkButtons button:first-child:hover{
+    background-color: green;
+    border: none;
+    border-radius: 10rem;
+    color: white;
+}
+
+.checkButtons button:last-child:hover{
+    background-color: #bc4749;
+    border: none;
+    border-radius: 10rem;
+    color: white;
+}
