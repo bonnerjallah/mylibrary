@@ -17,7 +17,7 @@
     width: 10rem;
 }
 
-.mainContainer form div:first-child{
+.firstSection{
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -49,5 +49,13 @@
     background-color: #bc4749;
     border: none;
     border-radius: 10rem;
+    color: white;
+}
+
+select {
+    margin-left: .5rem;
+}
+
+.isbnAuthorGereWrapper{
     color: white;
 }

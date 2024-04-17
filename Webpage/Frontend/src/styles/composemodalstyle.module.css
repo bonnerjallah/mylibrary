@@ -131,8 +131,17 @@
     margin-top: .5rem;
     border: 1px solid black;
     padding: .5rem;
-    overflow-y: scroll;
+    height: 5.5rem;
+    overflow-y: hidden;
     scroll-behavior: smooth;
+}
+
+.showcontacts:hover{
+    overflow-y: scroll;
+}
+
+.showcontactsContainer {
+    transition: overflow-y 0.3s ease-in-out;
 }
 
 .contact{

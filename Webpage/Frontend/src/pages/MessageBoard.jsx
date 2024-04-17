@@ -103,6 +103,9 @@ const MessageBoard = () => {
         setShowContact(false)
     }
 
+    console.log("all users", allUsers)
+    console.log("member", member)
+
 
     return (
         <div className={messagemodalstyle.messageBoardMainContainer}>

@@ -152,8 +152,19 @@
     margin-left: 2rem;
     row-gap: .5rem;
     padding: .5rem;
-    overflow-y: scroll;
+    height: 5rem;
+    overflow-y: hidden;
     scroll-behavior: smooth;
+}
+
+/* Show scrollbar on hover */
+.showcontactsContainer:hover {
+    overflow-y: scroll;
+}
+
+/* Optional: Add a smooth transition */
+.showcontactsContainer {
+    transition: overflow-y 0.3s ease-in-out;
 }
 
 
