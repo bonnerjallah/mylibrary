@@ -98,7 +98,6 @@ const OnHoldModal = ({closeModal}) => {
         fetchBooks()
     }, [])
 
-    console.log(member)
 
     const handleDeletingOnHoldBook = async (elem) => {
 
@@ -157,7 +156,7 @@ const OnHoldModal = ({closeModal}) => {
                                                 <p style={{fontSize:"1rem", color:"black"}}>{bookOnHold.bookDiscription.split(" ").slice(0, 15).join(' ')}...</p>
                                             </div>
                                             
-                                            <NavLink to="/CheckOutBooks">
+                                            <NavLink to={`/CheckOutBooks/${bookOnHold._id}`}>
                                                 <button className={onholdmodalstyle.button}>Check Out</button>
                                             </NavLink>
                                             <button className={onholdmodalstyle.removeButton} onClick={() => handleDeletingOnHoldBook(elem)}>Remove</button>

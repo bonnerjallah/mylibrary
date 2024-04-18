@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext"
+import { NavLink, useParams } from "react-router-dom"
 
 
 
@@ -13,6 +14,7 @@ import checkoutbookstyle from "../styles/checkoutbookstyle.module.css"
 const CheckOutBooks = () => {
 
     const {user} = useAuth()
+    const {_id} = useParams()
 
     const [member, setMember] = useState('')
     const [allBooks, setAllBooks] = useState([])
@@ -20,6 +22,7 @@ const CheckOutBooks = () => {
         bookOnHold : ""
     })
     const [selectedBook, setSelectedBook] = useState({})
+    const [bookOnHoldForCheckOut, setBookOnHoldForCheckOut] = useState({})
     const [checkOutDate, setCheckOutDate] = useState(null);
     const [expectedReturnDate, setExpectedReturnDate] = useState(null)
     const [latefee, setLateFee] = useState(0)
@@ -44,7 +47,6 @@ const CheckOutBooks = () => {
         fetchUserData()
     }, [])
 
-    console.log(member)
 
     useEffect(() => {
         const fetchAllBooks = async () => {
@@ -66,6 +68,20 @@ const CheckOutBooks = () => {
         fetchAllBooks()
     }, [])
 
+
+    //book on hold for checkout function
+    useEffect(() => {
+        const holdBookForCheckOut = () => {
+            const holdForCheckOut = allBooks.find(elem => elem._id === _id)
+            setBookOnHoldForCheckOut(holdForCheckOut)
+            setLateFee("50");
+
+        }
+        holdBookForCheckOut()
+    }, [_id, allBooks])
+    
+
+    //Selected book function
     const handleBookBeingCheckedOut = (e) => {
         const checkOutBook = e.target.value;
     
@@ -75,6 +91,11 @@ const CheckOutBooks = () => {
         // Find selected book
         const selectedBookToCheckOut = allBooks.find(elem => elem._id === checkOutBook);
         setSelectedBook(selectedBookToCheckOut);
+    
+        // Set bookOnHoldForCheckOut to null when selectedBook exists
+        if (selectedBookToCheckOut) {
+            setBookOnHoldForCheckOut('');
+        }
     
         // Set checkOutDate to current date
         const checkOutDate = new Date();
@@ -88,23 +109,24 @@ const CheckOutBooks = () => {
         setLateFee("50");
     };
     
+    
+    
 
-    // console.log(bookBeingCheckedOut)
-    // console.log("selected book", selectedBook)
+    const handleBookCheckOutSubmit = async (e) => {
+        e.preventDefault()
+    }
 
-    console.log(latefee)
-
+    
 
     return (
         <div className={checkoutbookstyle.mainContainer}>
             <div className={checkoutbookstyle.headerWrapper}>
-                <h1>Check Out</h1>
+                <h1>Check Out Book</h1>
             </div>
-            <form>
+            <form onSubmit={handleBookCheckOutSubmit} encType="multipart/form-data" method="POST">
                 
                 <div className={checkoutbookstyle.firstSection}>
                     <label htmlFor="BooksOnHold">
-                        Title: 
                             <select name="bookOnHold" id="BooksOnHold" onChange={ handleBookBeingCheckedOut }>
                                 <option value="">Select a book</option>
                                 {allBooks && member && member.user && member.user.shelf && (
@@ -123,9 +145,16 @@ const CheckOutBooks = () => {
                     
                     <div className={checkoutbookstyle.isbnAuthorGereWrapper}>
                         <div>
-                            <p>ISBN: <span>{selectedBook.bookIsbn}</span></p>
-                            <p>Author: <span>{selectedBook.bookAuthor}</span></p>
-                            <p>Genre: <span>{selectedBook.bookGenre ? selectedBook.bookGenre[0].split(' ').slice(0,1).join(' ') : ""}</span></p>
+                        <p>Title: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookTitle : selectedBook.bookTitle}</span></p>
+                            <p>ISBN: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookIsbn : selectedBook.bookIsbn}</span></p>
+                            <p>Author: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookAuthor : selectedBook.bookAuthor}</span></p>
+                            <p>Genre: 
+                                <span>
+                                    {bookOnHoldForCheckOut?.bookGenre?.[0]?.split(' ').slice(0, 1).join(' ') ||
+                                    (selectedBook?.bookGenre?.[0]?.split(' ').slice(0, 1).join(' ') || '')}
+                                </span>
+                            </p>
+
                         </div>
                     </div>      
 
@@ -133,7 +162,11 @@ const CheckOutBooks = () => {
                 </div>
                 <div className={checkoutbookstyle.publishCheckOutDateWrapper}>
                     <p>Publis Date: 
-                        <span>{ selectedBook && selectedBook.bookPublishDate ? new Date(selectedBook.bookPublishDate).toLocaleDateString("en-US", {
+                        <span>{bookOnHoldForCheckOut && bookOnHoldForCheckOut.bookPublishDate ? new Date(bookOnHoldForCheckOut.bookPublishDate).toLocaleDateString("en-US", {
+                            year:"numeric",
+                            month:"2-digit",
+                            day:"2-digit"
+                        }) : selectedBook && selectedBook.bookPublishDate ? new Date(selectedBook.bookPublishDate).toLocaleDateString("en-US", {
                             year:"numeric",
                             month:"2-digit",
                             day:"2-digit"
@@ -141,7 +174,7 @@ const CheckOutBooks = () => {
                         </span>
                     </p>
                     <p>Date Check Out: 
-                        <span>{ checkOutDate ? new Date(Date.now()).toLocaleDateString("en-US", {
+                        <span>{bookOnHoldForCheckOut || checkOutDate ? new Date(Date.now()).toLocaleDateString("en-US", {
                             year:"numeric",
                             month:'2-digit',
                             day:'2-digit'
@@ -150,22 +183,30 @@ const CheckOutBooks = () => {
                     </p>
                     <p>Expected Return Date: 
                         <span>
-                            { expectedReturnDate ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString("en-Us", {
+                            {bookOnHoldForCheckOut || expectedReturnDate ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString("en-Us", {
                                 year:'numeric',
                                 month:'2-digit',
                                 day:'2-digit'
                             }) : ""}
                         </span>
                     </p>
-                    <p>Late Fee / Damage: <span>{selectedBook ? `$ ${latefee}` : ""}</span></p>
+                    <p>Late Fee Or Damage Item: <span>{bookOnHoldForCheckOut ? `$ ${latefee}` : selectedBook ? `$ ${latefee}` : ""}</span></p>
                 </div>
-                <div>
-                <img src={`http://localhost:3001/booksimages/${selectedBook ? selectedBook.bookImageUrl : ''}`} alt="Book Image" width="100" height="120" />
+                <div>{bookOnHoldForCheckOut ? (
+                        <img src={`http://localhost:3001/booksimages/${bookOnHoldForCheckOut.bookImageUrl}`} alt="" width="100" height="120" />
+                    ) : selectedBook ? (
+                        <img src={`http://localhost:3001/booksimages/${selectedBook.bookImageUrl}`} alt="" width="100" height="120" />
+                    ) : (
+                        <img src="" alt="" width="100" height="120" />
+                    )}
                 </div>
 
                 <div className={checkoutbookstyle.checkButtons}>
-                    <button>Check Out</button>
-                    <button>Cancle</button>
+                    <button type="submit">Check Out</button>
+                    <NavLink to="/Dashboard">
+                        <button>Cancle</button>
+                    </NavLink>
+                        
                 </div>
                 
                 

@@ -24,10 +24,14 @@
     margin-bottom: 1rem;
 }
 
-.checkButtons{
+.checkButtons {
     grid-area: 2 / span 3;
-    display: flex;
     margin-top: 2rem;
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    margin-right: 15rem; /* Right margin for space */
+    align-self: center; /* Center the container vertically in its grid cell */
 }
 
 .checkButtons button{
