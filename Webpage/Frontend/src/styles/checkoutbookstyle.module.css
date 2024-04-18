@@ -59,3 +59,15 @@ select {
 .isbnAuthorGereWrapper{
     color: white;
 }
+
+.isbnAuthorGereWrapper p,
+.publishCheckOutDateWrapper p,
+.firstSection label{
+    color: black;
+}
+
+.isbnAuthorGereWrapper p span,
+.publishCheckOutDateWrapper span{
+    color: white;
+    margin-left: .5rem;
+}

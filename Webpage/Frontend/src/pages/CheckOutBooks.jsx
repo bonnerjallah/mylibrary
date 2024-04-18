@@ -19,6 +19,11 @@ const CheckOutBooks = () => {
     const [bookBeingCheckedOut, setBookBeingCheckedOut] = useState({
         bookOnHold : ""
     })
+    const [selectedBook, setSelectedBook] = useState({})
+    const [checkOutDate, setCheckOutDate] = useState(null);
+    const [expectedReturnDate, setExpectedReturnDate] = useState(null)
+    const [latefee, setLateFee] = useState(0)
+
 
     axios.defaults.withCredentials = true
     useEffect(() => {
@@ -62,13 +67,33 @@ const CheckOutBooks = () => {
     }, [])
 
     const handleBookBeingCheckedOut = (e) => {
-        const checkOutBook = e.target.value
+        const checkOutBook = e.target.value;
+    
+        // Update book being checked out
+        setBookBeingCheckedOut((prev) => ({ ...prev, bookOnHold: checkOutBook }));
+    
+        // Find selected book
+        const selectedBookToCheckOut = allBooks.find(elem => elem._id === checkOutBook);
+        setSelectedBook(selectedBookToCheckOut);
+    
+        // Set checkOutDate to current date
+        const checkOutDate = new Date();
+        setCheckOutDate(checkOutDate);
+    
+        // Calculate expectedReturnDate based on checkOutDate (e.g., 30 days from checkOutDate)
+        const expectedReturnDate = new Date(checkOutDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+        setExpectedReturnDate(expectedReturnDate);
+    
+        // Calculate days late and late fees
+        setLateFee("50");
+    };
+    
 
-        setBookBeingCheckedOut((prev) => ({...prev , bookOnHold : checkOutBook}))
+    // console.log(bookBeingCheckedOut)
+    // console.log("selected book", selectedBook)
 
-    }
+    console.log(latefee)
 
-    console.log(bookBeingCheckedOut)
 
     return (
         <div className={checkoutbookstyle.mainContainer}>
@@ -77,7 +102,7 @@ const CheckOutBooks = () => {
             </div>
             <form>
                 
-                <div className={CheckOutBooks.firstSection}>
+                <div className={checkoutbookstyle.firstSection}>
                     <label htmlFor="BooksOnHold">
                         Title: 
                             <select name="bookOnHold" id="BooksOnHold" onChange={ handleBookBeingCheckedOut }>
@@ -96,24 +121,46 @@ const CheckOutBooks = () => {
                             </select>
                     </label>
                     
-                        <div className={checkoutbookstyle.isbnAuthorGereWrapper}>
-                                <div>
-                                    <p>ISBN: <span>{allBooks.find(book => book._id === bookBeingCheckedOut.bookOnHold).bookIsbn}</span></p>
-                                    <p>Author: <span>{allBooks.find(book => book._id === bookBeingCheckedOut.bookOnHold).bookAuthor}</span></p>
-                                    <p>Genre: <span>{allBooks.find(book => book._id === bookBeingCheckedOut.bookOnHold).bookGenre}</span></p>
-                                </div>
-                        </div>      
+                    <div className={checkoutbookstyle.isbnAuthorGereWrapper}>
+                        <div>
+                            <p>ISBN: <span>{selectedBook.bookIsbn}</span></p>
+                            <p>Author: <span>{selectedBook.bookAuthor}</span></p>
+                            <p>Genre: <span>{selectedBook.bookGenre ? selectedBook.bookGenre[0].split(' ').slice(0,1).join(' ') : ""}</span></p>
+                        </div>
+                    </div>      
 
                     
                 </div>
-                <div>
-                    <p>Publis Date: <span></span></p>
-                    <p>Date Check Out: <span></span></p>
-                    <p>Expected Return Date: <span></span></p>
-                    <p>Late Fee: <span></span></p>
+                <div className={checkoutbookstyle.publishCheckOutDateWrapper}>
+                    <p>Publis Date: 
+                        <span>{ selectedBook && selectedBook.bookPublishDate ? new Date(selectedBook.bookPublishDate).toLocaleDateString("en-US", {
+                            year:"numeric",
+                            month:"2-digit",
+                            day:"2-digit"
+                        }) : ""}
+                        </span>
+                    </p>
+                    <p>Date Check Out: 
+                        <span>{ checkOutDate ? new Date(Date.now()).toLocaleDateString("en-US", {
+                            year:"numeric",
+                            month:'2-digit',
+                            day:'2-digit'
+                        }) : ""}
+                        </span>
+                    </p>
+                    <p>Expected Return Date: 
+                        <span>
+                            { expectedReturnDate ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString("en-Us", {
+                                year:'numeric',
+                                month:'2-digit',
+                                day:'2-digit'
+                            }) : ""}
+                        </span>
+                    </p>
+                    <p>Late Fee / Damage: <span>{selectedBook ? `$ ${latefee}` : ""}</span></p>
                 </div>
                 <div>
-                    book image
+                <img src={`http://localhost:3001/booksimages/${selectedBook ? selectedBook.bookImageUrl : ''}`} alt="Book Image" width="100" height="120" />
                 </div>
 
                 <div className={checkoutbookstyle.checkButtons}>
