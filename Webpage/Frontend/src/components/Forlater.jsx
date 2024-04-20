@@ -12,7 +12,6 @@ import shelfstyle from "../styles/shelfstyle.module.css"
 const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre}) => {
     const {user} = useAuth()
 
-    console.log("filter Books", filterAuthorBooks)
 
     const [allBooks, setAllBooks] = useState([])
     const [member, setMember] = useState('')
@@ -179,7 +178,7 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
                     return null;
                 }
                 return { ...shelfItem, book }; // Merge shelfItem and book object
-            });
+            }).filter(item => item !== null);
     
             // Sort the userShelfWithBooks array based on sortBy
             setUserShelf(prevUserShelf => {

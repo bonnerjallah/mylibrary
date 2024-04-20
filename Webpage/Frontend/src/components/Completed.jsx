@@ -166,7 +166,7 @@ const Completed = ({sortBy, filterAuthorBooks, filterBooksByGenre}) => {
                     return null;
                 }
                 return { ...shelfItem, book }; // Merge shelfItem and book object
-            });
+            }).filter(item => item !== null);
     
             // Sort the userShelfWithBooks array based on sortBy
             setUserShelf(prevUserShelf => {

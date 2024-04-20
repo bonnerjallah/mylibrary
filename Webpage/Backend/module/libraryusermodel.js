@@ -99,11 +99,13 @@ const libraryUsersSchema = new mongoose.Schema({
 
     checkout: [{
         bookid: String,
-        date: {
-            type: Date,
-            default: Date.now
-        }
-    }]
+        checkoutdate: String,
+        returndate: String,
+    }],
+
+    fees:{
+        type: Number
+    }
 
 })
 

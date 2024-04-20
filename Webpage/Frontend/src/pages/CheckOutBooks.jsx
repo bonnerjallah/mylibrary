@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext"
@@ -26,6 +26,12 @@ const CheckOutBooks = () => {
     const [checkOutDate, setCheckOutDate] = useState(null);
     const [expectedReturnDate, setExpectedReturnDate] = useState(null)
     const [latefee, setLateFee] = useState(0)
+    const [checkOutInput, setCheckOutInput] = useState({})
+    
+    const bookTitleRef = useRef(null)
+    const checkOutDateRef = useRef(null)
+    const returnDateRef = useRef(null)
+
 
 
     axios.defaults.withCredentials = true
@@ -109,11 +115,30 @@ const CheckOutBooks = () => {
         setLateFee("50");
     };
     
+
+    
+    const handleCheckOutInputData = () => {
+        const titleData = e.target.textContent;
+        const dateData = e.target.textContent; 
+        const expectedReturnDateData = e.target.textContent;  
+        
+        setCheckOutInput({
+            title: titleData,
+            date: dateData,
+            expectedReturnDate: expectedReturnDateData
+        });
+    };
+    
+
+    console.log(checkOutInput)
     
     
 
     const handleBookCheckOutSubmit = async (e) => {
         e.preventDefault()
+
+
+
     }
 
     
@@ -143,9 +168,9 @@ const CheckOutBooks = () => {
                             </select>
                     </label>
                     
-                    <div className={checkoutbookstyle.isbnAuthorGereWrapper}>
+                    <div  className={checkoutbookstyle.isbnAuthorGereWrapper}>
                         <div>
-                        <p>Title: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookTitle : selectedBook.bookTitle}</span></p>
+                        <p onInput={(e) => handleCheckOutInputData(e)} ref={bookTitleRef}>Title: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookTitle : selectedBook.bookTitle}</span></p>
                             <p>ISBN: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookIsbn : selectedBook.bookIsbn}</span></p>
                             <p>Author: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookAuthor : selectedBook.bookAuthor}</span></p>
                             <p>Genre: 
@@ -174,7 +199,7 @@ const CheckOutBooks = () => {
                         </span>
                     </p>
                     <p>Date Check Out: 
-                        <span>{bookOnHoldForCheckOut || checkOutDate ? new Date(Date.now()).toLocaleDateString("en-US", {
+                        <span onInput={(e) => handleCheckOutInputData(e)} ref={checkOutDateRef}>{bookOnHoldForCheckOut || checkOutDate ? new Date(Date.now()).toLocaleDateString("en-US", {
                             year:"numeric",
                             month:'2-digit',
                             day:'2-digit'
@@ -182,7 +207,7 @@ const CheckOutBooks = () => {
                         </span>
                     </p>
                     <p>Expected Return Date: 
-                        <span>
+                        <span onInput={(e) => handleCheckOutInputData(e)} ref={returnDateRef}>
                             {bookOnHoldForCheckOut || expectedReturnDate ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString("en-Us", {
                                 year:'numeric',
                                 month:'2-digit',
