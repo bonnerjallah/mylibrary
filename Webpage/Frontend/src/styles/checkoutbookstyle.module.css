@@ -2,6 +2,20 @@
     padding: 1rem;
 }
 
+.booksOutWrapper{
+    margin: 1rem 0 .2rem 0;
+    background-color: #bc4749;
+    width: max-content;
+    font-size: 1.2rem;
+    padding: .5rem;
+    color: white;
+    cursor: pointer;
+}
+
+.booksOutWrapper:hover{
+    color: black;
+}
+
 .mainContainer form {
     display: grid;
     grid-template-columns: 40% 40% 1fr;
@@ -10,7 +24,6 @@
     background-color: #344e41;
     color: white;
     padding: 1rem;
-    margin-top: 2rem;
 }
 
 .mainContainer form select{

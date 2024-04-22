@@ -336,6 +336,17 @@ app.post("/setbookshelf", async(req, res) => {
     }
 })
 
+app.post("/checkoutBook", async (req, res) => {
+    try {
+        const {userId, bookId, checkOutDate, expectedreturnDate} = req.body
+        console.log(req.body)
+        
+    } catch (error) {
+        console.log("error checkingout book", error)
+        return res.status(500).json({message: "Internal server issue"})
+    }
+})
+
 // Set user comment on books
 app.post("/usercomment", async (req, res) => {
 

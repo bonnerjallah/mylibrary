@@ -173,7 +173,6 @@ const Shelf = () => {
 
     return (
         <>
-            <ScrollToTop />
             <div className={shelfstyle.userNameContainer}>
                 <div className={shelfstyle.usernameWrapper}>
                     {member && (<p style={{backgroundColor:"#720026", borderRadius:"50%", color:"white", padding:" 0 .5rem", fontSize:"2rem"}}>{member.user.userName.charAt(0).toUpperCase()}</p>)}

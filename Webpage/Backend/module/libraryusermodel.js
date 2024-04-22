@@ -100,7 +100,8 @@ const libraryUsersSchema = new mongoose.Schema({
     checkout: [{
         bookid: String,
         checkoutdate: String,
-        returndate: String,
+        expectedreturndate: String,
+        datereturn: String
     }],
 
     fees:{

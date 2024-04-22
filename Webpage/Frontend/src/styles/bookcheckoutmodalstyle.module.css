@@ -1,0 +1,31 @@
+.mainContainer{
+    position: fixed;
+    transform: translate(-50% -50%);
+    top: 5%;
+    left: 19%;
+    z-index: 999;
+    width: 62%;
+    height: 90%;
+    background-color: #632c33;
+    overflow: scroll;
+    scroll-behavior: smooth;
+}
+
+.closeWrapper{
+    width: max-content;
+    border: 1px solid black;
+    position: absolute;
+    right: .5rem;
+    margin-top: .2rem;
+}
+
+.closeWrapper p:hover{
+    color: red;
+    cursor: pointer;
+}
+
+.headerWrapper{
+    margin-top: 2rem;
+    text-align: center;
+    color: white;
+}

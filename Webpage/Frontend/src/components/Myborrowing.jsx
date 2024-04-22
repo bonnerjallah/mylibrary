@@ -7,7 +7,7 @@ import {Barcode, ChevronRight} from "lucide-react"
 import dashboardsidebarstyle from "../styles/dashboardsidebarstyle.module.css"
 
 import OnHoldModal from "./OnHoldModal"
-import { NavLink } from "react-router-dom"
+import BookCheckedOutModal from "./BookCheckedOutModal"
 
 const Myborrowing = () => {
     const {user} = useAuth()
@@ -17,6 +17,11 @@ const Myborrowing = () => {
     const [booksOnHold, setBooksOnHold] = useState([])
 
     const [showOnHoldModal, setShowOnHoldModal] = useState(false)
+    const [showBookCheckOutModal, setShowBookCheckedOutModal] = useState(false)
+
+    const handleShowBookCheckOutModal = () => {
+        setShowBookCheckedOutModal(true)
+    }
 
     //Fetch user function
     axios.defaults.withCredentials = true
@@ -72,12 +77,10 @@ const Myborrowing = () => {
                     <h2><Barcode size={28} /> My Borrowing</h2>
                 </div>
                 <div className={dashboardsidebarstyle.CheckOutHoldFeesWrapper}>
-                    <NavLink to="/CheckOutBooks">
-                        <div style={{color:"black"}}>
-                            <p>Checked Out</p>
-                            <span>0 <ChevronRight /></span>
-                        </div>
-                    </NavLink>
+                    <div style={{color:"black"}} onClick={handleShowBookCheckOutModal}>
+                        <p>Checked Out</p>
+                        <span>0 <ChevronRight /></span>
+                    </div>
                     
                     <div onClick={handleShowOnHoldModal}>
                         <p>On Hold</p>
@@ -91,6 +94,7 @@ const Myborrowing = () => {
             </div>
             
             {showOnHoldModal && (<OnHoldModal  closeModal={setShowOnHoldModal}/>)}
+            {showBookCheckOutModal && (<BookCheckedOutModal closeModal={setShowBookCheckedOutModal} /> )}
 
         </>
         

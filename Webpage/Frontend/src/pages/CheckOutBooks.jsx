@@ -4,7 +4,7 @@ import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext"
 import { NavLink, useParams } from "react-router-dom"
 
-
+import BookCheckedOutModal from "../components/BookCheckedOutModal"
 
 import checkoutbookstyle from "../styles/checkoutbookstyle.module.css"
 
@@ -18,19 +18,24 @@ const CheckOutBooks = () => {
 
     const [member, setMember] = useState('')
     const [allBooks, setAllBooks] = useState([])
-    const [bookBeingCheckedOut, setBookBeingCheckedOut] = useState({
+    const [showBookCheckOutModal, setShowBookCheckedOutModal] = useState(false)
+    const [BookBeingCheckedOut, setBookBeingCheckedOut] = useState({
         bookOnHold : ""
+    })
+    const [checkOutObject, setCheckOutObject] = useState({
+        currentTitle: '',
+        checkOutDate: '',
+        returnDate: ''
     })
     const [selectedBook, setSelectedBook] = useState({})
     const [bookOnHoldForCheckOut, setBookOnHoldForCheckOut] = useState({})
     const [checkOutDate, setCheckOutDate] = useState(null);
     const [expectedReturnDate, setExpectedReturnDate] = useState(null)
     const [latefee, setLateFee] = useState(0)
-    const [checkOutInput, setCheckOutInput] = useState({})
-    
-    const bookTitleRef = useRef(null)
-    const checkOutDateRef = useRef(null)
+
+    const outDateRef = useRef(null)
     const returnDateRef = useRef(null)
+    
 
 
 
@@ -87,6 +92,11 @@ const CheckOutBooks = () => {
     }, [_id, allBooks])
     
 
+    const handleShowBookCheckOutModal = () => {
+        setShowBookCheckedOutModal(true)
+    }
+
+
     //Selected book function
     const handleBookBeingCheckedOut = (e) => {
         const checkOutBook = e.target.value;
@@ -115,29 +125,54 @@ const CheckOutBooks = () => {
         setLateFee("50");
     };
     
+    console.log(bookOnHoldForCheckOut)
 
-    
-    const handleCheckOutInputData = () => {
-        const titleData = e.target.textContent;
-        const dateData = e.target.textContent; 
-        const expectedReturnDateData = e.target.textContent;  
-        
-        setCheckOutInput({
-            title: titleData,
-            date: dateData,
-            expectedReturnDate: expectedReturnDateData
-        });
-    };
-    
+    useEffect(() => {
+        const currentTitle = bookOnHoldForCheckOut ? bookOnHoldForCheckOut._id : selectedBook._id
+        const formatcheckout = outDateRef ? outDateRef.current.innerText : ""
+        const formatreturDate = returnDateRef ? returnDateRef.current.innerText : ""
 
-    console.log(checkOutInput)
-    
-    
+
+        const checkOutDate = formatcheckout.replace(/[A-Za-z,:]/g, "").trim()
+        const returnDate = formatreturDate.replace(/[A-Za-z,:]/g, "").trim()
+
+        if (currentTitle !== checkOutObject.currentTitle || checkOutDate !== checkOutObject.checkOutDate || returnDate !== checkOutObject.returnDate) {
+            setCheckOutObject({
+                currentTitle,
+                checkOutDate,
+                returnDate
+            });
+        }
+
+    }, [bookOnHoldForCheckOut, selectedBook, checkOutObject])
+
+
+    console.log(checkOutObject)
+
 
     const handleBookCheckOutSubmit = async (e) => {
         e.preventDefault()
 
+        const requestData = {
+            userId : member.user._id,
+            bookId: checkOutObject.currentTitle,
+            checkOutDate: checkOutObject.checkOutDate,
+            expectedreturnDate: checkOutObject.returnDate
+        }
 
+        try {
+            const response = await axios.post("http://localhost:3001/checkoutBook", requestData, {
+                headers:{"Content-Type": "application/json"}
+            })
+
+            if(response.status === 200) {
+                console.log("successfully checkout book")
+            }
+
+            
+        } catch (error) {
+            console.log("error inserting checkout data", error)
+        }
 
     }
 
@@ -147,6 +182,9 @@ const CheckOutBooks = () => {
         <div className={checkoutbookstyle.mainContainer}>
             <div className={checkoutbookstyle.headerWrapper}>
                 <h1>Check Out Book</h1>
+            </div>
+            <div className={checkoutbookstyle.booksOutWrapper}>
+                <h5 onClick={handleShowBookCheckOutModal}>Books Out</h5>
             </div>
             <form onSubmit={handleBookCheckOutSubmit} encType="multipart/form-data" method="POST">
                 
@@ -170,7 +208,7 @@ const CheckOutBooks = () => {
                     
                     <div  className={checkoutbookstyle.isbnAuthorGereWrapper}>
                         <div>
-                        <p onInput={(e) => handleCheckOutInputData(e)} ref={bookTitleRef}>Title: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookTitle : selectedBook.bookTitle}</span></p>
+                            <p>Title: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookTitle : selectedBook.bookTitle}</span></p>
                             <p>ISBN: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookIsbn : selectedBook.bookIsbn}</span></p>
                             <p>Author: <span>{bookOnHoldForCheckOut ? bookOnHoldForCheckOut.bookAuthor : selectedBook.bookAuthor}</span></p>
                             <p>Genre: 
@@ -179,11 +217,9 @@ const CheckOutBooks = () => {
                                     (selectedBook?.bookGenre?.[0]?.split(' ').slice(0, 1).join(' ') || '')}
                                 </span>
                             </p>
-
                         </div>
                     </div>      
 
-                    
                 </div>
                 <div className={checkoutbookstyle.publishCheckOutDateWrapper}>
                     <p>Publis Date: 
@@ -198,16 +234,16 @@ const CheckOutBooks = () => {
                         }) : ""}
                         </span>
                     </p>
-                    <p>Date Check Out: 
-                        <span onInput={(e) => handleCheckOutInputData(e)} ref={checkOutDateRef}>{bookOnHoldForCheckOut || checkOutDate ? new Date(Date.now()).toLocaleDateString("en-US", {
+                    <p ref={outDateRef}>Date Check Out: 
+                        <span> {bookOnHoldForCheckOut || checkOutDate ? new Date(Date.now()).toLocaleDateString("en-US", {
                             year:"numeric",
                             month:'2-digit',
                             day:'2-digit'
                         }) : ""}
                         </span>
                     </p>
-                    <p>Expected Return Date: 
-                        <span onInput={(e) => handleCheckOutInputData(e)} ref={returnDateRef}>
+                    <p ref={returnDateRef}>Expected Return Date: 
+                        <span>
                             {bookOnHoldForCheckOut || expectedReturnDate ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString("en-Us", {
                                 year:'numeric',
                                 month:'2-digit',
@@ -236,6 +272,8 @@ const CheckOutBooks = () => {
                 
                 
             </form>
+
+            {showBookCheckOutModal && (<BookCheckedOutModal closeModal={setShowBookCheckedOutModal} />)}
             
         </div>
     )
