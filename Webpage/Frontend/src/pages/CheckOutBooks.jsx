@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext"
-import { NavLink, useParams } from "react-router-dom"
+import { NavLink, useParams,useNavigate } from "react-router-dom"
 
 import BookCheckedOutModal from "../components/BookCheckedOutModal"
 
@@ -15,6 +15,7 @@ const CheckOutBooks = () => {
 
     const {user} = useAuth()
     const {_id} = useParams()
+    const navigate = useNavigate()
 
     const [member, setMember] = useState('')
     const [allBooks, setAllBooks] = useState([])
@@ -32,6 +33,8 @@ const CheckOutBooks = () => {
     const [checkOutDate, setCheckOutDate] = useState(null);
     const [expectedReturnDate, setExpectedReturnDate] = useState(null)
     const [latefee, setLateFee] = useState(0)
+    const [successMessage, setSuccessMessage] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
 
     const outDateRef = useRef(null)
     const returnDateRef = useRef(null)
@@ -147,14 +150,11 @@ const CheckOutBooks = () => {
     }, [bookOnHoldForCheckOut, selectedBook, checkOutObject])
 
 
-    console.log(checkOutObject)
-
-
     const handleBookCheckOutSubmit = async (e) => {
         e.preventDefault()
 
         const requestData = {
-            userId : member.user._id,
+            userId : member.user.id,
             bookId: checkOutObject.currentTitle,
             checkOutDate: checkOutObject.checkOutDate,
             expectedreturnDate: checkOutObject.returnDate
@@ -166,12 +166,26 @@ const CheckOutBooks = () => {
             })
 
             if(response.status === 200) {
-                console.log("successfully checkout book")
-            }
+                setSuccessMessage("successfully checkout book")
 
+                setTimeout(() => {
+                    setSuccessMessage("")
+                    setBookOnHoldForCheckOut(false)
+                    setSelectedBook(false)
+                    navigate("/Dashboard");
+                }, 2000);
+
+            }
+            
             
         } catch (error) {
             console.log("error inserting checkout data", error)
+            if(error && error.response.data && error.response.data && error.response.data.message === "You already checked out this book") {
+                setErrorMessage(error.response.data.message)
+                setTimeout(() => {
+                    setErrorMessage("")
+                }, 2500);
+            }
         }
 
     }
@@ -274,6 +288,8 @@ const CheckOutBooks = () => {
             </form>
 
             {showBookCheckOutModal && (<BookCheckedOutModal closeModal={setShowBookCheckedOutModal} />)}
+            {successMessage && (<p className={checkoutbookstyle.successMsg}>{successMessage}</p>)}
+            {errorMessage && (<p className={checkoutbookstyle.errorMessage}>{errorMessage}</p>)}
             
         </div>
     )

@@ -78,7 +78,7 @@ const Myborrowing = () => {
                 </div>
                 <div className={dashboardsidebarstyle.CheckOutHoldFeesWrapper}>
                     <div style={{color:"black"}} onClick={handleShowBookCheckOutModal}>
-                        <p>Checked Out</p>
+                        <p>Checked Out Books</p>
                         <span>0 <ChevronRight /></span>
                     </div>
                     

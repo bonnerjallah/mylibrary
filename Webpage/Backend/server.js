@@ -33,7 +33,7 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5174'],
     methods: ["POST, GET, PUT, DELETE"],
     credentials: true
 }))
@@ -339,7 +339,49 @@ app.post("/setbookshelf", async(req, res) => {
 app.post("/checkoutBook", async (req, res) => {
     try {
         const {userId, bookId, checkOutDate, expectedreturnDate} = req.body
-        console.log(req.body)
+
+        if(!userId || !bookId || !checkOutDate || !expectedreturnDate) {
+            return res.status(400).json({message: "book information missing"})
+        }
+
+        const user = await LibraryUsers.findById(userId) 
+
+        if(!user) {
+            return res.status(404).json({message: "user not found"})
+        }
+
+        const bookInCatalog = await BooksCatalog.findById(bookId)
+        const bookFromSuggestion = await BooksSuggestions.findById(bookId)
+
+        let bookAvailable = null
+
+        if(bookInCatalog && bookInCatalog.bookAvailability === "Yes") {
+            bookAvailable = bookInCatalog._id 
+        } else if (bookFromSuggestion && bookFromSuggestion.bookAvailability === "Yes") {
+            bookAvailable = bookFromSuggestion._id
+        } else {
+            return res.status(404).json({message: "Book not Available"})
+        }
+        
+        // Check if the book is already checked out
+        if(user.checkout.some(elem => elem.bookid.toString() === bookAvailable.toString())) {
+            return res.status(400).json({message: "You already checked out this book"})
+        } 
+
+        // Filter the shelf to remove the checked-out book
+        const filteredShelf = user.shelf.filter(shelfItem => shelfItem.bookid !== bookAvailable.toString());
+        user.shelf = filteredShelf;
+
+        // Add the new checkout entry
+        user.checkout.push({
+            bookid : bookAvailable,
+            checkoutdate : checkOutDate,
+            expectedreturndate : expectedreturnDate
+        })
+
+        const updateCheckOut = await user.save()
+
+        return res.status(200).json({message: "book checked out", updateCheckOut})
         
     } catch (error) {
         console.log("error checkingout book", error)
