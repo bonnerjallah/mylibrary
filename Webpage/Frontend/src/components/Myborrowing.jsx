@@ -65,9 +65,7 @@ const Myborrowing = () => {
         setShowOnHoldModal(true)
     }
 
-
-
-
+    console.log(member)
 
 
     return (
@@ -77,10 +75,15 @@ const Myborrowing = () => {
                     <h2><Barcode size={28} /> My Borrowing</h2>
                 </div>
                 <div className={dashboardsidebarstyle.CheckOutHoldFeesWrapper}>
-                    <div style={{color:"black"}} onClick={handleShowBookCheckOutModal}>
-                        <p>Checked Out Books</p>
-                        <span>0 <ChevronRight /></span>
-                    </div>
+                    
+                    {member && member.user && member.user.checkout && (
+                        <div div style={{color:"black"}} onClick={handleShowBookCheckOutModal}>
+                            <p>Checked Out Books</p>
+                            <span>{member.user.checkout.length} <ChevronRight /></span>
+                        </div>
+                    )}
+                        
+                    
                     
                     <div onClick={handleShowOnHoldModal}>
                         <p>On Hold</p>

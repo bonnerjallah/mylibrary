@@ -33,7 +33,7 @@ const refToken = process.env.VITE_jwtRefreshSecret
 app.use(cookieParser())
 
 app.use(cors ({
-    origin: ['http://localhost:5174'],
+    origin: ['http://localhost:5173'],
     methods: ["POST, GET, PUT, DELETE"],
     credentials: true
 }))
@@ -598,8 +598,8 @@ app.post("/loginlibraryusers", async(req, res) => {
                     following: results.following,
                     messages: results.messages,
                     reviewer: results.reviewer,
-                    reviewandrating: results.reviewandrating,
-                    shelf: results.shelf
+                    shelf: results.shelf,
+                    checkout: results.checkout,
                 }
 
                 //Generate Jwt Token

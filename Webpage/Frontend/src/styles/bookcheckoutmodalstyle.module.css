@@ -9,6 +9,7 @@
     background-color: #632c33;
     overflow: scroll;
     scroll-behavior: smooth;
+    padding: 0 .5rem;
 }
 
 .closeWrapper{
@@ -28,4 +29,24 @@
     margin-top: 2rem;
     text-align: center;
     color: white;
+}
+
+.booksContainer{
+    border: 1px solid black;
+    padding: .5rem .5rem;
+    display: flex;
+    column-gap: .5rem;
+    width: max-content;
+    margin-top: 1rem;
+}
+
+.dateWrapper{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;    
+}
+
+.dateWrapper p span{
+    color: white;
+    margin-left: .5rem;
 }
