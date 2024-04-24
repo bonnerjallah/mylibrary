@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, memo } from "react"
 import { useAuth } from "./AuthContext"
 import axios from "axios"
 import Cookies from "js-cookie"
@@ -65,40 +65,37 @@ const BookCheckedOutModal = ({closeModal}) => {
             <div className={bookcheckoutmodalstyle.headerWrapper}>   
                 <h1>Books Out</h1>
             </div>
-            <div className={bookcheckoutmodalstyle.booksContainer}>
-
+            <div>
                 {allBooks && member && member.user && member.user.checkout && (
-                    <>
-                        {allBooks.filter((book) => member.user.checkout.some(elem => elem.bookid === book._id)).map((filteredBook, index) => (
-                            <div key={index}>
+                    <div className={bookcheckoutmodalstyle.booksContainer}>
+                        {allBooks.filter((book) => member.user.checkout.some(elem => elem.bookid === book._id)).map((filteredBook, id) => (
+                            <div key={id} className={bookcheckoutmodalstyle.bookWrapper}>
                                 <img src={`http://localhost:3001/booksimages/${filteredBook.bookImageUrl}`} alt="book image" width="100" height="150" />
+                                <div>
+                                {member.user.checkout.filter(elem => elem.bookid === filteredBook._id).map((elem, index) => (
+                                    <div key={index} className={bookcheckoutmodalstyle.dateWrapper}>
+                                        <p>
+                                            Check Out Date:
+                                            <span>
+                                                {elem.checkoutdate}
+                                            </span>
+                                        </p>
+                                        <p>
+                                            Expected Return Date: 
+                                            <span>
+                                                {elem.expectedreturndate}
+                                            </span>
+                                        </p>
+                                    </div>
+                                ))}
+                                </div>
                             </div>
                         ))}
-                    </>
+                    </div>
+                        
                 )}
-
-                <>
-                    {member && member.user && member.user.checkout &&  (
-                        <>
-                            {member.user.checkout.map((elem, index) => (
-                                <div key={index} className={bookcheckoutmodalstyle.dateWrapper}>
-                                    <p>
-                                        Checked Out Date:
-                                        <span>{elem.checkoutdate}</span>
-                                    </p>
-                                    <p>
-                                        Expected Return Date:
-                                        <span>{elem.expectedreturndate}</span>
-                                    </p>
-                                        
-                                </div>
-                                
-                            ))}
-                        </>
-                    )}
-                </>
-
             </div>
+
         </div>
     )
 }

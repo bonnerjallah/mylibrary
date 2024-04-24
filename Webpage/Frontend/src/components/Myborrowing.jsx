@@ -75,14 +75,14 @@ const Myborrowing = () => {
                     <h2><Barcode size={28} /> My Borrowing</h2>
                 </div>
                 <div className={dashboardsidebarstyle.CheckOutHoldFeesWrapper}>
-                    
-                    {member && member.user && member.user.checkout && (
-                        <div div style={{color:"black"}} onClick={handleShowBookCheckOutModal}>
-                            <p>Checked Out Books</p>
-                            <span>{member.user.checkout.length} <ChevronRight /></span>
-                        </div>
-                    )}
-                        
+                    <>
+                        {member && member.user && member.user.checkout && (
+                            <div style={{color:"black"}} onClick={handleShowBookCheckOutModal}>
+                                <p>Checked Out Books</p>
+                                <span>{member.user.checkout.length} <ChevronRight /></span>
+                            </div>
+                        )}
+                    </>
                     
                     
                     <div onClick={handleShowOnHoldModal}>

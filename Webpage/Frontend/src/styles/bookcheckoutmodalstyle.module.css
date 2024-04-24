@@ -32,12 +32,19 @@
 }
 
 .booksContainer{
-    border: 1px solid black;
     padding: .5rem .5rem;
+    column-gap: .5rem;
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: .5rem;
+}
+
+.bookWrapper{
     display: flex;
     column-gap: .5rem;
-    width: max-content;
-    margin-top: 1rem;
+    border: 1px solid black;
 }
 
 .dateWrapper{
