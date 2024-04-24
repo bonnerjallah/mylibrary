@@ -79,11 +79,10 @@ const Navbar = () => {
                             <li><NavLink to="/Discover">Discover</NavLink></li>
                             <li><NavLink to="/Dashboard">Dashboard</NavLink></li>
                             <li className={navstyles.reviews}>
-                                <NavLink>Reviews<FontAwesomeIcon icon={faCaretDown} /></NavLink>
+                                <NavLink to="/Social">Social<FontAwesomeIcon icon={faCaretDown} /></NavLink>
                                 <div className={navstyles.dropDown}>
                                     <ul>
                                         <li><NavLink>Members</NavLink></li>
-                                        <li><NavLink>Social</NavLink></li>
                                     </ul>
                                 </div>
                             </li>

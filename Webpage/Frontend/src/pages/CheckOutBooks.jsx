@@ -185,6 +185,11 @@ const CheckOutBooks = () => {
                 setTimeout(() => {
                     setErrorMessage("")
                 }, 2500);
+            } else if(error && error.response.data && error.response.data && error.response.data.message === "Book not available") {
+                setErrorMessage(error.response.data.message)
+                setTimeout(() => {
+                    setErrorMessage("")
+                }, 2500);
             }
         }
 

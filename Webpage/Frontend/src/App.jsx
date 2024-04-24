@@ -15,6 +15,8 @@ import Shelf from "./pages/Shelf"
 import CheckOutBooks from "./pages/CheckOutBooks"
 import BookDetails from "./pages/BookDetails"
 import MessageBoard from "./pages/MessageBoard"
+import Social from "./pages/Social"
+import PostContainer from "./pages/PostContainer"
 
 
 const router = createBrowserRouter (
@@ -26,17 +28,17 @@ const router = createBrowserRouter (
       <Route path="/Discover" element={<Discover />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/ForgotPassword" element={<ForgotPassword />} />
+      <Route path="/BookDetails/:_id" element={<BookDetails />} />
       <Route element={<ProtectedRoutes />}>
         <Route path="/Dashboard" element={<Dashboard />} /> 
         <Route path="/ReviewerRequest/:id" element={<ReviewerRequest />} />
         <Route path="/Shelf" element={<Shelf /> } />
         <Route path="/CheckOutBooks/:_id" element={<CheckOutBooks />} />
-        <Route path="/BookDetails/:_id" element={<BookDetails />} />
         <Route path="/MessageBoard" element={<MessageBoard /> } />
+        < Route path="/Social" element={<Social /> }>
+          <Route path="PostContainer" element={<PostContainer />} />
+        </Route>
       </Route>
-      
-
-      
     </Route>
   )
 )

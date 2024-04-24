@@ -336,6 +336,7 @@ app.post("/setbookshelf", async(req, res) => {
     }
 })
 
+//check out book
 app.post("/checkoutBook", async (req, res) => {
     try {
         const {userId, bookId, checkOutDate, expectedreturnDate} = req.body
@@ -360,7 +361,7 @@ app.post("/checkoutBook", async (req, res) => {
         } else if (bookFromSuggestion && bookFromSuggestion.bookAvailability === "Yes") {
             bookAvailable = bookFromSuggestion._id
         } else {
-            return res.status(404).json({message: "Book not Available"})
+            return res.status(404).json({message: "Book not available"})
         }
         
         // Check if the book is already checked out
