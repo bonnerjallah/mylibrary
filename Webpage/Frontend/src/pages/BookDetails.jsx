@@ -235,7 +235,7 @@ const BookDetails = () => {
                                 <h2>About</h2>
                                 <div className={bookdetailsstyle.authorDisWrapper}>
                                     <div className={bookdetailsstyle.authorImageWrapper}>
-                                        <img src={`http://localhost:3001/booksimages/${elem.authorImage}`} alt="author image" style={{ borderRadius: "50%", maxWidth: "100%", maxHeight: "100%" }} />
+                                        <img src={`http://localhost:3001/booksimages/${elem.authorImage}`} alt="author image" width="150" height="150" style={{borderRadius:"50%"}} />
                                         <h2>{elem.bookAuthor}</h2>
                                     </div>
                                     <h3>About Author</h3>
@@ -263,7 +263,7 @@ const BookDetails = () => {
                                             {elem.reviewandrating.map((reviewElem, index) => (
                                                 <div key={index} className={bookdetailsstyle.reviewWrapper}>
                                                     <div className={bookdetailsstyle.userImageWrapper}>
-                                                        <img src={`http://localhost:3001/libraryusersprofilepics/${reviewElem.profilepic}`} alt="user image" style={{ borderRadius: "50%", maxWidth: "100%", maxHeight: "100%" }}/>
+                                                        <img src={`http://localhost:3001/libraryusersprofilepics/${reviewElem.profilepic}`} alt="user image" width="30" height="30" style={{borderRadius:"50%"}}/>
                                                         <div>
                                                             {reviewElem.username}
                                                         </div>

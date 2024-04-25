@@ -1,0 +1,57 @@
+.postMainContainer{
+    display: grid;
+    grid-template-columns: 20% 55% 23%;
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+    column-gap: 1rem;
+}
+
+.postSideContainer{
+    background-color: #168aad;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0 1rem .5rem;
+    row-gap: 1rem;
+    height: 16rem;
+}
+
+.postSideContainer p{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.rightSideContainer{
+    background-color: #168aad;
+    height: max-content;
+}
+
+.postSideContainer p:hover,
+.rightSideContainer p:hover{
+    color: white;
+    cursor: pointer;
+}
+
+.postContainer{
+    overflow-Y: hidden;
+    height: 100Vh;
+}
+
+.postContainer:hover{
+    overflow-y: scroll;
+}
+
+.peopleYouMayKnowWrapper{
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+}
+
+.contactsWrapper{
+    display: flex;
+    justify-content: space-between;
+}
+
+.followingPost{
+    border: 2px solid black;
+    height: 45%;
+}

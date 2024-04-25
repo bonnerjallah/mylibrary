@@ -69,7 +69,7 @@ const Dashboard = () => {
                     <>
                         {member && member.user && member.user.profilepic ? (
                             <div className={dashboardstyle.profilePicWrapper}>
-                                <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt="" style={{ borderRadius: "50%", maxWidth: "100%", maxHeight: "100%" }} />
+                                <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt="" width="150" height="150" style={{borderRadius:"50%" }} />
                             </div>
                         ) : (
                             <div className={dashboardstyle.profilePicWrapper} style={{fontSize:"7rem", borderRadius:"50%", padding:"1rem", display:"flex", justifyContent:"center", alignItems:"center", backgroundColor:"#d8e2dc"}}>
