@@ -44,22 +44,83 @@
     cursor: pointer;
 }
 
+.homeVideoGroupIconWrapper div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.homeVideoGroupIconWrapper ul,
+.menuMessageBellAndUserWrapper ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.homeVideoGroupIconWrapper ul li,
+.menuMessageBellAndUserWrapper ul li {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.homeVideoGroupIconWrapper ul li .homeWrapper,
+.homeVideoGroupIconWrapper ul li .videoWrapper,
+.homeVideoGroupIconWrapper ul li .groupWrapper{
+    display: none;
+    z-index: 99;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin-top: 2.4rem;
+    padding: .5rem;
+}
+
+.menuMessageBellAndUserWrapper ul li .menuWrapper,
+.menuMessageBellAndUserWrapper ul li .messangerWrapper,
+.menuMessageBellAndUserWrapper ul li .notificationsWrapper{
+    display: none;
+    z-index: 99;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin-top: 2.8rem;
+    padding: .5rem;
+}
+
+.homeVideoGroupIconWrapper ul li:hover .homeIcons + .homeWrapper,
+.homeVideoGroupIconWrapper ul li:hover .videoIcons + .videoWrapper,
+.homeVideoGroupIconWrapper ul li:hover .gorupIcons + .groupWrapper,
+.menuMessageBellAndUserWrapper ul li:hover .menuIcons + .menuWrapper,
+.menuMessageBellAndUserWrapper ul li:hover .messangerIcons + .messangerWrapper,
+.menuMessageBellAndUserWrapper ul li:hover .notificationsIcons + .notificationsWrapper {
+    display: block;
+    z-index: 9999;
+}
+
+
 .menuMessageBellAndUserWrapper{
     color: white;
     width: 10rem;
     display: flex;
     justify-content: space-around;
     cursor: pointer;
-
 }
 
-.menuMessageBellAndUserWrapper .icons{
+.menuMessageBellAndUserWrapper .menuIcons,
+.menuMessageBellAndUserWrapper .messangerIcons,
+.menuMessageBellAndUserWrapper .notificationsIcons{
     background-color: #0b5569;
     border-radius: 50%;
     padding: .5rem;
 }
 
-.icons:hover{
+.homeIcons:hover,
+.videoIcons:hover,
+.gorupIcons:hover,
+.menuIcons:hover,
+.messangerIcons:hover,
+.notificationsIcons:hover{
     color: #720026;
 }
 

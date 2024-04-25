@@ -15,14 +15,49 @@ const Social = () => {
                         </label>
                     </div>
                     <div className={socialstyle.homeVideoGroupIconWrapper}>
-                        <Home className={socialstyle.icons} />
-                        <Video className={socialstyle.icons} />
-                        <UsersRound className={socialstyle.icons} />
+                        <ul>
+                            <li>
+                                <Home className={socialstyle.homeIcons} />
+                                <div className={socialstyle.homeWrapper}>
+                                    Home
+                                </div>
+                            </li>
+                            <li>
+                                <Video className={socialstyle.videoIcons} />
+                                <div className={socialstyle.videoWrapper}>
+                                    Video
+                                </div>
+                            </li>
+                            <li>
+                                <UsersRound className={socialstyle.gorupIcons} />
+                                <div className={socialstyle.groupWrapper}>
+                                    Group
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                     <div className={socialstyle.menuMessageBellAndUserWrapper}>
-                        <Menu size="35" className={socialstyle.icons} />
-                        <MessageSquareMore size="35" className={socialstyle.icons} />
-                        <Bell size="35" className={socialstyle.icons} />
+                        <ul>
+                            <li>
+                                <Menu size="35" className={socialstyle.menuIcons} />
+                                <div className={socialstyle.menuWrapper}>
+                                    Menu
+                                </div>
+                            </li>
+                            <li>
+                                <MessageSquareMore size="35" className={socialstyle.messangerIcons} />
+                                <div className={socialstyle.messangerWrapper}>
+                                    Messanger
+                                </div>
+                            </li>
+                            <li>
+                                <Bell size="35" className={socialstyle.notificationsIcons} />
+                                <div className={socialstyle.notificationsWrapper}>
+                                    Notifications
+                                </div>
+
+                            </li>
+                        </ul>
                         <img src="" alt=""  />
                     </div>
                 </div>

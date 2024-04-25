@@ -1,4 +1,8 @@
-import React from 'react'
+
+import { Search  } from 'lucide-react';
+
+import socialstyle from "../styles/socialstyle.module.css"
+
 
 const PostContainer = () => {
     return (
