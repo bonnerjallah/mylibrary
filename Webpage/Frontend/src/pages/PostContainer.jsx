@@ -4,7 +4,7 @@ import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext";
 
 
-import { Search  } from 'lucide-react';
+import { Search, ArrowBigLeft, ArrowBigRight, Heart, ImagePlus, Plus } from 'lucide-react';
 
 import poststyle from "../styles/poststyle.module.css"
 
@@ -16,6 +16,7 @@ const PostContainer = () => {
     const [member, setMember] = useState()
     const [allUsers, setAllUsers] = useState([])
     const [postPics, setPostPics] = useState([])
+    const [followingUserName, setFollowingUserName] = useState()
 
     //user fetch data
     axios.defaults.withCredentials = true
@@ -56,7 +57,9 @@ const PostContainer = () => {
     console.log("allusers", allUsers)
 
     useEffect(() => {
-        const userImage = allUsers && allUsers.filter(elem => member && member.user && member.user.following && member.user.following.includes(elem._id)).map(picElem => picElem.profilepic)
+        const userImage = allUsers && allUsers.filter(elem => member && member.user && member.user.following && member.user.following.includes(elem._id)).map(picElem => picElem)
+
+
 
         setPostPics(userImage)
         
@@ -81,12 +84,22 @@ const PostContainer = () => {
 
 
         return (
-            <div style={{border:"2px solid red", width:"100%", position:'relative'}}>
-                <div style={{width:"100%", border:"2px solid blue", height:"90%", display:"flex", overflow:'hidden', columnGap:'.5rem' }}>
+            <div style={{ width:"100%", position:'relative'}}>
+                <div className={poststyle.postImageWrapper  }>
                     {postPics && postPics.map((pic, index) => (
-                        <img key={index} src={`http://localhost:3001/libraryusersprofilepics/${pic}`} alt={`Post ${index + 1}`} width="40%rem" height="100%"  />
+                        <div key={index} style={{height:"100%", border:"1px solid black", translate: `${-100 * currentIndex}%`}} className={poststyle.followingHomePageImage}>
+                            <img  src={`http://localhost:3001/libraryusersprofilepics/${pic.profilepic}`} alt={`Post ${index + 1}`}  width="100%" height="100%" style={{borderRadius:"1rem"}}/>
+                            <div className={poststyle.usernameWrapper}>
+                                <p>@ {pic.username}</p> 
+                            </div>
+                        </div>
                     ))}
+
+                    
+                    
                 </div>
+                    <ArrowBigLeft size="40" className={poststyle.scrollIconLeft} onClick={showPrevImage} />
+                    <ArrowBigRight size="40" className={poststyle.scrollIconRight} onClick={showNextImage} />
             </div>
         )
 
@@ -115,20 +128,33 @@ const PostContainer = () => {
             </div>
             <div className={poststyle.postContainer}>
                 <div className={poststyle.followingPost}>
-                    {/* {allUsers && member && member.user && member.user.following && (
-                        <>
-                            {allUsers.filter(elem => member.user.following.includes(elem._id)).map((filterElem, index) => (
-                                <div key={index} className={poststyle.followingWrapper}>
-                                    <img src={`http://localhost:3001/libraryusersprofilepics/${filterElem.profilepic}`} width="100%" height="100%"  />
-                                </div>
-                            ))}
-                        </>
-                    )} */}
-
-                    <ImageSilder posts={postPics} />
+                    <ImageSilder post={postPics} />
                 </div>
-                <div>
-                    posts goes here
+                <div className={poststyle.postWrapper}>
+                    <div className={poststyle.postFormWrapper}>
+                        <form>
+                            <div className={poststyle.inputWrapper}>
+                                {member && member.user && member.user.profilepic && (
+                                    <div>
+                                        <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} width="50" height="50" style={{borderRadius:"50%"}}/>
+                                    </div>
+                                )}
+                                <label htmlFor="whatYouPosted"></label>
+                                <input type="text" name="whatposted" id="WhatYouPosted" placeholder="whats on your mind?"  />
+                            </div>
+                            <div className={poststyle.addImageButton}>
+                                <label htmlFor="ImagePost">
+                                    <ImagePlus /> Add Image
+                                </label>
+                                <input type="file" name="imagePost" id="ImagePost" accept="image/*" style={{display:"none"}}   />
+                                <button className={poststyle.postBttn}> <Plus /> Add Post</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    <div className={poststyle.postItSelf}>
+                        post goes here
+                    </div>
                 </div>
 
             </div>
