@@ -1,0 +1,118 @@
+.mainContainer{
+    border: 2px solid back;
+    position: fixed;
+    transform: translate(-50% -50%);
+    top: 0%;
+    background-color: #95d5b2;
+    color: white;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 999999;
+}
+
+.mainContainer h1{
+    align-self: center;
+}
+
+.mainContainer p{
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: .5rem;
+}
+
+.mainContainer p:hover{
+    color: red;
+}
+
+.mainContainer form {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.porfilePicWrapper{
+    display: flex;
+    justify-content: center;
+    margin-top: .5rem;
+    position: relative;
+}
+
+.porfilePicWrapper label {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    width: max-content;
+    cursor: pointer;
+    color: white;
+    background-color: black;
+    border-radius: 1rem;
+    padding: .5rem;
+    column-gap: .5rem;
+}
+
+.porfilePicWrapper label:hover{
+    background-color: #95d5b2;
+    color: white;
+    transition: all 300ms ease-in-out;
+}
+
+.inputDataWrapper{
+    width: 50%;
+    align-self: center;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    align-items: center;
+    position: relative;
+    height: 10rem;
+}
+
+.inputDataWrapper label{
+    width: 100%; 
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    margin-right: 20rem;
+}
+
+.inputDataWrapper input{
+    margin-left: .5rem;
+    width: 15rem;
+    height: 2rem;
+}
+
+.inputDataWrapper input[type="number"]::-webkit-inner-spin-button,
+.inputDataWrapper input[type="number"]::-webkit-outer-spin-button {
+    display: none;
+}
+
+.submitButtonWrapper{
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: .8rem;
+}
+
+.submitButtonWrapper button{
+    width: 7rem;
+    height: 2rem;
+    background-color: black;
+    border: none;
+    color: white;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.submitButtonWrapper button:hover{
+    background-color: #4a715c;
+    color: white;
+    transition: all 300ms ease-in-out;    
+}

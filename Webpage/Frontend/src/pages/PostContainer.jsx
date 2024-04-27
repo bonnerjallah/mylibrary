@@ -4,7 +4,7 @@ import Cookies from "js-cookie"
 import { useAuth } from "../components/AuthContext";
 
 
-import { Search, ArrowBigLeft, ArrowBigRight, Heart, ImagePlus, Plus } from 'lucide-react';
+import { Search, ArrowBigLeft, ArrowBigRight, Heart, ImagePlus, Plus, MessageCircleOff } from 'lucide-react';
 
 import poststyle from "../styles/poststyle.module.css"
 
@@ -148,6 +148,7 @@ const PostContainer = () => {
                                 </label>
                                 <input type="file" name="imagePost" id="ImagePost" accept="image/*" style={{display:"none"}}   />
                                 <button className={poststyle.postBttn}> <Plus /> Add Post</button>
+                                <button className={poststyle.canscelPostBttn}> <MessageCircleOff /> Cancle Post</button>
                             </div>
                             
                         </form>

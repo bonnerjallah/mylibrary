@@ -15,6 +15,7 @@ import ReviewerComponent from "../components/ReviewerComponent";
 import FollowerComonent from "../components/FollowerComonent";
 import Footer from "../components/Footer";
 import MessageModal from "../components/MessageModal";
+import UserEditingModal from "../components/UserEditingModal";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faGear, faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -27,6 +28,7 @@ const Dashboard = () => {
     const [member, setMember] = useState('')
     const [showInfo, setShowInfo] = useState(false)
     const [openMessageModal, setOpenMessageModal] = useState(false)
+    const [showUserEditingModal, setShowUserEditingModal] = useState(false)
 
     //Fetch user function
     axios.defaults.withCredentials = true
@@ -58,6 +60,11 @@ const Dashboard = () => {
     //Message modal function
     const handleMessageModal = () => {
         setOpenMessageModal(!openMessageModal)
+    }
+
+    //User Editing Modal function
+    const handleShowUserEditingModal = () => {
+        setShowUserEditingModal(!showUserEditingModal)
     }
 
 
@@ -134,7 +141,7 @@ const Dashboard = () => {
                             <span>{member && member.user && member.user.messages.length > 0 ? (member.user.messages.length) : ""}</span>
                             <FontAwesomeIcon icon={faBell} className={`${member && member.user && member.user.messages.length > 0 ? usernamestyle.bellIcon : "" }`} onClick={handleMessageModal}/>
                         </div>
-                        <div>
+                        <div onClick={handleShowUserEditingModal}>
                             <FontAwesomeIcon icon={faGear}/>
                         </div>
                     </div>
@@ -157,6 +164,7 @@ const Dashboard = () => {
 
             <Footer />
             {openMessageModal && (<MessageModal />)}
+            {showUserEditingModal && (<UserEditingModal closeModal={setShowUserEditingModal} />)}
 
         </div>
     )

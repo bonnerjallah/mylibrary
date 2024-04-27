@@ -159,7 +159,7 @@
 }
 
 .inputWrapper input{
-    width: 40%;
+    width: 80%;
     height: 50%;
     border-radius: 1rem;
     padding: .5rem;
@@ -198,8 +198,11 @@
     align-self: center;
     display: flex;
     column-gap: 1rem;
-    width: 45%;
+    width: max-content;
     justify-content: center;
+    border-top: 1px solid black;
+    width: 90%;
+    padding-top: .5rem;
 }
 
 .addImageButton label{
@@ -241,5 +244,27 @@
 .postBttn:hover{
     background-color: #168aad;
     color: black;
+    transition: all 300ms ease-in-out;
+}
+
+.canscelPostBttn{
+    bottom: .5rem;
+    right: .5rem;
+    width: max-content;
+    height: 2.5rem;
+    background-color: #0a4051;
+    border: none;
+    border-radius: 1rem;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem; 
+}
+
+.canscelPostBttn:hover{
+    color: black;
+    background-color: red;
     transition: all 300ms ease-in-out;
 }
