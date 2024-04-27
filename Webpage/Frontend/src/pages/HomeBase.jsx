@@ -70,6 +70,7 @@ const HomeBase = () => {
   const [bookOfTheWeek, setBookOfTheWeek] = useState([])
   const [currentDay, setCurrentDay] = useState('')
 
+  //all books fetch 
   useEffect(() => {
     const fetchbooks = async () => {
         try {
@@ -154,10 +155,6 @@ const HomeBase = () => {
     localStorage.setItem('bookSelectionTimestamp', new Date().toISOString());
 
 }, [allBooks]);
-
-
-
-
 
 
 
