@@ -23,6 +23,7 @@ const userEditingModal = ({closeModal}) => {
         postolcode: ""
 
     })
+    const [successfullyUdatedInfo, setSuccessfullyUdatedInfo] = useState("")
 
     //Fetching user data
     axios.defaults.withCredentials = true
@@ -85,6 +86,13 @@ const userEditingModal = ({closeModal}) => {
 
             if(response.status === 200) {
                 console.log("successfully inserted edited data")
+
+                setSuccessfullyUdatedInfo("Successfull updated your Information")
+
+                setTimeout(() => {
+                    setSuccessfullyUdatedInfo('')
+                    closeModal(false)
+                }, 2000);
             }
 
             setEditinputData({
@@ -179,9 +187,7 @@ const userEditingModal = ({closeModal}) => {
                     
                 )}
 
-                
-            
-
+            {successfullyUdatedInfo && (<p className={usereditingmodalstyle.successMsg}>{successfullyUdatedInfo}</p>)}
         </div>
     )
 }

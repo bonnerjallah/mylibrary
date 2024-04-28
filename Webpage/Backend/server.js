@@ -3,6 +3,7 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 const multer = require("multer")
 const path = require("path")
+const fs = require('fs')
 
 const ObjectId = require("mongodb")
 
@@ -171,18 +172,38 @@ app.put("/edituserdata", upload.single("profilepic"), async (req, res) => {
 
         user = await LibraryUsers.findById(userId)
 
+        const previousPic = path.join(__dirname, "../../shared-assets/public/libraryusersprofilepics", user.profilepic )
+
+
         if(!user) {
             return res.status(404).json({message: "user not found"})
         }
 
-        username !== "" ? user.username = username : ""
-        email !== "" ? user.email = email : ""
-        newpwd !== "" ? user.password = newpwd : ""
-        address !== "" ? user.address = address : ""
-        city !== "" ? user.city = city : ""
-        state !== "" ? user.state = state : ""
-        postolcode !== "" ? user.postalcode = postolcode : ""
-        UploadProfilePic !== "" ? user.profilepic = UploadProfilePic : ""
+        if(username !== "") user.username = username
+        if(email !== "") user.email = email
+        if(newpwd !== "") user.password = newpwd
+        if(address !== "") user.address = address
+        if(city !== "") user.city = city
+        if(state !== "") user.state = state
+        if(postolcode !== "") user.postalcode = postolcode 
+
+        // If a new profile picture is uploaded, delete the previous one form image file and update profile pic
+        if(UploadProfilePic && fs.existsSync(previousPic)) {
+            const previousProfilePic = previousPic
+            try {
+                fs.unlink(previousProfilePic, (err) => {
+                    if(err) {
+                        console.log("Error deleting previous profile picture", err)
+                    } else {
+                        console.log("Previous profile picture file deleted successfully")
+                    }
+                })
+            } catch (error) {
+                console.error("Error deleting previous profile picture", error)
+            }
+
+            user.profilepic = UploadProfilePic
+        }
 
         await user.save()
 
