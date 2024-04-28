@@ -12,7 +12,7 @@ const userEditingModal = ({closeModal}) => {
     const {user} = useAuth()
 
     const [member, setMember] = useState()
-    const [profilePic, setProfilePic] = useState()
+    const [profilePicUrl, setProfilePicUrl] = useState("")
     const [eidtInputData, setEditinputData] = useState({
         username: "",
         email: "",
@@ -47,13 +47,60 @@ const userEditingModal = ({closeModal}) => {
 
     // edit user porfile pic function
     const handleProfilePic = (e) => {
-        setProfilePic(e.target.files[0])
+        setProfilePicUrl(e.target.files[0])
     }
 
     //handle user edited input function
     const handleEditedInputData = (e) => {
         const {name, value} = e.target
         setEditinputData((prev) => ({...prev, [name]: value }))
+    }
+
+    //submit inputdata function
+    const handleEditInputSubmit = async (e) => {
+        e.preventDefault()
+
+        const userId = member.user.id
+
+        const formdata = new FormData()
+
+        formdata.append("userId", userId)
+        formdata.append("username", eidtInputData.username)
+        formdata.append("email", eidtInputData.email)
+        formdata.append("newpwd", eidtInputData.newpwd)
+        formdata.append("address", eidtInputData.address)
+        formdata.append("city", eidtInputData.city)
+        formdata.append("state", eidtInputData.state)
+        formdata.append("postolcode", eidtInputData.postolcode)
+
+        if(profilePicUrl) {
+            formdata.append("profilepic", profilePicUrl, profilePicUrl.name )
+        }
+
+
+        try {
+            const response = await axios.put("http://localhost:3001/edituserdata", formdata, {
+                headers:{"Content-Type": "multipart/form-data"}
+            })
+
+            if(response.status === 200) {
+                console.log("successfully inserted edited data")
+            }
+
+            setEditinputData({
+                username: "",
+                email: "",
+                newpwd: "",
+                address: "",
+                city: "",
+                state: "",
+                postolcode: ""
+            })
+
+            
+        } catch (error) {
+            console.log("error inserting data", error)
+        }
     }
 
 
@@ -66,19 +113,30 @@ const userEditingModal = ({closeModal}) => {
             
                 {member && member.user && (
                     
-                    <form onSubmit={handleEditInputSubmit} encType="form-data" method="POST">
+                    <form onSubmit={handleEditInputSubmit} encType="mulitpart/form-data" method="PUT">
                         <div className={usereditingmodalstyle.porfilePicWrapper}>
-                            <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} width="200" height="200" style={{borderRadius:"50%"}}/>
+                            {member && member.user && member.user.profilepic ? (
+                                <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} width="200" height="200" style={{borderRadius:"50%"}}/>
+                            ): ( 
+                                <div  style={{fontSize:"7rem", borderRadius:"50%", padding:"1rem", display:"flex", justifyContent:"center", alignItems:"center", backgroundColor:"#d8e2dc"}}>
+                                    {member && member.user && member.user.firstName && member.user.lastName ? (
+                                        `${member.user.firstName.charAt(0).toUpperCase()}${member.user.lastName.charAt(0).toUpperCase()}`
+                                    ) : (
+                                        'Unknown'
+                                    )}
+                                </div>
+                            )}
                             
                             <label htmlFor="ProfilePic">
-                                <input type="file" name="profilepic" id="ProfilePic" style={{display:"none"}} onChange={handleProfilePic} />
+                                <input type="file" name="profilepic" id="ProfilePic" accept="image/*" style={{display:"none"}} onChange={handleProfilePic} />
                                 <Camera /> Edit
                             </label>
                         </div>
+
                         <div className={usereditingmodalstyle.inputDataWrapper}>
                             <label htmlFor="UserName">
                                 User Name:
-                                <input type="text" name="username" id="UserName" value={member.user.userName} onChange={handleEditedInputData}/>
+                                <input type="text" name="username" id="UserName" value={eidtInputData.username} placeholder="UserName" onChange={handleEditedInputData}/>
                             </label>
 
                             <label htmlFor="Email">

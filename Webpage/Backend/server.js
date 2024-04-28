@@ -113,10 +113,6 @@ app.put("/updatebookonshelves/:bookid/:userId", async(req, res) => {
         const {userId, bookid} = req.params
         const {Action} = req.body
 
-        console.log(req.body)
-        console.log("userId", userId)
-        console.log("bookid", bookid)
-
         user = await LibraryUsers.findById(userId)
 
         user.shelf.forEach(item => {
@@ -158,10 +154,43 @@ app.put("/updatebookonshelves/:bookid/:userId", async(req, res) => {
 
         return res.json(result)
 
-        
     } catch (error) {
         console.log("errro updating book", error)
         return res.status(500).json({message: "Internal server issue"})
+    }
+})
+
+//Update user data
+app.put("/edituserdata", upload.single("profilepic"), async (req, res) => {
+    try {
+        const {userId, username, email, newpwd, address, city, state, postolcode} = req.body
+        const UploadProfilePic = req.file ? path.basename(req.file.path) : ""
+
+        console.log(req.body)
+        console.log(UploadProfilePic)
+
+        user = await LibraryUsers.findById(userId)
+
+        if(!user) {
+            return res.status(404).json({message: "user not found"})
+        }
+
+        username !== "" ? user.username = username : ""
+        email !== "" ? user.email = email : ""
+        newpwd !== "" ? user.password = newpwd : ""
+        address !== "" ? user.address = address : ""
+        city !== "" ? user.city = city : ""
+        state !== "" ? user.state = state : ""
+        postolcode !== "" ? user.postalcode = postolcode : ""
+        UploadProfilePic !== "" ? user.profilepic = UploadProfilePic : ""
+
+        await user.save()
+
+        return res.status(200).json({message: "User data updated successfully"})
+
+    } catch (error) {
+        console.log("error updating user data", error)
+        return res.status(500).json({message : "Internal server Issue"})
     }
 })
 
