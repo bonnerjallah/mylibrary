@@ -106,7 +106,23 @@ const libraryUsersSchema = new mongoose.Schema({
 
     fees:{
         type: Number
-    }
+    },
+
+    posts:[{
+        postpic: { type: Stirng },
+        postcontent: { type: String },
+        postreactions: {
+            likeby: [{ type: String }],
+            loveby: [{ type: String }],
+            laughby: [{ type: String }],
+            cryby: [{ type: String }]
+        },
+        postcomments:[{
+            commenter: { type: String },
+            comment: { type: String }
+        }]
+
+    }]
 
 })
 

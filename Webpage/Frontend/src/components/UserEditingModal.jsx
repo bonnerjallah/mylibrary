@@ -78,14 +78,12 @@ const userEditingModal = ({closeModal}) => {
             formdata.append("profilepic", profilePicUrl, profilePicUrl.name )
         }
 
-
         try {
             const response = await axios.put("http://localhost:3001/edituserdata", formdata, {
                 headers:{"Content-Type": "multipart/form-data"}
             })
 
             if(response.status === 200) {
-                console.log("successfully inserted edited data")
 
                 setSuccessfullyUdatedInfo("Successfull updated your Information")
 

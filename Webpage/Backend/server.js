@@ -43,7 +43,9 @@ app.use("/booksimages", express.static(path.join(__dirname, "../../shared-assets
 
 app.use("/libraryusersprofilepics", express.static(path.join(__dirname, "../../shared-assets/public/libraryusersprofilepics")))
 
+app.use("/postpictures", express.static(path.join(__dirname, "../../shared-assets/public/postpictures")))
 
+// libraryusersprofilepics multer function
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb (null, path.join(__dirname, "../../shared-assets/public/libraryusersprofilepics"))
@@ -55,6 +57,32 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage,
+    limits: {fileSize:5000000},
+    fileFilter: (req, file, cb) => {
+        const fileType = /jpeg|jpg|png|webp/i;
+        const mimeType = fileType.test(file.mimetype);
+        const extname = fileType.test(path.extname(file.originalname));
+
+        if(mimeType && extname) {
+            return cb(null, true)
+        }
+
+        cb(new Error("Give proper file format to upload"))
+    }
+})
+
+//postpictures multer function
+const postStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb (null, path.join(__dirname, "../../shared-assests/public/postpicture"))
+    },
+    filename : (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+
+const postUpload = multer({
+    storage: postStorage,
     limits: {fileSize:5000000},
     fileFilter: (req, file, cb) => {
         const fileType = /jpeg|jpg|png|webp/i;
