@@ -109,7 +109,7 @@ const libraryUsersSchema = new mongoose.Schema({
     },
 
     posts:[{
-        postpic: { type: Stirng },
+        postpic: { type: String },
         postcontent: { type: String },
         postreactions: {
             likeby: [{ type: String }],

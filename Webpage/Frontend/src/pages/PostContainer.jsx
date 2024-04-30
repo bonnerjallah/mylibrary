@@ -17,6 +17,10 @@ const PostContainer = () => {
     const [allUsers, setAllUsers] = useState([])
     const [postPics, setPostPics] = useState([])
     const [followingUserName, setFollowingUserName] = useState()
+    const [postInputData, setPostInputData] = useState({
+        whatposted : ""
+    })
+    const [imagePosting, setImagePosting] = useState("")
 
     //user fetch data
     axios.defaults.withCredentials = true
@@ -59,12 +63,11 @@ const PostContainer = () => {
     useEffect(() => {
         const userImage = allUsers && allUsers.filter(elem => member && member.user && member.user.following && member.user.following.includes(elem._id)).map(picElem => picElem)
 
-
-
         setPostPics(userImage)
         
     }, [allUsers, member])
-
+    
+    //Image slider function
     const ImageSilder = ({post}) => {
         const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -107,6 +110,48 @@ const PostContainer = () => {
 
     console.log("Post Pics", postPics)
 
+    //function to handle post images
+    const handlePostImage = (e) => {
+        setImagePosting(e.target.files[0])
+    }
+
+    // binding form input
+    const handlePostInputData = (e) => {
+        const {name, value} = e.target
+        setPostInputData((prev) => ({...prev, [name]: value}))
+    }
+
+    //Post data submiting function
+    const handleSubmitData = async (e) => {
+        e.preventDefault()
+
+        const userId = member.user.id
+
+        const formData = new FormData()
+        
+        formData.append("userId", userId)
+        formData.append("whatposted", postInputData.whatposted )
+
+        if(imagePosting) {
+            formData.append("postingImage", imagePosting, imagePosting.name)
+        }
+
+        try {
+            const response = await axios.post("http://localhost:3001/post", formData, {
+                headers: {"Content-Type": "multipart/form-data"}
+            })
+
+            if(response.status === 200) {
+                console.log("successfully posted")
+            }
+
+        } catch (error) {
+            console.log("Error posting", error)
+        }
+    }
+
+
+
     return (
         <div className={poststyle.postMainContainer}>
             <div className={poststyle.postSideContainer}>
@@ -132,7 +177,7 @@ const PostContainer = () => {
                 </div>
                 <div className={poststyle.postWrapper}>
                     <div className={poststyle.postFormWrapper}>
-                        <form>
+                        <form onSubmit={handleSubmitData} encType="form-data" method="POST">
                             <div className={poststyle.inputWrapper}>
                                 {member && member.user && member.user.profilepic && (
                                     <div>
@@ -140,14 +185,14 @@ const PostContainer = () => {
                                     </div>
                                 )}
                                 <label htmlFor="whatYouPosted"></label>
-                                <input type="text" name="whatposted" id="WhatYouPosted" placeholder="whats on your mind?"  />
+                                <input type="text" name="whatposted" id="WhatYouPosted" placeholder="whats on your mind?" value={postInputData.whatposted} onChange={handlePostInputData}  />
                             </div>
                             <div className={poststyle.addImageButton}>
                                 <label htmlFor="ImagePost">
                                     <ImagePlus /> Add Image
                                 </label>
-                                <input type="file" name="imagePost" id="ImagePost" accept="image/*" style={{display:"none"}}   />
-                                <button className={poststyle.postBttn}> <Plus /> Add Post</button>
+                                <input type="file" name="imagePost" id="ImagePost" accept="image/*" style={{display:"none"}} onChange={handlePostImage}   />
+                                <button type="submit" className={poststyle.postBttn}> <Plus /> Add Post</button>
                                 <button className={poststyle.canscelPostBttn}> <MessageCircleOff /> Cancle Post</button>
                             </div>
                             
