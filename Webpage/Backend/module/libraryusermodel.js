@@ -121,9 +121,7 @@ const libraryUsersSchema = new mongoose.Schema({
             commenter: { type: String },
             comment: { type: String }
         }]
-
     }]
-
 })
 
 const LibraryUsers = mongoose.model("libraryUsers", libraryUsersSchema)

@@ -8,6 +8,8 @@ import { Search, ArrowBigLeft, ArrowBigRight, Heart, ImagePlus, Plus, MessageCir
 
 import poststyle from "../styles/poststyle.module.css"
 
+import Postsbox from "../components/Postsbox";
+
 
 const PostContainer = () => {
 
@@ -42,7 +44,6 @@ const PostContainer = () => {
         fetchUserData()
     }, [])
 
-    console.log("member", member)
 
     //all users fetch
     useEffect(() => {
@@ -58,7 +59,6 @@ const PostContainer = () => {
         fetchAllUsers()
     }, [])
 
-    console.log("allusers", allUsers)
 
     useEffect(() => {
         const userImage = allUsers && allUsers.filter(elem => member && member.user && member.user.following && member.user.following.includes(elem._id)).map(picElem => picElem)
@@ -133,17 +133,21 @@ const PostContainer = () => {
         formData.append("whatposted", postInputData.whatposted )
 
         if(imagePosting) {
-            formData.append("postingImage", imagePosting, imagePosting.name)
+            formData.append("imagePost", imagePosting, imagePosting.name)
         }
 
         try {
-            const response = await axios.post("http://localhost:3001/post", formData, {
+            const response = await axios.post("http://localhost:3001/posting", formData, {
                 headers: {"Content-Type": "multipart/form-data"}
             })
 
             if(response.status === 200) {
                 console.log("successfully posted")
             }
+
+            setPostInputData({
+                whatposted : ""
+            })
 
         } catch (error) {
             console.log("Error posting", error)
@@ -199,7 +203,7 @@ const PostContainer = () => {
                         </form>
                     </div>
                     <div className={poststyle.postItSelf}>
-                        post goes here
+                        <Postsbox />
                     </div>
                 </div>
 

@@ -59,7 +59,7 @@ const upload = multer({
     storage: storage,
     limits: {fileSize:5000000},
     fileFilter: (req, file, cb) => {
-        const fileType = /jpeg|jpg|png|webp/i;
+        const fileType = /jpeg|jpg|png|jfif|webp/i;
         const mimeType = fileType.test(file.mimetype);
         const extname = fileType.test(path.extname(file.originalname));
 
@@ -74,7 +74,7 @@ const upload = multer({
 //postpictures multer function
 const postStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb (null, path.join(__dirname, "../../shared-assests/public/postpicture"))
+        cb (null, path.join(__dirname, "../../shared-assets/public/postpictures"))
     },
     filename : (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname))
@@ -85,7 +85,7 @@ const postUpload = multer({
     storage: postStorage,
     limits: {fileSize:5000000},
     fileFilter: (req, file, cb) => {
-        const fileType = /jpeg|jpg|png|webp/i;
+        const fileType = /jpeg|jpg|png|jfif|webp/i;
         const mimeType = fileType.test(file.mimetype);
         const extname = fileType.test(path.extname(file.originalname));
 
@@ -126,7 +126,7 @@ app.get("/suggestedBooks", async (req, res) => {
 //Get all users
 app.get("/usersToFollow", async(req, res) => {
     try {
-        const results = await LibraryUsers.find().select("_id username profilepic reviewer").exec()
+        const results = await LibraryUsers.find().select("_id username profilepic reviewer posts").exec()
 
         return res.json(results)
 
@@ -330,6 +330,39 @@ app.delete("/onholddelete/:elem/:_id", async (req, res) => {
     } catch (error) {
         console.log("error deleting book on hold", error)
         return res.status(500).json({message: "Internal server error"})
+    }
+})
+
+app.post("/posting", postUpload.single("imagePost"), async (req, res) => {
+    try {
+        const {userId, whatposted} = req.body
+        const uploadedPost = req.file ? path.basename(req.file.path) : ""
+
+        user = await LibraryUsers.findById(userId)
+
+        if(!user) {
+            return res.status(400).json({message: "user not found"})
+        }
+
+        user.posts.push({
+            postpic : uploadedPost,
+            postcontent : whatposted,
+            postreactions: {
+                likeby: [],
+                loveby: [],
+                laughby: [],
+                cryby: []
+            },
+            postcomments: []
+        })  
+
+        await user.save()
+
+        return res.status(200).json({message: "Successfully posted data"})
+        
+    } catch (error) {
+        console.log("Error posting post data", error)
+        return res.status(500).json({message: "Internal server issue"})
     }
 })
 
