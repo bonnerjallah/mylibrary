@@ -53,37 +53,52 @@ const Postsbox = () => {
 
     return (
         <div className={postboxstyle.mainContainer}>
-            <div className={postboxstyle.headerContainer}>
-                <div className={postboxstyle.postImageAndContainer}>
-                    <div className={postboxstyle.posterImageWrapper}>
-                    </div>
-                    <div className={postboxstyle.menuAndCloseWrapper}>
-                        <Menu />
-                        <p>X</p>
-                    </div>
-                </div>
-                <div className={postboxstyle.whatsPostedWrapper}>
-                    post goes here
-                </div>
-            </div>
-            <div className={postboxstyle.WhatsPostedImageWrapper}>
-                post pic goes here
-            </div>
-            <div className={postboxstyle.commentFormWrapper}>
-                <form>
-                    <div className={postboxstyle.likesContainer}>
-                        likes
-                    </div>
-                    <div className={postboxstyle.commentLeaverContainer}>
-                        <div className={postboxstyle.commentWrapper}>
-                            page holder profile pic
-                            <label htmlFor="Comment">
-                                <input type="text" name='comment' id='Comment' placeholder='Write a comment' />
-                            </label>
+            {allUsers && allUsers.map((user, id) => (
+                user.posts.length > 0 && (
+                    <div key={id}>
+                        <div className={postboxstyle.headerContainer}>
+                            <div className={postboxstyle.postImageAndContainer}>
+                                <div className={postboxstyle.posterImageWrapper}>
+                                    <img src={`http://localhost:3001/libraryusersprofilepics/${user.profilepic}`} width="50" height="50" style={{borderRadius:"50%"}} />
+                                    <p>{user.username}</p>
+                                </div>
+                                <div className={postboxstyle.menuAndCloseWrapper}>
+                                    <Menu className={postboxstyle.menuIcon} />
+                                    <p>X</p>
+                                </div>
+                            </div>
+                            <div className={postboxstyle.whatsPostedWrapper}>
+                                {user.posts[user.posts.length - 1].postcontent}
+                            </div>
+                        </div>
+
+                        <div className={postboxstyle.WhatsPostedImageWrapper}>
+                            <img src={`http://localhost:3001/postpictures/${user.posts[user.posts.length - 1].postpic}`}         className={postboxstyle.WhatsPostedImage} />
+                        </div>
+
+                        <div className={postboxstyle.commentFormWrapper}>
+                            {member && member.user && member.user.profilepic && (
+                                <form>
+                                    <div className={postboxstyle.likesContainer}>
+                                        likes
+                                    </div>
+                                    <div className={postboxstyle.commentLeaverContainer}>
+                                        <div className={postboxstyle.commentWrapper}>
+                                            <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} width="40" height="40" style={{borderRadius:"50%"}} />
+                                        </div>
+                                        <label htmlFor="Comment">
+                                            <input type="text" name='comment' id='Comment' placeholder='Write a comment' />
+                                        </label>
+                                    </div>
+                                </form>
+                            )}
                         </div>
                     </div>
-                </form>
-            </div>
+                )
+            ))}
+            
+            
+            
         </div>
     )
 }

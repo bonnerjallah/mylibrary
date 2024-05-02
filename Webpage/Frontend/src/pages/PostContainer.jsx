@@ -189,7 +189,7 @@ const PostContainer = () => {
                                     </div>
                                 )}
                                 <label htmlFor="whatYouPosted"></label>
-                                <input type="text" name="whatposted" id="WhatYouPosted" placeholder="whats on your mind?" value={postInputData.whatposted} onChange={handlePostInputData}  />
+                                <input type="text" name="whatposted" id="whatYouPosted" placeholder="whats on your mind?" value={postInputData.whatposted} onChange={handlePostInputData}  />
                             </div>
                             <div className={poststyle.addImageButton}>
                                 <label htmlFor="ImagePost">
