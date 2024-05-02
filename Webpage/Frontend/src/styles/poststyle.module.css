@@ -188,7 +188,6 @@
 }
 
 .postItSelf{
-    border: 4px solid green;
     align-self: center;
     width: 90%;
     height: max-content;

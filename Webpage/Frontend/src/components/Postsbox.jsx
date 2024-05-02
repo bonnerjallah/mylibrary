@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from "js-cookie"
 import { useAuth } from './AuthContext';
 
-import { Menu } from 'lucide-react';
+import { Menu, ThumbsUp, Heart, Laugh, Frown, MessageCircle } from 'lucide-react';
 import postboxstyle from "../styles/postboxstyle.module.css"
 
 
@@ -13,6 +13,8 @@ const Postsbox = () => {
 
     const [member, setMember] = useState("")
     const [allUsers, setAllUsers] = useState([])
+    const [showLikeOptions, setShowLikeOptions] = useState(false)
+    const [showCommentInput, setShowCommentInput] = useState(false)
 
     //fetching user data
     axios.defaults.withCredentials = true
@@ -51,11 +53,23 @@ const Postsbox = () => {
 
     console.log("all users", allUsers)
 
+    const handleShowLikeOptions = () => {
+        setShowLikeOptions(!showLikeOptions)
+    }
+
+    const handleshowCommentInput = () => {
+        setShowCommentInput(!showCommentInput)
+    }
+
+    const handleCloseInputComment = () => {
+        setShowCommentInput(false)
+    }
+
     return (
-        <div className={postboxstyle.mainContainer}>
+        <div >
             {allUsers && allUsers.map((user, id) => (
                 user.posts.length > 0 && (
-                    <div key={id}>
+                    <div key={id} className={postboxstyle.mainContainer}>
                         <div className={postboxstyle.headerContainer}>
                             <div className={postboxstyle.postImageAndContainer}>
                                 <div className={postboxstyle.posterImageWrapper}>
@@ -79,16 +93,28 @@ const Postsbox = () => {
                         <div className={postboxstyle.commentFormWrapper}>
                             {member && member.user && member.user.profilepic && (
                                 <form>
-                                    <div className={postboxstyle.likesContainer}>
-                                        likes
+                                    <div className={postboxstyle.likesCount}>
+                                        likes count
                                     </div>
                                     <div className={postboxstyle.commentLeaverContainer}>
-                                        <div className={postboxstyle.commentWrapper}>
-                                            <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} width="40" height="40" style={{borderRadius:"50%"}} />
+                                        <div className={ showLikeOptions ? postboxstyle.showClickWrapper : postboxstyle.clikesWrapper } >
+                                            <ThumbsUp  className={postboxstyle.likebutton}/>
+                                            <Heart className={postboxstyle.heartIconButton} />
+                                            <Laugh className={postboxstyle.laughIconButton} />
+                                            <Frown className={postboxstyle.sadIconButton} />
                                         </div>
-                                        <label htmlFor="Comment">
-                                            <input type="text" name='comment' id='Comment' placeholder='Write a comment' />
-                                        </label>
+                                        <div style={{display:"flex", justifyContent:"space-around", width:"100%"}}>
+                                            <p><ThumbsUp style={{cursor:"pointer", marginRight:".5rem"}}  onMouseEnter={handleShowLikeOptions} /> Like</p>
+                                            <p><MessageCircle style={{cursor:"pointer", marginRight:".5rem"}} onClick={handleshowCommentInput}  /> Comment</p>
+                                        </div>
+                                        <div className={ showCommentInput ? postboxstyle.commentInputWrapper : postboxstyle.commentInputNoShow}>
+                                            <span onClick={handleCloseInputComment}>X</span>
+                                            <label htmlFor="Comment"  >
+                                                <input type="text" name='comment' id='Comment' placeholder='Write a comment' />
+                                            </label>
+                                            <button>Submit</button>
+                                        </div>
+
                                     </div>
                                 </form>
                             )}
@@ -96,9 +122,6 @@ const Postsbox = () => {
                     </div>
                 )
             ))}
-            
-            
-            
         </div>
     )
 }
