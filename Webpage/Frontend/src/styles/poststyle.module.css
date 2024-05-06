@@ -269,3 +269,8 @@
     transition: all 300ms ease-in-out;
 }
 
+.postProfilePicWrapper{
+    position: absolute;
+    top: .3rem;
+    left: .3rem;
+}

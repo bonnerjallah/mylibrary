@@ -61,11 +61,16 @@ const PostContainer = () => {
 
 
     useEffect(() => {
-        const userImage = allUsers && allUsers.filter(elem => member && member.user && member.user.following && member.user.following.includes(elem._id)).map(picElem => picElem)
+        // const userImage = allUsers && allUsers.filter(elem => member && member.user && member.user.following && member.user.following.includes(elem._id)).map(picElem => picElem)
 
-        setPostPics(userImage)
+        const postImage = allUsers && allUsers.length > 0 && allUsers.filter(user => {
+            return user.posts && user.posts.length > 0
+        })
+
+        setPostPics(postImage)
         
     }, [allUsers, member])
+
     
     //Image slider function
     const ImageSilder = ({post}) => {
@@ -89,13 +94,18 @@ const PostContainer = () => {
         return (
             <div style={{ width:"100%", position:'relative'}}>
                 <div className={poststyle.postImageWrapper  }>
-                    {postPics && postPics.map((pic, index) => (
-                        <div key={index} style={{height:"100%", border:"1px solid black", translate: `${-100 * currentIndex}%`}} className={poststyle.followingHomePageImage}>
-                            <img  src={`http://localhost:3001/libraryusersprofilepics/${pic.profilepic}`} alt={`Post ${index + 1}`}  width="100%" height="100%" style={{borderRadius:"1rem"}}/>
-                            <div className={poststyle.usernameWrapper}>
-                                <p>@ {pic.username}</p> 
+                    {postPics && postPics.map((userPost, index) => (
+                        userPost.posts.length > 0 && (
+                            <div key={index} style={{height:"100%", border:"1px solid black", translate:`${-100 * currentIndex}%`}} className={poststyle.followingHomePageImage}>
+                                <div className={poststyle.postProfilePicWrapper}>
+                                    <img src={`http://localhost:3001/libraryusersprofilepics/${userPost.profilepic}`} alt="" width="50" height="50" style={{borderRadius:"50%"}} />
+                                </div>
+                                <img src={`http://localhost:3001/postpictures/${userPost.posts[userPost.posts.length - 1].postpic}`} alt={`Post ${index + 1}`}  width="100%" height="100%" style={{borderRadius:"1rem"}} />
+                                <div className={poststyle.usernameWrapper}>
+                                    <p>@ {userPost.username}</p>
+                                </div>
                             </div>
-                        </div>
+                        )
                     ))}
 
                     
@@ -108,7 +118,6 @@ const PostContainer = () => {
 
     }
 
-    console.log("Post Pics", postPics)
 
     //function to handle post images
     const handlePostImage = (e) => {
@@ -199,7 +208,6 @@ const PostContainer = () => {
                                 <button type="submit" className={poststyle.postBttn}> <Plus /> Add Post</button>
                                 <button className={poststyle.canscelPostBttn}> <MessageCircleOff /> Cancle Post</button>
                             </div>
-                            
                         </form>
                     </div>
                     <div className={poststyle.postItSelf}>

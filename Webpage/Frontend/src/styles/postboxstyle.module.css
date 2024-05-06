@@ -113,7 +113,7 @@
     display: none;
 }
 
-.showClickWrapper{
+.showClickWrapper {
     display: flex;
     justify-content: space-around;
     background-color: rgba(103, 102, 102, 0.9);
@@ -124,6 +124,14 @@
     top: -2rem;
     left: 5rem;
     color: white;
+}
+
+.showClickWrapper button{
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    padding: .3rem;
 }
 
 .likebutton:hover{

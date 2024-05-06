@@ -238,7 +238,6 @@ const CheckOutBooks = () => {
                             </p>
                         </div>
                     </div>      
-
                 </div>
                 <div className={checkoutbookstyle.publishCheckOutDateWrapper}>
                     <p>Publis Date: 

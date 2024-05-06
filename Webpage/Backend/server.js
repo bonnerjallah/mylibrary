@@ -195,13 +195,10 @@ app.put("/edituserdata", upload.single("profilepic"), async (req, res) => {
         const {userId, username, email, newpwd, address, city, state, postolcode} = req.body
         const UploadProfilePic = req.file ? path.basename(req.file.path) : ""
 
-        console.log(req.body)
-        console.log(UploadProfilePic)
 
         user = await LibraryUsers.findById(userId)
 
         const previousPic = path.join(__dirname, "../../shared-assets/public/libraryusersprofilepics", user.profilepic )
-
 
         if(!user) {
             return res.status(404).json({message: "user not found"})
@@ -242,6 +239,73 @@ app.put("/edituserdata", upload.single("profilepic"), async (req, res) => {
         return res.status(500).json({message : "Internal server Issue"})
     }
 })
+
+app.put("/postoptions", async (req, res) => {
+    try {
+        const { like, heart, laugh, sad, userId, postId, posterId } = req.body
+
+        console.log(req.body)
+
+        personPost = await LibraryUsers.findById(posterId)
+
+        if (!personPost) {
+            return res.status(400).json({ message: "Person that poster not found" })
+        }
+
+        post = personPost.posts.find(elem => elem._id.toString() === postId)
+
+        if (!post) {
+            return res.status(400).json({ message: "Post not found" })
+        }
+
+        // Remove previous reactions
+        if (post.postreactions.likeby) {
+            post.postreactions.likeby.pull(userId);
+        }
+        if (post.postreactions.heartby) {
+            post.postreactions.heartby.pull(userId);
+        }
+        if (post.postreactions.laughby) {
+            post.postreactions.laughby.pull(userId);
+        }
+        if (post.postreactions.cryby) {
+            post.postreactions.cryby.pull(userId);
+        }
+        
+
+        // Add new reaction
+        if (req.body.heart) {
+            if (post.postreactions.heartby) {
+                post.postreactions.heartby.push(userId);
+            }
+        } else if (req.body.like) {
+            if (post.postreactions.likeby) {
+                post.postreactions.likeby.push(userId);
+            }
+        } else if (req.body.laugh) {
+            if (post.postreactions.laughby) {
+                post.postreactions.laughby.push(userId);
+            }
+        } else if (req.body.sad) {
+            if (post.postreactions.cryby) {
+                post.postreactions.cryby.push(userId);
+            }
+        }
+        
+        
+        
+
+        await personPost.save()
+
+        return res.status(200).json({ message: "Successfully inserted reaction" })
+
+    } catch (error) {
+        console.log("error inserting data", error)
+        return res.status(500).json({ message: "Internal server issue" })
+    }
+})
+
+
 
 //Delete book form shelf
 app.delete("/deletefromshelves/:bookid/:_id", async(req, res) => {

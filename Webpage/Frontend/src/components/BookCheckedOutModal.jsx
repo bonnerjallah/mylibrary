@@ -32,7 +32,6 @@ const BookCheckedOutModal = ({closeModal}) => {
         fetchUserData()
     }, [])
 
-    console.dir(member)
 
     //fetch allbooks
     useEffect(() => {

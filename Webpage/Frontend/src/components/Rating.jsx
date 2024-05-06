@@ -14,7 +14,6 @@ const Rating = ({onRatingChange}) => {
     }
 
     return (
-        
         <div className={ratingstyle.mainContainer}>
             {[...Array(5)].map((star, index) => {
                 const currentRating = index + 1
