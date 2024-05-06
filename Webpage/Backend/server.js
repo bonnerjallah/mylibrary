@@ -262,8 +262,8 @@ app.put("/postoptions", async (req, res) => {
         if (post.postreactions.likeby) {
             post.postreactions.likeby.pull(userId);
         }
-        if (post.postreactions.heartby) {
-            post.postreactions.heartby.pull(userId);
+        if (post.postreactions.loveby) {
+            post.postreactions.loveby.pull(userId);
         }
         if (post.postreactions.laughby) {
             post.postreactions.laughby.pull(userId);
@@ -275,8 +275,8 @@ app.put("/postoptions", async (req, res) => {
 
         // Add new reaction
         if (req.body.heart) {
-            if (post.postreactions.heartby) {
-                post.postreactions.heartby.push(userId);
+            if (post.postreactions.loveby) {
+                post.postreactions.loveby.push(userId);
             }
         } else if (req.body.like) {
             if (post.postreactions.likeby) {

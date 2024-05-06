@@ -130,20 +130,60 @@ const Postsbox = () => {
 
     }
 
-    const handleLaughOption = (e) => {
+    const handleLaughOption = async (e, postsid, userid) => {
         e.preventDefault()
         setLaugh("Laugh")
         setLike("")
         setHeart("")
         setSad("")
+
+        const requestdata = {
+            userId : member.user.id,
+            laugh : "laugh",
+            postId : postsid,
+            posterId: userid
+        }
+
+        try {
+            const response = await axios.put("http://localhost:3001/postoptions", requestdata, {
+                headers: {"Content-Type": "application/json"}
+            })
+
+            if(response.status === 200) {
+                console.log("Successfully like post")
+            }
+            
+        } catch (error) {
+            console.log("error inserting likes", error)
+        }
     }
 
-    const handleSadOption = (e) => {
+    const handleSadOption = async (e, postsid, userid) => {
         e.preventDefault()
         setSad("Sad")
         setLike("")
         setLaugh("")
         setHeart("")
+
+        const requestdata = {
+            userId : member.user.id,
+            sad: "Sad",
+            postId : postsid,
+            posterId: userid
+        }
+
+        try {
+            const response = await axios.put("http://localhost:3001/postoptions", requestdata, {
+                headers: {"Content-Type": "application/json"}
+            })
+
+            if(response.status === 200) {
+                console.log("Successfully like post")
+            }
+            
+        } catch (error) {
+            console.log("error inserting likes", error)
+        }
     }
 
     const handeCommentAndLikeInputData =  async (e, reaction) => {
