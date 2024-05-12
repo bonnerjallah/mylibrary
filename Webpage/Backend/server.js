@@ -242,7 +242,7 @@ app.put("/edituserdata", upload.single("profilepic"), async (req, res) => {
 
 app.put("/postoptions", async (req, res) => {
     try {
-        const { like, heart, laugh, sad, userId, postId, posterId } = req.body
+        const { like, heart, laugh, sad, comment, userId, postId, posterId } = req.body
 
         console.log(req.body)
 
@@ -257,6 +257,11 @@ app.put("/postoptions", async (req, res) => {
         if (!post) {
             return res.status(400).json({ message: "Post not found" })
         }
+
+        post.postcomments.push({
+            commenter : userId,
+            comment : comment
+        })
 
         // Remove previous reactions
         if (post.postreactions.likeby) {
@@ -292,9 +297,6 @@ app.put("/postoptions", async (req, res) => {
             }
         }
         
-        
-        
-
         await personPost.save()
 
         return res.status(200).json({ message: "Successfully inserted reaction" })

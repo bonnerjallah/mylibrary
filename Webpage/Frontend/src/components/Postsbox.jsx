@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from "js-cookie"
 import { useAuth } from './AuthContext';
 
-import { Menu, ThumbsUp, Heart, Laugh, Frown, MessageCircle } from 'lucide-react';
+import { Menu, ThumbsUp, Heart, Laugh, Frown, MessageCircle, MessageCircleMore } from 'lucide-react';
 import postboxstyle from "../styles/postboxstyle.module.css"
 
 
@@ -15,6 +15,9 @@ const Postsbox = () => {
     const [allUsers, setAllUsers] = useState([])
     const [showLikeOptions, setShowLikeOptions] = useState(false)
     const [showCommentInput, setShowCommentInput] = useState(false)
+    const [comment, setComment] = useState({
+        comment: ""
+    })
     const [like, setLike] = useState("")
     const [heart, setHeart] = useState("")
     const [laugh, setLaugh] = useState("")
@@ -55,7 +58,7 @@ const Postsbox = () => {
         fetchAllUsers()
     }, [])
 
-    // console.log("all users", allUsers)
+    console.log("all users", allUsers)
 
     const handleShowLikeOptions = () => {
         setShowLikeOptions(!showLikeOptions)
@@ -70,7 +73,7 @@ const Postsbox = () => {
     }
 
 
-
+    //like functions
     const handleLikeOption = async (e, postsid, userid) => {
         e.preventDefault()
         setLike("Like")
@@ -99,7 +102,6 @@ const Postsbox = () => {
         }
 
     }
-
 
     const handleHeartOption =  async (e, postsid, userid) => {
         e.preventDefault()
@@ -186,13 +188,46 @@ const Postsbox = () => {
         }
     }
 
-    const handeCommentAndLikeInputData =  async (e, reaction) => {
+
+    //Input field function
+    const handleCommentInput = (e) => {
+        const {name, value} = e.target
+        setComment((prev) => ({...prev, [name]: value}))
+    }
+
+    //Submit Comment
+    const handeCommentInputDataSubmit =  async (e, postsid, userid) => {
         e.preventDefault()
 
-        const userId = member.user.id
+        const requestData = {
+            userId : member.user.id,
+            postId : postsid,
+            posterId : userid,
+            comment : comment.comment
+        }
 
-        console.log(reaction)
-        
+        console.log(requestData)
+
+        try {
+            const response = await axios.put("http://localhost:3001/postoptions", requestData, {
+                headers:{"Content-Type": "application/json"}
+            })
+
+            if(response.status === 200) {
+                console.log("Successfully commented on post")
+            }
+            
+            setComment({
+                comment: ""
+            })
+
+            setTimeout(() => {
+                handleCloseInputComment()
+            }, 2000);
+
+        } catch (error) {
+            console.log("Error inserting comment", error)
+        }
     }
 
     return (
@@ -222,21 +257,56 @@ const Postsbox = () => {
 
                         <div className={postboxstyle.commentFormWrapper}>
                             {member && member.user && member.user.profilepic && (
-                                <form onSubmit={(e) => handeCommentAndLikeInputData(e, reaction)} encType='form-data' method='POST'>
+                                <>
                                     <div className={postboxstyle.likesCount}>
-                                        likes count
+                                        {user && user.posts && user.posts[user.posts.length - 1].postreactions && (
+                                            <div className={postboxstyle.likeContainer}>
+                                                <div className={postboxstyle.likes}>
+                                                    {Object.keys(user.posts[user.posts.length - 1].postreactions).map(key => {
+                                                        if (key !== "") {
+                                                            if (key === "cryby" && user.posts[user.posts.length - 1].postreactions[key].length > 0) {
+                                                                return <Frown fill='orange' key={key} />;
+                                                            } else if (key === "laughby" && user.posts[user.posts.length - 1].postreactions[key].length > 0) {
+                                                                return <Laugh fill='yellow'  key={key} />;
+                                                            } else if (key === "likeby" && user.posts[user.posts.length - 1].postreactions[key].length > 0) {
+                                                                return <ThumbsUp fill='blue' stroke='none' key={key} />;
+                                                            } else if (key === "loveby" && user.posts[user.posts.length - 1].postreactions[key].length > 0) {
+                                                                return <Heart fill='red' stroke='none' key={key} />;
+                                                            }
+                                                        }
+                                                        return null; // Render nothing if condition is not met
+                                                    })}
+                                                </div>
+                                                <span>
+                                                    {Object.values(user.posts[user.posts.length - 1].postreactions).reduce((acc, curr) => acc + curr.length, 0) > 0 
+                                                        ? Object.values(user.posts[user.posts.length - 1].postreactions).reduce((acc, curr) => acc + curr.length, 0)
+                                                        : ""}
+                                                </span>
+
+                                            </div>
+                                        )}
+
+                                        <div >
+                                            {user && user.posts && user.posts[user.posts.length - 1].postcomments && user.posts[user.posts.length - 1].postcomments.length > 0 && (
+                                                <div className={postboxstyle.commentCount}>
+                                                    <MessageCircleMore  />
+                                                    {user.posts[user.posts.length - 1].postcomments.length}
+                                                </div>
+                                            )}
+                                        </div>
+
                                     </div>
                                     <div className={postboxstyle.commentLeaverContainer}>
                                         <div className={ showLikeOptions ? postboxstyle.showClickWrapper : postboxstyle.clikesWrapper } >
                                             
                                             <button onClick={(e) => {handleLikeOption(e, user.posts[user.posts.length - 1]._id, user._id)}}>
-                                                <ThumbsUp className={postboxstyle.likebutton} />
+                                                <ThumbsUp className={ postboxstyle.likebutton } />
                                             </button>
                                             <button onClick={(e) => {handleHeartOption(e, user.posts[user.posts.length - 1]._id, user._id)}}>
-                                                <Heart className={postboxstyle.heartIconButton} />
+                                                <Heart className={ postboxstyle.heartIconButton } />
                                             </button>
-                                            <button onClick={(e) => {handleLaughOption(e, user.posts[user.posts.length - 1]._id, user._id)}}>
-                                                <Laugh className={postboxstyle.laughIconButton} />
+                                            <button onClick={(e) =>  {handleLaughOption(e, user.posts[user.posts.length - 1]._id, user._id)}}>
+                                                <Laugh className={ postboxstyle.laughIconButton } />
                                             </button>
                                             <button onClick={(e) => {handleSadOption(e, user.posts[user.posts.length - 1]._id, user._id)}}>
                                                 <Frown className={postboxstyle.sadIconButton} />
@@ -246,18 +316,36 @@ const Postsbox = () => {
                                             <p><ThumbsUp style={{cursor:"pointer", marginRight:".5rem"}}  onMouseEnter={handleShowLikeOptions} /> Like</p>
                                             <p><MessageCircle style={{cursor:"pointer", marginRight:".5rem"}} onClick={handleshowCommentInput}  /> Comment</p>
                                         </div>
-                                        <div className={ showCommentInput ? postboxstyle.commentInputWrapper : postboxstyle.commentInputNoShow}>
-                                            <span onClick={handleCloseInputComment}>X</span>
-                                            <label htmlFor="Comment"  >
-                                                <input type="text" name='comment' id='Comment' placeholder='Write a comment' />
-                                            </label>
-                                            <button type='submit'>Submit</button>
-                                        </div>
 
+                                        <form onSubmit={(e) => handeCommentInputDataSubmit(e, user.posts[user.posts.length - 1]._id, user._id)} encType='form-data' method='PUT'>
+                                            <div className={ showCommentInput ? postboxstyle.commentInputWrapper : postboxstyle.commentInputNoShow}>
+                                                <span onClick={handleCloseInputComment}>X</span>
+                                                <label htmlFor="Comment"  >
+                                                    <input type="text" name='comment' id='Comment' placeholder='Write a comment' value={comment.comment} onChange={handleCommentInput} />
+                                                </label>
+                                                <button type='submit'>Submit</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
+                                </>
                             )}
                         </div>
+                        <div className={postboxstyle.commentsContainer}>
+                        {user && user.posts && user.posts[user.posts.length - 1].postcomments && (
+                            <div className={postboxstyle.commentsWrapper}>
+                                {user.posts[user.posts.length - 1].postcomments.map((elem, index) => {
+                                    const commenter = allUsers && allUsers.find(userElem => userElem.id === elem.commenter.toLowerCase());
+                                    return (
+                                        <div key={index}>
+                                            <span>{elem.comment}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+
+                        </div>
+
                     </div>
                 )
             ))}

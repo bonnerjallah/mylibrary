@@ -134,15 +134,17 @@
     padding: .3rem;
 }
 
+
 .likebutton:hover{
     cursor: pointer;
     fill: #0466c8;
 }
 
 .heartIconButton:hover{
-    cursor: pointer;
     fill: red;
+    cursor: pointer;
 }
+
 
 .laughIconButton:hover{
     cursor: pointer;
@@ -200,4 +202,34 @@
 .commentInputWrapper button:hover{
     background-color: #2d6a4f;
     color: white;
+}
+
+.likeContainer{
+    display: flex;
+    align-items: center;
+    column-gap: .5rem;
+    width: max-content;
+}
+
+.likesCount{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.commentCount{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    cursor: pointer;
+}
+
+.commentsWrapper{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    padding: .5rem;
+    row-gap: .2rem;
 }
