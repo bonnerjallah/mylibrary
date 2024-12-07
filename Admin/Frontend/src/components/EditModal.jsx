@@ -3,6 +3,9 @@ import modalstyle from "../styles/modalstyle.module.css"
 
 import axios from "axios"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 
 const EditModal = ({closeEditModal, dataToEdit}) => {
 
@@ -12,6 +15,9 @@ const EditModal = ({closeEditModal, dataToEdit}) => {
         bookAvailableYes : false,
         bookAvailableNo: false
     })
+
+    const [bookImageUrl, setBookImage] = useState(null)
+
 
     const handleEditInputData = (e, discription) => {
         const {name, value, type, checked} = e.target 
@@ -28,7 +34,12 @@ const EditModal = ({closeEditModal, dataToEdit}) => {
                 [name]: value
             }))
         }
-    }   
+    }  
+
+    const handleImageEdit = (e) => {
+        setBookImage(e.target.files[0])
+    }
+    
 
     const handleEditBookInputSubmit = async (e) => {
         e.preventDefault();
@@ -45,14 +56,16 @@ const EditModal = ({closeEditModal, dataToEdit}) => {
         formData.append("bookTitle", editInputData.bookTitle);
         formData.append("bookAuthor", editInputData.bookAuthor);
         formData.append("bookPublishDate", editInputData.bookPublishDate);
+
+        if(bookImageUrl) {
+            formData.append("bookImage", bookImageUrl, bookImageUrl.name)
+        }
     
         const availability = bookAvailableCheckBox.bookAvailableYes ? "Yes" : (bookAvailableCheckBox.bookAvailableNo ? "No" : "");
         formData.append("bookAvailability", availability);        
 
         try {
-            const response = await axios.put(`http://localhost:3001/bookEdit/${_id}`, formData, {
-                headers: { "Content-Type": "application/json" }
-            });
+            const response = await axios.put(`${backEndUrl}/bookEdit/${_id}`, formData);
     
             if (response.status === 200) {
                 console.log("Edit book successful");
@@ -72,7 +85,8 @@ const EditModal = ({closeEditModal, dataToEdit}) => {
         } catch (error) {
             console.log("Error editing book data", error);
         }
-    };
+    };    
+   
     
     
     
@@ -84,7 +98,7 @@ const EditModal = ({closeEditModal, dataToEdit}) => {
                     <p onClick={() => {closeEditModal(false)}}>X</p>
                 </div>
                 <div className={modalstyle.bookInfoWrapper}>
-                    <img src={`http://localhost:3001/booksimages/${dataToEdit.bookImageUrl}`} alt="" width={120} height={200} />
+                    <img src={`${backEndUrl}/booksimages/${dataToEdit.bookImageUrl}`} alt="" width={120} height={200} />
                     <div className={modalstyle.formWrapper}>
                         <form onSubmit={handleEditBookInputSubmit} encType="multipart/form-data" method="PUT">
                             <div>
@@ -96,6 +110,13 @@ const EditModal = ({closeEditModal, dataToEdit}) => {
                             <div className={modalstyle.checkedBoxOptions}>
                                 <label htmlFor="availableyes">Yes:<input type="checkbox" name="bookAvailableYes" checked={bookAvailableCheckBox.bookAvailableYes} id="availableyes" onChange={(e) => handleEditInputData(e, "Yes")} /></label>
                                 <label htmlFor="availableno">No: <input type="checkbox" name="bookAvailableNo" checked={bookAvailableCheckBox.bookAvailableNo} id="availableno" onChange={(e) => handleEditInputData(e, "No")} /></label>
+                            </div>
+
+                            <div>
+                                <label htmlFor="BookImage">
+                                    Image:
+                                    <input type="file" accept="image/*" name="bookImage" id="BookImage" onChange={handleImageEdit} />
+                                </label>
                             </div>
                             
                             <button className={modalstyle.editFormButton}>Submit</button>

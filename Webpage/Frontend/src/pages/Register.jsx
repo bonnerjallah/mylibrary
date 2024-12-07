@@ -6,6 +6,9 @@ import Footer from "../components/Footer"
 
 import loginstyle from "../styles/loginstyle.module.css"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const Register = () => {
 
     const navigate = useNavigate()
@@ -29,7 +32,6 @@ const Register = () => {
         setUserProfilePicUrl(e.target.files[0])
     }
 
-    console.log(UserProfilePicUrl)
 
     const handleUserInputData = (e) => {
         const {name, value} = e.target
@@ -43,7 +45,7 @@ const Register = () => {
 
         formData.append("firstname", userInputData.firstname)
         formData.append("lastname", userInputData.lastname)
-        formData.append("birthday", userInputData.birthday)
+        formData.append("birthday", new Date(userInputData.birthday).toISOString());
         formData.append("address", userInputData.address)
         formData.append("city", userInputData.city)
         formData.append("state", userInputData.state)
@@ -57,29 +59,35 @@ const Register = () => {
             formData.append("profilepic", UserProfilePicUrl, UserProfilePicUrl.name )
         }
 
+        // if(formData) {
+        //     console.log("formdata", Array.from(formData))
+        // }
+
+        // console.log("FormData as array:", Array.from(formData.entries()));
+
+
+
 
         try {
-            const response = await axios.post("http://localhost:3001/registerlibraryusers", formData, {
-                headers: {"Content-type": "multipart/form-data"}
-            })
+            const response = await axios.post(`${backEndUrl}/registerlibraryusers`, formData)
 
-            if(response.status === 200){
-                console.log("Insert data successfully")
+            if(response.status === 200) {
+
+                setUserInputData({
+                    firstname: "",
+                    lastname: "",
+                    birthday: "",
+                    address: "",
+                    city: "",
+                    state: "",
+                    postalcode: "",
+                    phonenumber: "",
+                    email: "",
+                    username:"",
+                    password: ""
+                })
             }
 
-            setUserInputData({
-                firstname: "",
-                lastname: "",
-                birthday: "",
-                address: "",
-                city: "",
-                state: "",
-                postalcode: "",
-                phonenumber: "",
-                email: "",
-                username:"",
-                password: ""
-            })
 
             navigate("/LoginForm")
             

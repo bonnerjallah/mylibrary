@@ -10,7 +10,6 @@ const UserLogin = () => {
     setShowLoginForm(!showLoginForm);
   };
 
-  console.log('showLoginForm:', showLoginForm);
 
   return (
     <div>

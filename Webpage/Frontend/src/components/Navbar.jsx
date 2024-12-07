@@ -13,6 +13,8 @@ import SidebarModal from "./SidebarModal";
 import UserNameModal from "./UserNameModal";
 
 
+
+
 const Navbar = () => {
 
     const {loggedIn, logOut} = useAuth()

@@ -6,6 +6,9 @@ import Cookies from 'js-cookie';
 
 import dashboardsidebarstyle from "../styles/dashboardsidebarstyle.module.css"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const Myprofilebox = () => {
 
     const {user} = useAuth()
@@ -19,7 +22,7 @@ const Myprofilebox = () => {
             if(!user) return
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers:{"Content-Type": "application/json", "Authorization": `Bearer${token}`}
                 })
 

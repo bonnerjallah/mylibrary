@@ -3,10 +3,13 @@ import { useAuth } from "../components/AuthContext"
 import Cookies from "js-cookie"
 import axios from "axios"
 import { NavLink, useParams } from "react-router-dom"
-import { Bookmark, Star, ChevronDown, ChevronUp, MoveLeft } from "lucide-react"
+import { Bookmark, Star, ChevronDown, ChevronUp, MoveLeft, StarHalf } from "lucide-react"
 import bookdetailsstyle from "../styles/bookdetailsstyle.module.css"
 
 import Fotter from "../components/Footer"
+
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
 
 const BookDetails = () => {
 
@@ -35,7 +38,7 @@ const BookDetails = () => {
         const fetchUserData = async () => {
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -54,7 +57,7 @@ const BookDetails = () => {
     useEffect(() => {
         const fetchAllBooks = async () => {
             try {
-                const catalogResponse = await axios.get("http://localhost:3001/catalogbooks")
+                const catalogResponse = await axios.get(`${backEndUrl}/books`)
                 const catalogbooks = catalogResponse.data
 
                 const formattedData = catalogbooks.map(elem => {
@@ -68,7 +71,7 @@ const BookDetails = () => {
                     return elem
                 })
 
-                const suggestedBooksResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const suggestedBooksResponse = await axios.get(`${backEndUrl}/suggestions`)
                 const suggestedBooks = suggestedBooksResponse.data
 
                 const suggestedBooksFormattedData = suggestedBooks.map(elem => {
@@ -120,7 +123,7 @@ const BookDetails = () => {
         
 
         try {
-            const response = await axios.post("http://localhost:3001/setbookshelf", requestObject , {
+            const response = await axios.post(`${backEndUrl}/setbookshelf`, requestObject , {
                 headers: {"Content-Type": "application/json"}
             })
 
@@ -165,19 +168,20 @@ const BookDetails = () => {
         };
         
         try {
-            const response = await axios.post("http://localhost:3001/usercomment", requestObject, {
+            const response = await axios.post(`${backEndUrl}/usercomment`, requestObject, {
                 headers: { "Content-Type": "application/json" }
             });
     
             if (response.status === 200) {
-                console.log("Successfully added user comment");
+
+                setCommunityComment({
+                    comment: "",
+                    commRate: ""
+                });
+    
             }
     
-            setCommunityComment({
-                comment: "",
-                commRate: ""
-            });
-
+          
 
         } catch (error) {
             console.log("Error inserting user comment", error);
@@ -199,13 +203,31 @@ const BookDetails = () => {
                         <div key={index} className={bookdetailsstyle.mainContainer}>
                             <div className={bookdetailsstyle.bookDiscriptionContainer}>
                                 <div>
-                                    <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="400" height="550" />                                    
+                                    <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="book image" width="400" height="550" />                                    
                                 </div>
                                 <div className={bookdetailsstyle.aboutBookWrapper}>
                                     <h1>Title: <span style={{fontWeight:"normal"}}>{elem.bookTitle}</span></h1>
                                     <h3>Author: <span style={{fontWeight:"normal"}}>{elem.bookAuthor}</span></h3>
                                     <div>
-                                        <h3>Rating: <span style={{fontWeight:"normal"}}>{elem.rating}</span>****</h3>
+                                        <h3 style={{display: "flex"}}>Rating: 
+                                            {elem.ratings && elem.ratings > 0 ? (
+                                                <span style={{fontWeight: "normal", marginLeft: ".5rem"}}>
+                                                    {Array.from({length: Math.max(0, Math.floor(elem.ratings))},
+                                                    (_, i) => (
+                                                        <Star key={i} fill="black" size={20}/>
+                                                    )
+                                                        
+                                                    )}
+
+                                                    {elem.ratings % 1 !== 0 && (
+                                                        <StarHalf fill="black" size={20} />
+                                                    )}
+                                                </span>
+                                            ) : (
+                                                ""
+                                            )}
+                                        
+                                        </h3>
                                     </div>
                                     <div>
                                         {<h3>Publish Date: <span style={{fontWeight:"normal"}}>{elem.bookPublishDate}</span></h3>}
@@ -235,7 +257,7 @@ const BookDetails = () => {
                                 <h2>About</h2>
                                 <div className={bookdetailsstyle.authorDisWrapper}>
                                     <div className={bookdetailsstyle.authorImageWrapper}>
-                                        <img src={`http://localhost:3001/booksimages/${elem.authorImage}`} alt="author image" width="150" height="150" style={{borderRadius:"50%"}} />
+                                        <img src={`${backEndUrl}/booksimages/${elem.authorImage}`} alt="author image" width="150" height="150" style={{borderRadius:"50%"}} />
                                         <h2>{elem.bookAuthor}</h2>
                                     </div>
                                     <h3>About Author</h3>
@@ -263,7 +285,7 @@ const BookDetails = () => {
                                             {elem.reviewandrating.map((reviewElem, index) => (
                                                 <div key={index} className={bookdetailsstyle.reviewWrapper}>
                                                     <div className={bookdetailsstyle.userImageWrapper}>
-                                                        <img src={`http://localhost:3001/libraryusersprofilepics/${reviewElem.profilepic}`} alt="user image" width="30" height="30" style={{borderRadius:"50%"}}/>
+                                                        <img src={`${backEndUrl}/libraryusersprofilepics/${reviewElem.profilepic}`} alt="user image" width="30" height="30" style={{borderRadius:"50%"}}/>
                                                         <div>
                                                             {reviewElem.username}
                                                         </div>

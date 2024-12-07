@@ -7,6 +7,7 @@ import booksborrowedoutstyle from "../styles/booksborrowedoutstyle.module.css"
 import EditModal from "../components/EditModal"
 import EditSuggestionsModal from "../components/EditSuggestionsModal"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
 
 
 const BooksBorrowedOut = () => {
@@ -17,7 +18,7 @@ const BooksBorrowedOut = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const booksResponse = await axios.get("http://localhost:3001/books")
+                const booksResponse = await axios.get(`${backEndUrl}/books`)
                 const bookData = booksResponse.data
 
                 const formatedData= bookData.map((elem) => {
@@ -34,7 +35,7 @@ const BooksBorrowedOut = () => {
 
                 setCatalogeData(formatedData)
             
-                const suggestionsResult = await axios.get("http://localhost:3001/suggestions")
+                const suggestionsResult = await axios.get(`${backEndUrl}/suggestions`)
                 const suggestionsData = suggestionsResult.data
 
                 const fomattedSuggestedData = suggestionsData.map((elem) => {
@@ -118,7 +119,7 @@ const BooksBorrowedOut = () => {
         }
 
         try {
-            const response = await axios.delete(`http://localhost:3001/bookdelete/${id}`, {
+            const response = await axios.delete(`${backEndUrl}/bookdelete/${id}`, {
                 headers: {"Content-Type": "application/json"}
             })
 
@@ -142,7 +143,7 @@ const BooksBorrowedOut = () => {
         }
 
         try {
-            const response = await axios.delete(`http://localhost:3001/deletesuggestedbook/${id}`, {
+            const response = await axios.delete(`${backEndUrl}/deletesuggestedbook/${id}`, {
                 headers: {"Content-Type": "application/json"}
             })
 
@@ -202,7 +203,7 @@ const BooksBorrowedOut = () => {
                             {filteredBookData.length > 0 ? (
                                 filteredBookData.map((elem, id) => (
                                     <div key={id} className={booksborrowedoutstyle.books}>
-                                        <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="Book Image" width={60} height={100} />
+                                        <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="Book Image" width={60} height={100} />
                                         <div>
                                             <p>Title: <span style={{ color: "#bc4b51" }}>{elem.bookTitle}</span></p>
                                             <p>Author: <span style={{ color: "#bc4b51" }}>{elem.bookAuthor}</span></p>
@@ -218,7 +219,7 @@ const BooksBorrowedOut = () => {
                             ) : (
                                 catalogeData.map((elem, id) => (
                                     <div key={id} className={booksborrowedoutstyle.books}>
-                                        <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="Book Image" width={60} height={100} />
+                                        <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="Book Image" width={60} height={100} />
                                         <div>
                                             <p>Title: <span style={{ color: "#bc4b51" }}>{elem.bookTitle}</span></p>
                                             <p>Author: <span style={{ color: "#bc4b51" }}>{elem.bookAuthor}</span></p>
@@ -257,7 +258,7 @@ const BooksBorrowedOut = () => {
                             {filterSuggestions.length > 0 ? 
                                 (filterSuggestions.map((elem, id)=> (
                                     <div key={id}  className={booksborrowedoutstyle.books}>
-                                        <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width={60} height={100} />
+                                        <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="book image" width={60} height={100} />
                                         <div>
                                             <p>Title: <span style={{color: "#bc4b51"}}>{elem.bookTitle}</span></p>
                                             <p>Author: <span style={{color: "#bc4b51"}}>{elem.bookAuthor}</span></p>
@@ -273,7 +274,7 @@ const BooksBorrowedOut = () => {
                             ) : (
                                 suggestionsData.map((elem, id) => (
                                     <div key={id} className={booksborrowedoutstyle.books} >
-                                        <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="Book Image" width={60} height={100}  />
+                                        <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="Book Image" width={60} height={100}  />
                                         <div>
                                             <p>Title: <span style={{color: "#bc4b51"}}>{elem.bookTitle}</span></p>
                                             <p>Author: <span style={{color: "#bc4b51"}}>{elem.bookAuthor}</span></p>

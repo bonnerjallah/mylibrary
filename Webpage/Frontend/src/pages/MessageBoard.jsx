@@ -10,6 +10,9 @@ import messagemodalstyle from "../styles/messagemodalstyle.module.css"
 import ReadMessageModal from "../components/ReadMessageModal"
 import ComposeModal from "../components/ComposeModal"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const MessageBoard = () => {
 
     const user = useAuth()
@@ -39,7 +42,7 @@ const MessageBoard = () => {
             if(!user) return
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -56,7 +59,7 @@ const MessageBoard = () => {
     useEffect(() => {
         const fetchAllUsers = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/usersToFollow")
+                const response = await axios.get(`${backEndUrl}/usersToFollow`)
                 setAllUsers(response.data)
             } catch (error) {
                 console.log("error fetching all users", error)
@@ -140,7 +143,7 @@ const MessageBoard = () => {
                                 <>
                                     {allUsers.filter(user => member.user.followers.includes(user._id)).map((contactElem, index) => (
                                         <div key={index} className={messagemodalstyle.contactWrapper}>
-                                            <img src={`http://localhost:3001/libraryusersprofilepics/${contactElem.profilepic}`} alt="user image" width="30" height="30" style={{borderRadius:"50%"}}  />
+                                            <img src={`${backEndUrl}/libraryusersprofilepics/${contactElem.profilepic}`} alt="user image" width="30" height="30" style={{borderRadius:"50%"}}  />
                                             <div onClick={handleShowComposeBox}>
                                                 {contactElem.username}
                                             </div>

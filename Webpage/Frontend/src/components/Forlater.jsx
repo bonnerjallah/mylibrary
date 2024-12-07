@@ -7,6 +7,8 @@ import Cookies from "js-cookie"
 
 import shelfstyle from "../styles/shelfstyle.module.css"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
 
 
 const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre}) => {
@@ -51,7 +53,7 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
             if(!user)return
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer${token}`}
                 })
     
@@ -72,7 +74,7 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
     useEffect(() => {
         const fetchBooksData = async () => {
             try {
-                const catalogResponse = await axios.get("http://localhost:3001/catalogbooks")
+                const catalogResponse = await axios.get(`${backEndUrl}/books`)
                 const bookCatalog = (catalogResponse.data)
 
                 const formattedData = bookCatalog.map((elem) => {
@@ -87,7 +89,7 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
                     return elem
                 })
 
-                const suggestedBooksResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const suggestedBooksResponse = await axios.get(`${backEndUrl}/suggestions`)
                 const suggestedBooks = (suggestedBooksResponse.data)
 
                 const formattedSuggestedData = suggestedBooks.map((elem) => {
@@ -117,12 +119,11 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
     const handleDeleteBookFromShelves =  async (bookid) => {
         const _id = member.user.id
         try {
-            const response = await axios.delete(`http://localhost:3001/deletefromshelves/${bookid}/${_id}`, {
+            const response = await axios.delete(`${backEndUrl}/deletefromshelves/${bookid}/${_id}`, {
                 headers: {"Content-Type": "application/json"}
             })
             
             if(response.status === 200) {
-                console.log("deleted book successfully")
 
                 setUserShelf(prevShelf => {
                     const updatedShelfItems = prevShelf.filter(item => item.bookid !== bookid);
@@ -148,7 +149,7 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
         const userId = member.user.id;
     
         try {
-            const response = await axios.put(`http://localhost:3001/updatebookonshelves/${bookid}/${userId}`, { Action: manageAction });
+            const response = await axios.put(`${backEndUrl}/updatebookonshelves/${bookid}/${userId}`, { Action: manageAction });
         
             if (response.status === 200) {
                 console.log("Updated book successfully");
@@ -159,7 +160,6 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
                 });
             }
 
-            fetchUserData()
             
         } catch (error) {
             console.log("Error updating book on shelves", error);
@@ -213,7 +213,7 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
                     <div key={id} className={shelfstyle.shelfBooksWrapper}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                             <div style={{ display: "flex", columnGap: ".5rem" }}>
-                                <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="100" height="150" />
+                                <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="book image" width="100" height="150" />
                                 <div style={{ display: "flex", flexDirection: "column", rowGap: ".5rem" }}>
                                     <div>{elem.bookTitle}</div>
                                     <div><span style={{ color: "blue" }}>by:</span> {elem.bookAuthor}</div>
@@ -253,7 +253,7 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
                     <div key={id} className={shelfstyle.shelfBooksWrapper}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                             <div style={{ display: "flex", columnGap: ".5rem" }}>
-                                <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="100" height="150" />
+                                <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="book image" width="100" height="150" />
                                 <div style={{ display: "flex", flexDirection: "column", rowGap: ".5rem" }}>
                                     <div>{elem.bookTitle}</div>
                                     <div><span style={{ color: "blue" }}>by:</span> {elem.bookAuthor}</div>
@@ -299,7 +299,7 @@ const Forlater = ({sortBy, onBookIdChange, filterAuthorBooks, filterBooksByGenre
                             <div key={index} className={shelfstyle.shelfBooksWrapper}>
                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                                     <div style={{ display: "flex", columnGap: ".5rem" }}>
-                                        <img src={`http://localhost:3001/booksimages/${book.bookImageUrl}`} alt="book image" width="100" height="150" />
+                                        <img src={`${backEndUrl}/booksimages/${book.bookImageUrl}`} alt="book image" width="100" height="150" />
                                         <div style={{ display: "flex", flexDirection: "column", rowGap: ".5rem" }}>
                                             <div>{shelfItem.bookTitle}</div>
                                             <div><span style={{ color: "blue" }}>by:</span> {book.bookAuthor}</div>

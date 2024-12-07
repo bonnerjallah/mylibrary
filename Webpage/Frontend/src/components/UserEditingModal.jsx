@@ -6,6 +6,9 @@ import { useAuth } from "./AuthContext"
 import { Camera } from 'lucide-react';
 import usereditingmodalstyle from "../styles/usereditingmodalstyle.module.css"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 
 const userEditingModal = ({closeModal}) => {
 
@@ -32,7 +35,7 @@ const userEditingModal = ({closeModal}) => {
         const fetchUserData = async () => {
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -79,7 +82,7 @@ const userEditingModal = ({closeModal}) => {
         }
 
         try {
-            const response = await axios.put("http://localhost:3001/edituserdata", formdata, {
+            const response = await axios.put( `${backEndUrl}/edituserdata`, formdata, {
                 headers:{"Content-Type": "multipart/form-data"}
             })
 
@@ -122,7 +125,7 @@ const userEditingModal = ({closeModal}) => {
                     <form onSubmit={handleEditInputSubmit} encType="mulitpart/form-data" method="PUT">
                         <div className={usereditingmodalstyle.porfilePicWrapper}>
                             {member && member.user && member.user.profilepic ? (
-                                <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} width="200" height="200" style={{borderRadius:"50%"}}/>
+                                <img src={`${backEndUrl}/libraryusersprofilepics/${member.user.profilepic}`} width="200" height="200" style={{borderRadius:"50%"}}/>
                             ): ( 
                                 <div  style={{fontSize:"7rem", borderRadius:"50%", padding:"1rem", display:"flex", justifyContent:"center", alignItems:"center", backgroundColor:"#d8e2dc"}}>
                                     {member && member.user && member.user.firstName && member.user.lastName ? (

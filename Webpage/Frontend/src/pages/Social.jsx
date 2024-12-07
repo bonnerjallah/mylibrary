@@ -6,6 +6,9 @@ import { NavLink, Outlet } from "react-router-dom"
 import socialstyle from "../styles/socialstyle.module.css"
 import { Home, Video, UsersRound, MessageSquareMore, Bell, Menu, Search  } from 'lucide-react';
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const Social = () => {
     const {user} = useAuth()
 
@@ -17,7 +20,7 @@ const Social = () => {
         const fetchUserData = async () => {
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -99,7 +102,7 @@ const Social = () => {
                             <li>
                                 <NavLink>
                                     {member && member.user && member.user.profilepic && (
-                                        <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt=""  width="35" height="35" style={{borderRadius:"50%"}} />
+                                        <img src={`${backEndUrl}/libraryusersprofilepics/${member.user.profilepic}`} alt=""  width="35" height="35" style={{borderRadius:"50%"}} />
                                     )}
                                 </NavLink>
                                 <div className={socialstyle.profileIcons}>

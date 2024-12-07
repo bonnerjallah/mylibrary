@@ -5,6 +5,8 @@ import { useAuth } from './AuthContext'
 
 import Cookies from 'js-cookie'
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
 
 import userloginstyle from "../styles/userloginstyle.module.css"
 
@@ -36,12 +38,12 @@ const LoginForm = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.post("http://localhost:3001/loginadminusers", loginData, {
+      const response = await axios.post(`${backEndUrl}/loginAdmin`, loginData, {
         headers: {"Content-Type": "application/json"}
       })
 
       if(response.status === 200) {
-        console.log("successfully logged in user")
+        // console.log("successfully logged in user")
 
         //Access token from cookies
         const token = Cookies.get('token')
@@ -50,8 +52,6 @@ const LoginForm = () => {
         const {userData} = response.data
 
         login(userData, token)
-
-        console.log("User", userData)
 
         setLoginData({
           username: "",

@@ -6,6 +6,7 @@ import { useAuth } from './AuthContext';
 import { Send, MessageCircleOff, ChevronDown } from 'lucide-react';
 import composemodalstyle from "../styles/composemodalstyle.module.css"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
 
 
 const ComposeModal = ({closeModal}) => {
@@ -43,7 +44,7 @@ const ComposeModal = ({closeModal}) => {
         const fetchUserData = async () => {
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -62,7 +63,7 @@ const ComposeModal = ({closeModal}) => {
     useEffect(() => {
         const fetchAllUsers = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/usersToFollow")
+                const response = await axios.get(`${backEndUrl}/usersToFollow`)
                 setAllUsers(response.data)
 
             } catch (error) {
@@ -96,7 +97,7 @@ const ComposeModal = ({closeModal}) => {
         }
 
         try {
-            const response = await axios.post("http://localhost:3001/sendmessage", requestObject , {
+            const response = await axios.post(`${backEndUrl}/sendmessage`, requestObject , {
                 headers: {"Content-Type": "application/json"}
             })
         
@@ -129,7 +130,7 @@ const ComposeModal = ({closeModal}) => {
                 <div className={composemodalstyle.userAndContactWrapper}>
                     <div className={composemodalstyle.userWrapper}>
                         {member.user && (
-                            <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt={member.user.userName} width="70" height="70"  style={{borderRadius:"1rem"}} />
+                            <img src={`${backEndUrl}/libraryusersprofilepics/${member.user.profilepic}`} alt={member.user.userName} width="70" height="70"  style={{borderRadius:"1rem"}} />
                         )}
                     </div>
                     <div className={composemodalstyle.contactWrapper}>
@@ -138,7 +139,7 @@ const ComposeModal = ({closeModal}) => {
                             <div className={openContacts ? composemodalstyle.showcontacts : composemodalstyle.contacts}>
                                 {allUsers.filter(user => followers.includes(user._id)).map((elem, index) => (
                                     <div key={index} className={composemodalstyle.contact}>
-                                        <img src={`http://localhost:3001/libraryusersprofilepics/${elem.profilepic}`} alt='' width="20" height="20" style={{borderRadius:"50%"}} />
+                                        <img src={`${backEndUrl}/libraryusersprofilepics/${elem.profilepic}`} alt='' width="20" height="20" style={{borderRadius:"50%"}} />
                                         <span onClick={(e) => {handleSelectedContact(e)}}>{elem.username}</span>
                                     </div>
                                 ))}

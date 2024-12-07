@@ -6,7 +6,7 @@ import shelvestyle from "../styles/shelvestyle.module.css"
 
 import { UserRoundPlus } from 'lucide-react';
 
-
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
 
 
 const FollowerComonent = () => {
@@ -36,7 +36,7 @@ const FollowerComonent = () => {
 
             console.log("request Body", requestBody)
 
-            const response = await axios.post("http://localhost:3001/followRequest", requestBody, {
+            const response = await axios.post(`${backEndUrl}/followRequest`, requestBody, {
                 headers: {"Content-Type": "application/json"}
             })
 
@@ -66,7 +66,7 @@ const FollowerComonent = () => {
         const fetchUserData = async () => {
             try {
                 const token = Cookies.get("token")
-                const userResponse = await axios.get("http://localhost:3001/libraryusers", {
+                const userResponse = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` }
                 })
                 userResponse.data.valid ? setLoggedInUser(userResponse.data) : console.error("Error fetching logged in user", userResponse.data)
@@ -77,7 +77,7 @@ const FollowerComonent = () => {
 
         const fetchAllUser = async () => {
             try {
-                const allMemberResponse = await axios.get("http://localhost:3001/usersToFollow")
+                const allMemberResponse = await axios.get(`${backEndUrl}/usersToFollow`)
                 setAllMembers(allMemberResponse.data)
             } catch (error) {
                 console.error("Error fetching all members", error)
@@ -107,7 +107,7 @@ const FollowerComonent = () => {
                             <div key={member._id} className={shelvestyle.followerWrapper}>
                                 <div className={shelvestyle.userWrapper}>
                                     <div className={shelvestyle.userImageWrapper}>
-                                        <img src={`http://localhost:3001/libraryusersprofilepics/${member.profilepic}`} alt="Profile pic" style={{borderRadius:"50%"}} width="50" height="50" />
+                                        <img src={`${backEndUrl}/libraryusersprofilepics/${member.profilepic}`} alt="Profile pic" style={{borderRadius:"50%"}} width="50" height="50" />
                                     </div>
                                     <div>
                                         <p>@{member.username}</p>

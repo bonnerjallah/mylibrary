@@ -4,6 +4,8 @@ import modalstyle from "../styles/modalstyle.module.css"
 import axios from "axios"
 
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
 
 const EditSuggestionsModal = ({closeSuggestionsEditModal, suggDataToEdit}) => {
 
@@ -13,6 +15,8 @@ const EditSuggestionsModal = ({closeSuggestionsEditModal, suggDataToEdit}) => {
         bookAvailableYes: false,
         bookAvailableNo: false
     })
+
+    const [bookImageUrl, setBookImageUrl] = useState(null)
 
     const handleSuggestionEditInputData = (e, discription) => {
         const {name, value, type, checked} = e.target 
@@ -51,10 +55,13 @@ const EditSuggestionsModal = ({closeSuggestionsEditModal, suggDataToEdit}) => {
         const availability = bookAvailableCheckBox.bookAvailableYes ? "Yes" : (bookAvailableCheckBox.bookAvailableNo ? "No" : "")
         formData.append("bookAvailability", availability)
 
+        if(bookImageUrl) {
+            console.log("book image", bookImageUrl)
+            formData.append("bookImage", bookImageUrl, bookImageUrl.name)
+        }
+
         try {
-            const response = await axios.put(`http://localhost:3001/editSuggestedBook/${_id}`, formData, {
-                headers: {'Content-type': "application/json"}
-            }) 
+            const response = await axios.put(`${backEndUrl}/editSuggestedBook/${_id}`, formData) 
 
             if(response.status === 200) {
                 setSuggestionInputData({
@@ -86,7 +93,7 @@ const EditSuggestionsModal = ({closeSuggestionsEditModal, suggDataToEdit}) => {
                 </div>
                 <div className={modalstyle.bookInfoWrapper}>
                     <div className={modalstyle.bookInfoWrapper}>
-                        <img src={`http://localhost:3001/booksimages/${suggDataToEdit.bookImageUrl}`} alt="" width={120} height={200} />
+                        <img src={`${backEndUrl}/booksimages/${suggDataToEdit.bookImageUrl}`} alt="" width={120} height={200} />
                         <div className={modalstyle.formWrapper}>
                             <form onSubmit={handleEditInputSubmit} encType="multipart/form-data" method="PUT">
                                 <div>
@@ -99,6 +106,14 @@ const EditSuggestionsModal = ({closeSuggestionsEditModal, suggDataToEdit}) => {
                                     <label htmlFor="availableyes">Yes:<input type="checkbox" name="bookAvailableYes" checked={bookAvailableCheckBox.bookAvailableYes} id="bookAvailableyes" onChange={(e) => {handleSuggestionEditInputData(e, "Yes")}} /></label>
                                     <label htmlFor="availableno">No: <input type="checkbox" name="bookAvailableNo" checked={bookAvailableCheckBox.bookAvailableNo} id="bookAvailableno" onChange={(e) => {handleSuggestionEditInputData(e, "No")}} /></label>
                                 </div>
+
+                                <div>
+                                    <label htmlFor="BookImage">
+                                        Image:
+                                        <input type="file" accept="image/*" name="bookImage" id="BookImage" onChange={(e) => {setBookImageUrl(e.target.files[0])}} />
+                                    </label>
+                                </div>
+
                                 <button className={modalstyle.editFormButton}>Submit</button>
                             </form>
                         </div>

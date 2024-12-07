@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBars } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 import { useAuth } from "./AuthContext";
 
 
@@ -16,7 +19,7 @@ const Navbar = () => {
 
     const handleLogOut = async () => {
         try {
-            const res = await axios.post("http://localhost:3001/logout", {}, {
+            const res = await axios.post(`${backEndUrl}/logout`, {}, {
                 withCredential: true
             })
         } catch (error) {

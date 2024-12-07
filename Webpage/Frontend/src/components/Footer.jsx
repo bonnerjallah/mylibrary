@@ -6,6 +6,8 @@ import { Facebook, Instagram, Twitter } from 'lucide-react';
 import footer from "../styles/footerstyle.module.css"
 
 
+
+
 const Footer = () => {
     return (
         <div className={footer.mainContainer}>

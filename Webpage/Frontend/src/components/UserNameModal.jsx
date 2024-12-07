@@ -10,6 +10,9 @@ import { faBell, faGear } from "@fortawesome/free-solid-svg-icons";
 import usernamestyle from "../styles/usernamestyle.module.css"
 import { useEffect, useState } from 'react';
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const UserNameModal = ({closemodal}) => {
 
     const {logOut, user} = useAuth()
@@ -25,7 +28,7 @@ const UserNameModal = ({closemodal}) => {
 
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -40,7 +43,7 @@ const UserNameModal = ({closemodal}) => {
 
     const handleLogOut = async () => {
         try {
-            const response = await axios.post("http://localhost:3001/logout", {}, {
+            const response = await axios.post(`${backEndUrl}/clientLogout`, {}, {
                 withCredentials: true
             })
             
@@ -57,7 +60,6 @@ const UserNameModal = ({closemodal}) => {
         navigate("/")
     }
 
-    console.log("member",member)
 
     return (
         <div className={usernamestyle.UserNameModalMainContainer}>

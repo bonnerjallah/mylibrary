@@ -5,6 +5,8 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import sidebarModalstyle from "../styles/sidebarModalstyle.module.css"
 import { NavLink } from 'react-router-dom';
 
+
+
 const SidebarModal = ({closeSidebarModal}) => {
 
     const [isCultureVisible, setCultureVisible] = useState(false);

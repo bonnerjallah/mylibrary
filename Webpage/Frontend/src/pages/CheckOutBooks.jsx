@@ -9,6 +9,7 @@ import BookCheckedOutModal from "../components/BookCheckedOutModal"
 import checkoutbookstyle from "../styles/checkoutbookstyle.module.css"
 
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
 
 
 const CheckOutBooks = () => {
@@ -48,7 +49,7 @@ const CheckOutBooks = () => {
         const fetchUserData = async () => {
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -65,10 +66,10 @@ const CheckOutBooks = () => {
     useEffect(() => {
         const fetchAllBooks = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/catalogbooks")
+                const response = await axios.get(`${backEndUrl}/books`)
                 const catalogbooks = response.data
 
-                const suggestedBooksResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const suggestedBooksResponse = await axios.get(`${backEndUrl}/suggestions`)
                 const suggestedBooks = suggestedBooksResponse.data
 
                 const combineBooks = [...catalogbooks, ...suggestedBooks]
@@ -161,7 +162,7 @@ const CheckOutBooks = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:3001/checkoutBook", requestData, {
+            const response = await axios.post(`${backEndUrl}/checkoutBook`, requestData, {
                 headers:{"Content-Type": "application/json"}
             })
 
@@ -272,9 +273,9 @@ const CheckOutBooks = () => {
                     <p>Late Fee Or Damage Item: <span>{bookOnHoldForCheckOut ? `$ ${latefee}` : selectedBook ? `$ ${latefee}` : ""}</span></p>
                 </div>
                 <div>{bookOnHoldForCheckOut ? (
-                        <img src={`http://localhost:3001/booksimages/${bookOnHoldForCheckOut.bookImageUrl}`} alt="" width="100" height="120" />
+                        <img src={`${backEndUrl}/booksimages/${bookOnHoldForCheckOut.bookImageUrl}`} alt="" width="100" height="120" />
                     ) : selectedBook ? (
-                        <img src={`http://localhost:3001/booksimages/${selectedBook.bookImageUrl}`} alt="" width="100" height="120" />
+                        <img src={`${backEndUrl}/booksimages/${selectedBook.bookImageUrl}`} alt="" width="100" height="120" />
                     ) : (
                         <img src="" alt="" width="100" height="120" />
                     )}

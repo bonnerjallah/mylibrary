@@ -5,6 +5,9 @@ import axios from "axios"
 
 import reviewrequeststyle from "../styles/reviewrequeststyle.module.css"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 
 const ReviewerRequest = () => {
 
@@ -54,7 +57,7 @@ const ReviewerRequest = () => {
         formData.append("id", userid);
     
         try {
-            const response = await axios.post("http://localhost:3001/reviewerrequest", formData, {
+            const response = await axios.post(`${backEndUrl}/reviewerrequest`, formData, {
                 headers: {"Content-Type": "application/json"}
             });
     

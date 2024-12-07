@@ -5,6 +5,9 @@ import axios from "axios"
 import Cookies from "js-cookie"
 import { NavLink } from "react-router-dom"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const OnHoldModal = ({closeModal}) => {
     const {user} = useAuth()
 
@@ -21,7 +24,7 @@ const OnHoldModal = ({closeModal}) => {
             if(!user) return
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -55,7 +58,7 @@ const OnHoldModal = ({closeModal}) => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const catalogResponse = await axios.get("http://localhost:3001/catalogbooks")
+                const catalogResponse = await axios.get(`${backEndUrl}/books`)
                 const catalog = catalogResponse.data
 
 
@@ -71,7 +74,7 @@ const OnHoldModal = ({closeModal}) => {
                     return elem
                 })
                 
-                const suggestedBooksResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const suggestedBooksResponse = await axios.get(`${backEndUrl}/suggestions`)
                 const suggestions = suggestedBooksResponse.data
 
                 const suggestedBooksFormattedData = suggestions.map(elem => {
@@ -104,7 +107,7 @@ const OnHoldModal = ({closeModal}) => {
         const _id = member.user.id
 
         try {
-            const response = await axios.delete(`http://localhost:3001/onholddelete/${elem}/${_id}`, {
+            const response = await axios.delete(`${backEndUrl}/onholddelete/${elem}/${_id}`, {
                 headers:{"Content-Type": "application/json"}
             })
 
@@ -145,7 +148,7 @@ const OnHoldModal = ({closeModal}) => {
                                         <div className={onholdmodalstyle.bookWrapper}>
                                             <NavLink to={`/BookDetails/${bookOnHold._id}`} >
                                                 <div>
-                                                    <img src={`http://localhost:3001/booksimages/${bookOnHold.bookImageUrl}`} alt="book image" width="100" height="150" />
+                                                    <img src={`${backEndUrl}/booksimages/${bookOnHold.bookImageUrl}`} alt="book image" width="100" height="150" />
                                                 </div>
                                             </NavLink>
                                             

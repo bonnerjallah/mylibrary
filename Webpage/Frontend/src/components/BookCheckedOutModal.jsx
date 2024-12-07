@@ -5,6 +5,9 @@ import Cookies from "js-cookie"
 
 import bookcheckoutmodalstyle from "../styles/bookcheckoutmodalstyle.module.css"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const BookCheckedOutModal = ({closeModal}) => {
 
     const {user} = useAuth()
@@ -19,7 +22,7 @@ const BookCheckedOutModal = ({closeModal}) => {
         const fetchUserData = async () => {
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -37,10 +40,10 @@ const BookCheckedOutModal = ({closeModal}) => {
     useEffect(() => {
         const fetchAllBooks = async () => {
             try {
-                const catalogbooksresponse = await axios.get("http://localhost:3001/catalogbooks")
+                const catalogbooksresponse = await axios.get(`${backEndUrl}/books`)
                 const catalogbooks = catalogbooksresponse.data
 
-                const suggestedBooksResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const suggestedBooksResponse = await axios.get(`${backEndUrl}/suggestions`)
                 const suggestedBooks = suggestedBooksResponse.data
 
                 const combineBooks = [...catalogbooks, ...suggestedBooks]
@@ -69,7 +72,7 @@ const BookCheckedOutModal = ({closeModal}) => {
                     <div className={bookcheckoutmodalstyle.booksContainer}>
                         {allBooks.filter((book) => member.user.checkout.some(elem => elem.bookid === book._id)).map((filteredBook, id) => (
                             <div key={id} className={bookcheckoutmodalstyle.bookWrapper}>
-                                <img src={`http://localhost:3001/booksimages/${filteredBook.bookImageUrl}`} alt="book image" width="100" height="150" />
+                                <img src={`${backEndUrl}/booksimages/${filteredBook.bookImageUrl}`} alt="book image" width="100" height="150" />
                                 <div>
                                 {member.user.checkout.filter(elem => elem.bookid === filteredBook._id).map((elem, index) => (
                                     <div key={index} className={bookcheckoutmodalstyle.dateWrapper}>

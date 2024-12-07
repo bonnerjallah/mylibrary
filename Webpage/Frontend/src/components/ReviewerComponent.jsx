@@ -9,6 +9,9 @@ import { useAuth } from './AuthContext';
 
 import Rating from './Rating';
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 
 const ReviewerComponent = () => {
 
@@ -81,7 +84,7 @@ const ReviewerComponent = () => {
 
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer${token}`}
                 })
 
@@ -124,7 +127,7 @@ const ReviewerComponent = () => {
 
 
         try {
-            const response = await axios.post("http://localhost:3001/reviewerinput", formData, {
+            const response = await axios.post(`${backEndUrl}/reviewerinput`, formData, {
                 headers:{"Content-Type": "application/json"}
             })
 
@@ -178,7 +181,7 @@ const ReviewerComponent = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const catalogBooksResponse = await axios.get("http://localhost:3001/catalogbooks")
+                const catalogBooksResponse = await axios.get(`${backEndUrl}/books`)
                 const booksInCatalog = catalogBooksResponse.data
 
                 const formatedCatalogBookData = booksInCatalog.map((elem) => {
@@ -193,7 +196,7 @@ const ReviewerComponent = () => {
                     return elem
                 })
 
-                const suggestionsBookResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const suggestionsBookResponse = await axios.get(`${backEndUrl}/suggestions`)
                 const booksInSuggestions = suggestionsBookResponse.data
 
                 const formatedBookSuggestionsData = booksInSuggestions.map((suggestElem) => {
@@ -266,7 +269,7 @@ const ReviewerComponent = () => {
                         <div className={shelvestyle.bookImageWrapper}>
                             {filterBookData && filterBookData.length > 0 ? (
                                 <div style={{padding:".5rem .5rem", display:'flex', justifyContent:"center"}}>
-                                    <img src={`http://localhost:3001/booksimages/${filterBookData[0].bookImageUrl}`} alt=" book Image" width="80" height="90" />
+                                    <img src={`${backEndUrl}/booksimages/${filterBookData[0].bookImageUrl}`} alt=" book Image" width="80" height="90" />
                                 </div>
                             ) : (
                                 <BookImage size={100}/>

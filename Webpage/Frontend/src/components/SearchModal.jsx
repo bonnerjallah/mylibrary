@@ -5,6 +5,9 @@ import Cookies from "js-cookie"
 import { useState, useEffect } from "react"
 import axios from "axios"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const SearchModal = ({closeModal}) => {
 
     const user = useAuth()
@@ -29,10 +32,10 @@ const SearchModal = ({closeModal}) => {
     useEffect(() => {
         const fetchBooksData = async () => {
             try {
-                const catalogBooksResponse = await axios.get("http://localhost:3001/catalogbooks")
+                const catalogBooksResponse = await axios.get(`${backEndUrl}/books`)
                 const catalogBooks = (catalogBooksResponse.data)
 
-                const suggestionsBooksResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const suggestionsBooksResponse = await axios.get(`${backEndUrl}/suggestions`)
                 const suggestedBooks = (suggestionsBooksResponse.data)
 
                 const combineBooks = [...catalogBooks, ...suggestedBooks]
@@ -53,7 +56,7 @@ const SearchModal = ({closeModal}) => {
             if(!user) return
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers:{"Content-Type": "application/json", "Authorization": `Bearer${token}`}
                 })
                 response.data.valid ? setMember(response.data) : console.error("Error fetching from database", response.data)
@@ -128,7 +131,7 @@ const SearchModal = ({closeModal}) => {
         }
 
         try {
-            const response = await axios.post("http://localhost:3001/setbookshelf", requestObject, {
+            const response = await axios.post(`${backEndUrl}/setbookshelf`, requestObject, {
                 headers: {"Content-Type": "application/json"}
             })
 
@@ -153,7 +156,6 @@ const SearchModal = ({closeModal}) => {
         
     }
 
-    console.log("member", member)    
 
 
     return (

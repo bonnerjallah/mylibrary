@@ -13,6 +13,11 @@ import brainbookinhand from "/brainbookinhand.jpg";
 import bookpuzzle from "/bookpuzzle.jpg";
 import blowbackhead from "/blowbackhead.jpg";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faStar, faStarHalf} from "@fortawesome/free-solid-svg-icons"
+
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
 
 const Images = [openbrainbook, home, aman, brainbookinhand, bookpuzzle, blowbackhead]
 
@@ -74,7 +79,7 @@ const HomeBase = () => {
   useEffect(() => {
     const fetchbooks = async () => {
         try {
-          const response = await axios.get("http://localhost:3001/catalogbooks")
+          const response = await axios.get(`${backEndUrl}/books`)
           const catalogBooks = response.data
 
           const formattedBookData = catalogBooks.map(elem => {
@@ -90,7 +95,7 @@ const HomeBase = () => {
 
           setStaffList(formattedBookData)
 
-          const suggestedBooksResponse = await axios.get("http://localhost:3001/suggestedBooks")
+          const suggestedBooksResponse = await axios.get(`${backEndUrl}/suggestions`)
           const suggestions = suggestedBooksResponse.data
 
           const formattedSuggestedBooks = suggestions.map(elem => {
@@ -192,17 +197,30 @@ const HomeBase = () => {
           {bookOfTheWeek && (
             <div className={homestyle.weeklybookWrapper}>
               <NavLink to={`/BookDetails/${bookOfTheWeek._id}`}>
-                <img src={`http://localhost:3001/booksimages/${bookOfTheWeek.bookImageUrl}`} alt="Book Image" width="300" height="400" />
+                <img src={`${backEndUrl}/booksimages/${bookOfTheWeek.bookImageUrl}`} alt="Book Image" width="300" height="400" />
               </NavLink>
               <div className={homestyle.bookDiscriptions}>
-                <p>Title: <NavLink to={`/BookDetails:bookOfTheWeek._id`}><span>{bookOfTheWeek.bookTitle}</span></NavLink></p>
+                <p>Title: <NavLink to={`/BookDetails/${bookOfTheWeek._id}`}><span>{bookOfTheWeek.bookTitle}</span></NavLink></p>
                 <div className={homestyle.bookAuthorAndRatingsWrapper}>
                   <p>Author: <span>{bookOfTheWeek.bookAuthor}</span></p>
-                  {bookOfTheWeek.Ratings}
                 </div>
+                <p>
+                  Ratings:
+                  {bookOfTheWeek && bookOfTheWeek.ratings > 0 ? (
+                      <span>
+                        {Array.from({length: Math.max(0, Math.floor(Number(bookOfTheWeek.ratings)))},
+                          (_, i) => (
+                            <FontAwesomeIcon key={i} icon={faStar} />
+                          )
+                        )}
+                      </span>
+                  ) : (
+                    ""
+                  )}
+                </p>
                 <div className={homestyle.bookSummeryWrapper}>
                   {bookOfTheWeek && bookOfTheWeek.bookDiscription &&(
-                    <NavLink style={{color: "black"}} to={`/BookDetails:bookOfTheWeek._id`}>
+                    <NavLink style={{color: "black"}} to={`/BookDetails/${bookOfTheWeek._id}`}>
                       <div>
                       {bookOfTheWeek.bookDiscription.split(/\s+/).slice(0, 50).join(' ')}....
                       </div>
@@ -220,9 +238,26 @@ const HomeBase = () => {
               {staffList.length > 0 && (staffList.slice(0, 3).map((elem, id) => (
                 <div key={id} className={homestyle.stafflistbookWrapper}>
                   <div>
-                    <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="Book Image" width="60" height="80" />
+                    <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="Book Image" width="60" height="80" />
                   </div>
-                  <p>{elem.bookTitle}</p>
+                  <div>
+                    <p>{elem.bookTitle}</p>
+                    <p>
+                      {elem && elem.ratings > 0 && (
+                        <span>
+                          {Array.from({length: Math.max(0, Math.floor(Number(elem.ratings)))},
+                          (_, i) => (
+                            <FontAwesomeIcon key={i} icon={faStar} />
+                          )
+                          )}
+
+                          {elem.ratings % 1 !== 0 && (
+                            <FontAwesomeIcon key={i} icon={faStarHalf} />
+                          )}
+                        </span>
+                      )}
+                    </p> 
+                  </div>
                 </div>
               )))}
             </div>

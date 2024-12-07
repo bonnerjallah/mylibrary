@@ -1,6 +1,8 @@
 import { useState } from "react"
 import axios from "axios"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
 
 import addsuggestionsstyle from "../styles/addsuggestionsstyle.module.css"
 
@@ -14,6 +16,7 @@ const AddSuggestions = () => {
         bookPublishDate: "",
         bookDiscription: "",
         aboutAuthor: "",
+        ratings: ""
     })
 
     const [bookAvailabilityCheckBox, setBookAvailableCheckBox] = useState({
@@ -67,6 +70,8 @@ const AddSuggestions = () => {
         formData.append("bookPublishDate", bookSuggestions.bookPublishDate)
         formData.append("bookDiscription", bookSuggestions.bookDiscription)
         formData.append("aboutAuthor", bookSuggestions.aboutAuthor)
+        formData.append("ratings", bookSuggestions.ratings)
+
 
 
         //Append checkbox value
@@ -84,7 +89,7 @@ const AddSuggestions = () => {
 
 
         try {
-            const response = await axios.post("http://localhost:3001/suggestions", formData, {
+            const response = await axios.post(`${backEndUrl}/suggestions`, formData, {
                 headers: {"Content-Type": "multipart/form-data"}
             })
 
@@ -99,6 +104,7 @@ const AddSuggestions = () => {
                     bookPublishDate: "",
                     bookDiscription: "",
                     aboutAuthor: "",
+                    ratings: ""
                 })
 
                 setBookAvailableCheckBox({
@@ -143,6 +149,15 @@ const AddSuggestions = () => {
 
                     <label htmlFor="publishDate"></label>
                     <input type="date" name="bookPublishDate" id="publishDate" placeholder="Publish Date" value={bookSuggestions.bookPublishDate} required onChange={handleInputData} />
+
+                    <select id="Ratings" name="ratings" defaultValue="" required onChange={handleInputData}>
+                        <option value="" disabled>Select Rating</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
 
                     <label htmlFor="description"></label>
                     <textarea name="bookDiscription" id="description" cols="30" rows="10" placeholder="Description" value={bookSuggestions.bookDiscription} required onChange={handleInputData}></textarea>

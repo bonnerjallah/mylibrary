@@ -5,6 +5,8 @@ import axios from "axios";
 import Cookies from "js-cookie"
 import { useAuth } from "./AuthContext";
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
 
 
 const ReadMessageModal = ({ close, message, deletedMessage }) => {
@@ -27,7 +29,7 @@ const ReadMessageModal = ({ close, message, deletedMessage }) => {
         if(!user)return
         const fetchAllUsers = async () => {
             const token = Cookies.get("token")
-            const response = await axios.get("http://localhost:3001/libraryusers", {
+            const response = await axios.get(`${backEndUrl}/libraryusers`, {
                 headers:{"Content-Type" : "application/json", "Authorization": `Bearer ${token}`}
             })
 
@@ -65,7 +67,7 @@ const ReadMessageModal = ({ close, message, deletedMessage }) => {
         }
 
         try {
-            const response = await axios.post("http://localhost:3001/sendmessage", requestObject, {
+            const response = await axios.post(`${backEndUrl}/sendmessage`, requestObject, {
                 headers: {"Content-Type": "application/json"}
             })
 
@@ -96,7 +98,7 @@ const ReadMessageModal = ({ close, message, deletedMessage }) => {
     
     
         try {
-            const response = await axios.delete(`http://localhost:3001/deleteMessages/${userId}/${msgId}`);
+            const response = await axios.delete(`${backEndUrl}/deleteMessages/${userId}/${msgId}`);
     
             if (response.status === 200) {
                 console.log("successfully deleted message");
@@ -123,7 +125,7 @@ const ReadMessageModal = ({ close, message, deletedMessage }) => {
                     <div className={messagemodalstyle.senderPicAndNameWrapper}>
                         <div>
                             {message && (
-                                <img src={`http://localhost:3001/libraryusersprofilepics/${message.senderProfilePic}`} alt="" width="100" height="100" style={{borderRadius:"50%"}} />
+                                <img src={`${backEndUrl}/libraryusersprofilepics/${message.senderProfilePic}`} alt="" width="100" height="100" style={{borderRadius:"50%"}} />
                             )}
                         </div>
                         <div style={{fontSize:"1.3rem", fontWeight:"bold"}}>

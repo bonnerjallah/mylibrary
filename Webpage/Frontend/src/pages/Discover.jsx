@@ -6,6 +6,11 @@ import ScrollToTop from "../components/ScrollToTop"
 import discoverstyle from "../styles/discoverstyle.module.css"
 import { NavLink } from "react-router-dom"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faStar, faStarHalf} from "@fortawesome/free-solid-svg-icons"
+
 
 const Discover = () => {
 
@@ -16,7 +21,7 @@ const Discover = () => {
     useEffect(() => {
         const fetchSuggestedBooks = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/suggestedBooks")
+                const response = await axios.get(`${backEndUrl}/suggestions`)
                 setSuggestedBooks(response.data)
                 
             } catch (error) {
@@ -26,7 +31,6 @@ const Discover = () => {
         fetchSuggestedBooks()
     }, [])
 
-    console.log(suggestedBooks)
 
     const lastBookIndex = currentPage * bookSuggestionPerPage
     const firstBookIndex = lastBookIndex - bookSuggestionPerPage
@@ -67,14 +71,31 @@ const Discover = () => {
                         <div key={index} className={discoverstyle.booksWrapper}>
                             <NavLink to={`/BookDetails/${elem._id}`} >
                                 <div className={discoverstyle.bookImageWrapper}>
-                                    <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="200" height="300" style={{margin:" .2rem.2rem"}} />
+                                    <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="book image" width="200" height="300" style={{margin:" .2rem.2rem"}} />
                                 </div>
                             </NavLink>
                             <div>
                                 <div className={discoverstyle.bookTitleWrapper}>
                                     <p>Title: <span>{elem.bookTitle}</span> </p>
                                     <p>Author: <span>{elem.bookAuthor}</span></p>
-                                    <p>Ratings: <small>{elem.Ratings}</small></p>
+                                    <p>Ratings: 
+                                        {elem.ratings && elem.ratings > 0 ? (
+                                            <small>
+                                                {Array.from({length: Math.max(0, Math.floor(Number(elem.ratings)))},
+                                                    (_, i) => (
+                                                        <FontAwesomeIcon key={i} icon={faStar} style={{ width: "20px", height: "20px", marginRight: "5px" }}/>
+                                                    ) 
+                                                )}
+
+                                                {elem.ratings % 1 !== 0 && (
+                                                    <FontAwesomeIcon key={i} icon={faStarHalf} style={{ width: "20px", height: "20px", marginRight: "5px" }}/>
+                                                )}
+                                            </small>
+                                        ) : (
+                                            ""
+                                        )}
+                                    
+                                    </p>
                                 </div>
                                 <div className={discoverstyle.bookdiscriptionWrapper}>
                                     <p>{elem.bookDiscription && elem.bookDiscription.split(/\s+/).slice(0, 150).join(' ')}...</p>

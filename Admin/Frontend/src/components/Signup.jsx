@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import axios from "axios"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 
 import userloginstyle from "../styles/userloginstyle.module.css"
 
@@ -27,21 +30,22 @@ const Signup = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.post("http://localhost:3001/registeradminusers", adminSignUp, {
+      const response = await axios.post(`${backEndUrl}/registeradminusers`, adminSignUp, {
         headers: {"Content-Type": "application/json"}
       });
       
       if (response.status === 200) {
-        console.log("Admin user inserted successfully");
+
+        setAdminSignUp({
+          firstname: "",
+          lastname: "",
+          email: "",
+          username: "",
+          password: ""
+        });
       }
   
-      setAdminSignUp({
-        firstname: "",
-        lastname: "",
-        email: "",
-        username: "",
-        password: ""
-      });
+      
 
 
     } catch (error) {

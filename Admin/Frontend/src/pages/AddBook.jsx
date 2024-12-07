@@ -2,6 +2,10 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
+
 import addbookstyle from "../styles/addbookstyle.module.css"
 
 
@@ -15,7 +19,8 @@ const AddBook = () => {
     bookIsbn: "",
     bookDiscription: "",
     bookPublishDate: "",
-    aboutAuthor: ""
+    aboutAuthor: "",
+    ratings: ""
   })
 
   const [bookAvailableCheckBox, setBookAvailableCheckBox] = useState({
@@ -34,23 +39,26 @@ const AddBook = () => {
     setAuthorImage(e.target.files[0])
   }
 
-  const handleBookInput = (e, discription) => {
-    const {name, value, checked, type} = e.target
-
-    if(type === "checkbox") {
-      setBookAvailableCheckBox((prev) => ({
-        ...prev, 
-        [name]: checked, 
-        [name + "_discription"]: checked ? discription : prev[name + "_discription"]
-      }))
+  const handleBookInput = (e, description) => {
+    const { name, checked, type } = e.target;
+  
+    if (type === "checkbox") {
+      setBookAvailableCheckBox((prev) => {
+        if (name === "bookAvailableyes" && checked) {
+          return { bookAvailableyes: true, bookAvailableno: false };
+        } else if (name === "bookAvailableno" && checked) {
+          return { bookAvailableyes: false, bookAvailableno: true };
+        }
+        return { ...prev, [name]: checked };
+      });
     } else {
       setBookData((prev) => ({
         ...prev,
-        [name]: value
-      }))
+        [name]: e.target.value,
+      }));
     }
-  }
-
+  };
+  
 
 
   const handleFormSubmit = async (e) => {
@@ -65,6 +73,7 @@ const AddBook = () => {
     formData.append("bookDiscription", bookData.bookDiscription)
     formData.append("bookPublishDate", bookData.bookPublishDate)
     formData.append("aboutAuthor", bookData.aboutAuthor)
+    formData.append("ratings", bookData.ratings)
 
     // Append availability to FormData
     const availability = bookAvailableCheckBox.bookAvailableyes ? "Yes" : (bookAvailableCheckBox.bookAvailableno ? "No" : "");
@@ -83,12 +92,13 @@ const AddBook = () => {
 
 
     try {
-      const response = await axios.post("http://localhost:3001/books", formData, {
-        headers: {'Content-type': 'multipart/form-data'}
-      })
-
-      if(response.status === 200) {
-
+      const response = await axios.post(`${backEndUrl}/addBooks`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    
+      if (response.status === 200) {
+        alert("Book added successfully!");
+        // Reset form state
         setBookData({
           bookTitle: "",
           bookAuthor: "",
@@ -96,25 +106,23 @@ const AddBook = () => {
           bookIsbn: "",
           bookDiscription: "",
           bookPublishDate: "",
-          aboutAuthor: ""
-        })
-
+          aboutAuthor: "",
+          ratings: "",
+        });
         setBookAvailableCheckBox({
           bookAvailableyes: false,
           bookAvailableno: false,
-        })
-
-        setBookImageUrl(null)
-        setAuthorImage(null)
-
-      } else{
-        console.log("Error inserting book data", response.data)
+        });
+        setBookImageUrl(null);
+        setAuthorImage(null);
+      } else {
+        alert("Error adding book: " + response.data.message);
       }
-
     } catch (error) {
-      console.error("Error inserting book data", error)
+      console.error("Error adding book:", error);
+      alert("An error occurred while adding the book. Please try again.");
     }
-
+    
   }
 
 
@@ -137,6 +145,17 @@ const AddBook = () => {
 
           <label htmlFor="publishDate"></label>
           <input type="date" name="bookPublishDate" id="publishDate" value={bookData.bookPublishDate} placeholder="Publish Date" required onChange={handleBookInput} />
+
+          <select id="Ratings" name="ratings" defaultValue="" required onChange={handleBookInput}>
+            <option value="" disabled>Select Rating</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+
+
 
           <label htmlFor="description"></label>
           <textarea name="bookDiscription" id="description" value={bookData.bookDiscription} cols="30" rows="10" placeholder="Description" required onChange={handleBookInput}></textarea>

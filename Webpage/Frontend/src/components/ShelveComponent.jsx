@@ -8,6 +8,9 @@ import { useAuth } from "./AuthContext";
 import shelvestyle from "../styles/shelvestyle.module.css"
 import { useEffect, useState } from "react";
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const ShelveComponent = () => {
 
     const user = useAuth()
@@ -24,7 +27,7 @@ const ShelveComponent = () => {
             if(!user) return
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -44,7 +47,7 @@ const ShelveComponent = () => {
     useEffect(() => {
         const fetchAllBooks = async () => {
             try {
-                const catalogResponse = await axios.get("http://localhost:3001/catalogbooks")
+                const catalogResponse = await axios.get(`${backEndUrl}/books`)
                 const catalog = catalogResponse.data
 
                 const formattedBookData = catalog.map(elem => {
@@ -59,7 +62,7 @@ const ShelveComponent = () => {
                     return elem
                 })
 
-                const suggestedBooksResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const suggestedBooksResponse = await axios.get(`${backEndUrl}/suggestions`)
                 const booksSuggested = suggestedBooksResponse.data
 
                 const formattedSuggestedData = booksSuggested.map(elem => {
@@ -103,7 +106,7 @@ const ShelveComponent = () => {
                             {allBooks.find(book => book._id === shelfItem.bookid) && (
                                 <NavLink to={`/BookDetails/${shelfItem.bookid}`}>
                                     <div style={{display:"flex", flexDirection:"column"}}>
-                                        <img src={`http://localhost:3001/booksimages/${allBooks.find(book => book._id === shelfItem.bookid).bookImageUrl}`} alt="book image" width="100" height="150" />
+                                        <img src={`${backEndUrl}/booksimages/${allBooks.find(book => book._id === shelfItem.bookid).bookImageUrl}`} alt="book image" width="100" height="150" />
                                         <div style={{textAlign:"center", color:"black"}}>
                                             {shelfItem.hasOwnProperty("completed") && shelfItem.completed && (
                                                 <span>Completed</span>

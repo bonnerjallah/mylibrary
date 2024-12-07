@@ -1,6 +1,9 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import axios from "axios"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
@@ -20,7 +23,7 @@ export const AuthProvider = ({children}) => {
                 return //Exit the function is user is not logged in
             }
 
-            const response = await axios.post("http://localhost:3001/refresh_token", {}, {
+            const response = await axios.post(`${backEndUrl}/refreshClient_token`, {}, {
                 headers: {"Content-Type": "application/json"}
             });
             

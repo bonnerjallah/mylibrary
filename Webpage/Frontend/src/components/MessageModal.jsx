@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom"
 import messagemodalstyle from "../styles/messagemodalstyle.module.css"
 
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
 
 
 
@@ -23,7 +24,7 @@ const MessageModal = () => {
             if(!user) return
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers:{"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 

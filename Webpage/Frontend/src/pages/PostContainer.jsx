@@ -10,6 +10,8 @@ import poststyle from "../styles/poststyle.module.css"
 
 import Postsbox from "../components/Postsbox";
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
 
 const PostContainer = () => {
 
@@ -31,7 +33,7 @@ const PostContainer = () => {
         const fetchUserData = async () => {
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers:{"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -49,7 +51,7 @@ const PostContainer = () => {
     useEffect(() => {
         const fetchAllUsers = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/usersToFollow")
+                const response = await axios.get(`${backEndUrl}/usersToFollow`)
                 setAllUsers(response.data)
                 
             } catch (error) {
@@ -98,9 +100,9 @@ const PostContainer = () => {
                         userPost.posts.length > 0 && (
                             <div key={index} style={{height:"100%", border:"1px solid black", translate:`${-100 * currentIndex}%`}} className={poststyle.followingHomePageImage}>
                                 <div className={poststyle.postProfilePicWrapper}>
-                                    <img src={`http://localhost:3001/libraryusersprofilepics/${userPost.profilepic}`} alt="" width="50" height="50" style={{borderRadius:"50%"}} />
+                                    <img src={`${backEndUrl}/libraryusersprofilepics/${userPost.profilepic}`} alt="" width="50" height="50" style={{borderRadius:"50%"}} />
                                 </div>
-                                <img src={`http://localhost:3001/postpictures/${userPost.posts[userPost.posts.length - 1].postpic}`} alt={`Post ${index + 1}`}  width="100%" height="100%" style={{borderRadius:"1rem"}} />
+                                <img src={`${backEndUrl}/postpictures/${userPost.posts[userPost.posts.length - 1].postpic}`} alt={`Post ${index + 1}`}  width="100%" height="100%" style={{borderRadius:"1rem"}} />
                                 <div className={poststyle.usernameWrapper}>
                                     <p>@ {userPost.username}</p>
                                 </div>
@@ -146,18 +148,17 @@ const PostContainer = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:3001/posting", formData, {
+            const response = await axios.post(`${backEndUrl}/posting`, formData, {
                 headers: {"Content-Type": "multipart/form-data"}
             })
 
             if(response.status === 200) {
-                console.log("successfully posted")
+                setPostInputData({
+                    whatposted : ""
+                })
             }
 
-            setPostInputData({
-                whatposted : ""
-            })
-
+           
         } catch (error) {
             console.log("Error posting", error)
         }
@@ -171,7 +172,7 @@ const PostContainer = () => {
                 <div>
                     {member && member.user && member.user.profilepic && member.user.userName && (
                         <div style={{display:"flex", alignItems:"center", columnGap:"1rem"}}>
-                            <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} alt=""  width="35" height="35" style={{borderRadius:"50%"}} />
+                            <img src={`${backEndUrl}/libraryusersprofilepics/${member.user.profilepic}`} alt=""  width="35" height="35" style={{borderRadius:"50%"}} />
                             <p>
                                 {member.user.userName}
                             </p>
@@ -194,7 +195,7 @@ const PostContainer = () => {
                             <div className={poststyle.inputWrapper}>
                                 {member && member.user && member.user.profilepic && (
                                     <div>
-                                        <img src={`http://localhost:3001/libraryusersprofilepics/${member.user.profilepic}`} width="50" height="50" style={{borderRadius:"50%"}}/>
+                                        <img src={`${backEndUrl}/libraryusersprofilepics/${member.user.profilepic}`} width="50" height="50" style={{borderRadius:"50%"}}/>
                                     </div>
                                 )}
                                 <label htmlFor="whatYouPosted"></label>

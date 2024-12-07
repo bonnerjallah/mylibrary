@@ -10,6 +10,9 @@ import loginstyle from "../styles/loginstyle.module.css"
 
 import Footer from "../components/Footer"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 
 const LoginForm = () => {
 
@@ -34,7 +37,7 @@ const LoginForm = () => {
     const handleInputSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post("http://localhost:3001/loginlibraryusers", userLoginInputData, {
+            const response = await axios.post(`${backEndUrl}/loginlibraryusers`, userLoginInputData, {
                 headers: {"Content-Type": "application/json"}
             })
 
@@ -56,7 +59,7 @@ const LoginForm = () => {
 
 
         } catch (error) {
-            console.log("Error loging in user", error)
+            // console.log("Error loging in user", error)
             setUserMessage(error.response.data.message)
             
         }
@@ -76,10 +79,10 @@ const LoginForm = () => {
 
             <div className={loginstyle.formWrapper}>
                 <form onSubmit={handleInputSubmit} encType="mulitpart/ form-data" method="POST">
-                    <label htmlFor="UserName">Username:</label>
+                    <label htmlFor="UserName">Username: <span style={{color:"#06d6a0"}}>Guest007</span></label>
                     <input type="text" name='username' value={userLoginInputData.username} id='UserName' onChange={handleLoginData} />
 
-                    <label htmlFor="Password">Password:</label>
+                    <label htmlFor="Password">Password: <span style={{color:"#06d6a0"}}>password</span></label>
                     <input type="password" name='password' value={userLoginInputData.password} id='Password' onChange={handleLoginData} />
 
                     <p><NavLink to="/ForgotPassword">Forgot your Password?</NavLink></p>

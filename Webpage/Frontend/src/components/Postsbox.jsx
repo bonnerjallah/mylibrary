@@ -6,6 +6,8 @@ import { useAuth } from './AuthContext';
 import { Menu, ThumbsUp, Heart, Laugh, Frown, MessageCircle, MessageCircleMore } from 'lucide-react';
 import postboxstyle from "../styles/postboxstyle.module.css"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
 
 const Postsbox = () => {
 
@@ -30,7 +32,7 @@ const Postsbox = () => {
         const fetchUserData = async () => {
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers:{"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 })
 
@@ -49,7 +51,7 @@ const Postsbox = () => {
     useEffect(() => {
         const fetchAllUsers = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/usersToFollow")
+                const response = await axios.get(`${backEndUrl}/usersToFollow`)
                 setAllUsers(response.data)
             } catch (error) {
                 console.log("Error fetch all user", error)
@@ -58,7 +60,6 @@ const Postsbox = () => {
         fetchAllUsers()
     }, [])
 
-    console.log("all users", allUsers)
 
     const handleShowLikeOptions = () => {
         setShowLikeOptions(!showLikeOptions)
@@ -89,12 +90,12 @@ const Postsbox = () => {
         }
 
         try {
-            const response = await axios.put("http://localhost:3001/postoptions", requestdata, {
+            const response = await axios.put(`${backEndUrl}/postoptions`, requestdata, {
                 headers: {"Content-Type": "application/json"}
             })
 
             if(response.status === 200) {
-                console.log("Successfully like post")
+                // console.log("Successfully like post")
             }
             
         } catch (error) {
@@ -118,12 +119,12 @@ const Postsbox = () => {
         }
 
         try {
-            const response = await axios.put("http://localhost:3001/postoptions", requestdata, {
+            const response = await axios.put(`${backEndUrl}/postoptions`, requestdata, {
                 headers: {"Content-Type": "application/json"}
             })
 
             if(response.status === 200) {
-                console.log("Successfully like post")
+                // console.log("Successfully like post")
             }
             
         } catch (error) {
@@ -147,12 +148,12 @@ const Postsbox = () => {
         }
 
         try {
-            const response = await axios.put("http://localhost:3001/postoptions", requestdata, {
+            const response = await axios.put(`${backEndUrl}/postoptions`, requestdata, {
                 headers: {"Content-Type": "application/json"}
             })
 
             if(response.status === 200) {
-                console.log("Successfully like post")
+                // console.log("Successfully like post")
             }
             
         } catch (error) {
@@ -175,12 +176,12 @@ const Postsbox = () => {
         }
 
         try {
-            const response = await axios.put("http://localhost:3001/postoptions", requestdata, {
+            const response = await axios.put(`${backEndUrl}/postoptions`, requestdata, {
                 headers: {"Content-Type": "application/json"}
             })
 
             if(response.status === 200) {
-                console.log("Successfully like post")
+                // console.log("Successfully like post")
             }
             
         } catch (error) {
@@ -209,17 +210,18 @@ const Postsbox = () => {
         console.log(requestData)
 
         try {
-            const response = await axios.put("http://localhost:3001/postoptions", requestData, {
+            const response = await axios.put(`${backEndUrl}/postoptions`, requestData, {
                 headers:{"Content-Type": "application/json"}
             })
 
             if(response.status === 200) {
-                console.log("Successfully commented on post")
+                
+                setComment({
+                    comment: ""
+                })            
             }
             
-            setComment({
-                comment: ""
-            })
+            
 
             setTimeout(() => {
                 handleCloseInputComment()
@@ -238,7 +240,7 @@ const Postsbox = () => {
                         <div className={postboxstyle.headerContainer}>
                             <div className={postboxstyle.postImageAndContainer}>
                                 <div className={postboxstyle.posterImageWrapper}>
-                                    <img src={`http://localhost:3001/libraryusersprofilepics/${user.profilepic}`} width="50" height="50" style={{borderRadius:"50%"}} />
+                                    <img src={`${backEndUrl}/libraryusersprofilepics/${user.profilepic}`} width="50" height="50" style={{borderRadius:"50%"}} />
                                     <p>{user.username}</p>
                                 </div>
                                 <div className={postboxstyle.menuAndCloseWrapper}>
@@ -252,7 +254,7 @@ const Postsbox = () => {
                         </div>
 
                         <div className={postboxstyle.WhatsPostedImageWrapper}>
-                            <img src={`http://localhost:3001/postpictures/${user.posts[user.posts.length - 1].postpic}`}         className={postboxstyle.WhatsPostedImage} />
+                            <img src={`${backEndUrl}/postpictures/${user.posts[user.posts.length - 1].postpic}`}         className={postboxstyle.WhatsPostedImage} />
                         </div>
 
                         <div className={postboxstyle.commentFormWrapper}>

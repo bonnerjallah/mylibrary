@@ -16,6 +16,9 @@ import Completed from "../components/Completed"
 import Inprogress from "../components/Inprogress"
 import Forlater from "../components/Forlater"
 
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const Shelf = () => {
 
     const {user} = useAuth()
@@ -41,7 +44,6 @@ const Shelf = () => {
 
     const [showInprogress, setShowInprogress] = useState(false)
     const handleShowInprogress = () => {
-        console.log("In progress clicked")
         setShowCompleted(false);  
         setShowInprogress(true);
         setShowForlater(false);   
@@ -49,7 +51,6 @@ const Shelf = () => {
 
     const [showForLater, setShowForlater] = useState(false)
     const handleShowForLater = () => {
-        console.log("for later clicked")
         setShowCompleted(false);  
         setShowInprogress(false); 
         setShowForlater(true);
@@ -73,7 +74,7 @@ const Shelf = () => {
             if(!user)return
             try {
                 const token = Cookies.get("token")
-                const response = await axios.get("http://localhost:3001/libraryusers", {
+                const response = await axios.get(`${backEndUrl}/libraryusers`, {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer${token}`}
                 })
     
@@ -96,7 +97,7 @@ const Shelf = () => {
     useEffect(() => {
         const fetchBooksData = async () => {
             try {
-                const catalogResponse = await axios.get("http://localhost:3001/catalogbooks")
+                const catalogResponse = await axios.get(`${backEndUrl}/books`)
                 const bookCatalog = (catalogResponse.data)
 
                 const formattedData = bookCatalog.map((elem) => {
@@ -111,7 +112,7 @@ const Shelf = () => {
                     return elem
                 })
 
-                const suggestedBooksResponse = await axios.get("http://localhost:3001/suggestedBooks")
+                const suggestedBooksResponse = await axios.get(`${backEndUrl}/suggestions`)
                 const suggestedBooks = (suggestedBooksResponse.data)
 
                 const formattedSuggestedData = suggestedBooks.map((elem) => {

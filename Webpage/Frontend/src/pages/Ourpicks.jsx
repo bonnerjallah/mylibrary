@@ -7,6 +7,13 @@ import ScrollToTop from "../components/ScrollToTop"
 import ourpicksstyle from "../styles/ourpicksstyle.module.css"
 import { NavLink } from "react-router-dom"
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faStar, faStarHalf} from "@fortawesome/free-solid-svg-icons"
+
+
+const backEndUrl = import.meta.env.VITE_BACKEND_URL
+
+
 const Ourpicks = () => {
 
     const [catalogOfBooks, setCatalogOfBooks] = useState([])
@@ -17,7 +24,7 @@ const Ourpicks = () => {
     useEffect(() => {
         const fetchCatalogBooks = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/catalogbooks")
+                const response = await axios.get(`${backEndUrl}/books`)
                 
                 setCatalogOfBooks(response.data)
 
@@ -48,7 +55,6 @@ const Ourpicks = () => {
         setCurrentPage(nextPage);
     }
 
-    console.log(catalogOfBooks)
 
     return (
         <>
@@ -69,14 +75,29 @@ const Ourpicks = () => {
                         <div key={id} className={ourpicksstyle.booksWrapper}> 
                             <NavLink to={`/BookDetails/${elem._id}`} >
                                 <div className={ourpicksstyle.bookImageWrapper}>
-                                    <img src={`http://localhost:3001/booksimages/${elem.bookImageUrl}`} alt="book image" width="200" height="300" style={{margin:" .2rem.2rem"}} />
+                                    <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="book image" width="200" height="300" style={{margin:" .2rem.2rem"}} />
                                 </div>
                             </NavLink>
                             <div>
                                 <div className={ourpicksstyle.bookTitleWrapper}>
                                     <p>Title: <span>{elem.bookTitle}</span> </p>
                                     <p>Author: <span>{elem.bookAuthor}</span></p>
-                                    <p>Ratings: <small>{elem.Ratings}</small></p>
+                                    <p>Ratings: 
+                                        {elem.ratings && elem.ratings > 0 ? (
+                                            <small>
+                                                {Array.from({length: Math.max(0, Math.floor(Number(elem.ratings)))},
+                                                (_, i) => (
+                                                    <FontAwesomeIcon key={i} icon={faStar} style={{ width: "20px", height: "20px", marginRight: "5px" }}/>
+                                                ))}
+
+                                                {elem.ratings % 1 !== 0 && (
+                                                    <FontAwesomeIcon key={i} icon={faStarHalf} style={{ width: "20px", height: "20px", marginRight: "5px" }} />
+                                                )}
+                                            </small>
+                                        ) : (
+                                            ""
+                                        )}
+                                    </p>
                                 </div>
                                 <div className={ourpicksstyle.bookdiscriptionWrapper}>
                                     <p>{elem.bookDiscription && elem.bookDiscription.split(/\s+/).slice(0, 150).join(' ')}...</p>
