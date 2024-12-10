@@ -87,7 +87,7 @@ const Ourpicks = () => {
                                             <small>
                                                 {Array.from({length: Math.max(0, Math.floor(Number(elem.ratings)))},
                                                 (_, i) => (
-                                                    <FontAwesomeIcon key={i} icon={faStar} style={{ width: "20px", height: "20px", marginRight: "5px" }}/>
+                                                    <FontAwesomeIcon key={i} icon={faStar} style={{ marginRight: "5px" }}/>
                                                 ))}
 
                                                 {elem.ratings % 1 !== 0 && (
@@ -106,6 +106,7 @@ const Ourpicks = () => {
                         </div>
                     ))}
                 </div>
+
                 <div className={ourpicksstyle.paginationWrapper} style={{borderTop:"1px solid #168aad"}}>
                     {pageNumbers.map((nextPage) => (
                         <li key={nextPage} onClick={() => handleNextPage(nextPage)} style={{backgroundColor:currentPage === nextPage ? "#000000" : "#22c1c3", color: currentPage === nextPage ? "orange" : "" }}>

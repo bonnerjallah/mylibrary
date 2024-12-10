@@ -129,7 +129,6 @@ const CheckOutBooks = () => {
         setLateFee("50");
     };
     
-    console.log(bookOnHoldForCheckOut)
 
     useEffect(() => {
         const currentTitle = bookOnHoldForCheckOut ? bookOnHoldForCheckOut._id : selectedBook._id

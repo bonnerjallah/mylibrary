@@ -80,14 +80,7 @@ const Navbar = () => {
                             <li><NavLink to="/Ourpicks">Our picks</NavLink></li>
                             <li><NavLink to="/Discover">Discover</NavLink></li>
                             <li><NavLink to="/Dashboard">Dashboard</NavLink></li>
-                            <li className={navstyles.reviews}>
-                                <NavLink to="/Social/PostContainer">Social<FontAwesomeIcon icon={faCaretDown} /></NavLink>
-                                <div className={navstyles.dropDown}>
-                                    <ul>
-                                        <li><NavLink>Members</NavLink></li>
-                                    </ul>
-                                </div>
-                            </li>
+                            <li><NavLink to="/Social/PostContainer">Social</NavLink></li>
                             <li><NavLink>Blog</NavLink></li>
                             <li><NavLink>Shop</NavLink></li>
                             <li><NavLink>Who we are</NavLink></li>

@@ -27,9 +27,9 @@ const Footer = () => {
                 &copy; 2024 Consious Book Club. All Rights Reserved.
             </div>
             <div className={footer.socialIcons}>
-                <Facebook  size={48} className={footer.facebook} />
-                <Instagram size={48} className={footer.instagram}/>
-                <Twitter size={48} className={footer.twiter} />
+                <Facebook   className={footer.facebook} />
+                <Instagram  className={footer.instagram}/>
+                <Twitter  className={footer.twiter} />
             </div>
 
         </div>

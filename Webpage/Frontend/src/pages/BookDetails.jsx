@@ -203,7 +203,7 @@ const BookDetails = () => {
                         <div key={index} className={bookdetailsstyle.mainContainer}>
                             <div className={bookdetailsstyle.bookDiscriptionContainer}>
                                 <div>
-                                    <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="book image" width="400" height="550" />                                    
+                                    <img src={`${backEndUrl}/booksimages/${elem.bookImageUrl}`} alt="book image"  />                                    
                                 </div>
                                 <div className={bookdetailsstyle.aboutBookWrapper}>
                                     <h1>Title: <span style={{fontWeight:"normal"}}>{elem.bookTitle}</span></h1>
@@ -214,7 +214,7 @@ const BookDetails = () => {
                                                 <span style={{fontWeight: "normal", marginLeft: ".5rem"}}>
                                                     {Array.from({length: Math.max(0, Math.floor(elem.ratings))},
                                                     (_, i) => (
-                                                        <Star key={i} fill="black" size={20}/>
+                                                        <Star key={i} fill="black" />
                                                     )
                                                         
                                                     )}
@@ -385,7 +385,8 @@ const BookDetails = () => {
                                                 </label>
                                                 <select name="commRate" id="CommuRating" value={communityComment.commRate} onChange={handleCommunityComment}>
                                                     <option value="">Rate This</option>
-                                                    <option value="1"> 1 star</option>                                                    <option value="2"> 2 stars</option>
+                                                    <option value="1"> 1 star</option>                                                    
+                                                    <option value="2"> 2 stars</option>
                                                     <option value="3"> 3 stars</option>
                                                     <option value="4"> 4 stars</option>
                                                     <option value="5"> 5 stars</option>

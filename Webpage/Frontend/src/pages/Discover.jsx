@@ -83,7 +83,7 @@ const Discover = () => {
                                             <small>
                                                 {Array.from({length: Math.max(0, Math.floor(Number(elem.ratings)))},
                                                     (_, i) => (
-                                                        <FontAwesomeIcon key={i} icon={faStar} style={{ width: "20px", height: "20px", marginRight: "5px" }}/>
+                                                        <FontAwesomeIcon key={i} icon={faStar} style={{marginRight: "5px" }}/>
                                                     ) 
                                                 )}
 

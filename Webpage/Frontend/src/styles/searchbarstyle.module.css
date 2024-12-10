@@ -22,3 +22,40 @@ select{
     width: 17rem;
     margin-right: .5rem;
 }
+
+@media(845px <= width <= 1150px) {
+    .mainContainer{
+        border: 1px solid  #168aad;
+        width: max-content;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding-left: 0;
+
+    }
+    .mainContainer p {
+        font-size: .9rem;
+    }
+    .mainContainer form input {
+        width: auto
+    }
+}
+
+@media(790px <= width <= 845px) {
+    .mainContainer{
+        padding-left: 0;
+    }
+    .mainContainer p {
+        font-size: .9rem;
+    }
+    .mainContainer form input{
+        width: 9rem
+    }
+}
+
+@media(width <= 789px) {
+    .mainContainer{
+        display: none;
+    }
+}

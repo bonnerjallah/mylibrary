@@ -193,11 +193,12 @@ const HomeBase = () => {
             {currentDay && <p>{currentDay}</p>}
           </div>
         </div>
+
         <div className={homestyle.weeklybookContainer}>
           {bookOfTheWeek && (
             <div className={homestyle.weeklybookWrapper}>
               <NavLink to={`/BookDetails/${bookOfTheWeek._id}`}>
-                <img src={`${backEndUrl}/booksimages/${bookOfTheWeek.bookImageUrl}`} alt="Book Image" width="300" height="400" />
+                <img src={`${backEndUrl}/booksimages/${bookOfTheWeek.bookImageUrl}`} alt="Book Image"/>
               </NavLink>
               <div className={homestyle.bookDiscriptions}>
                 <p>Title: <NavLink to={`/BookDetails/${bookOfTheWeek._id}`}><span>{bookOfTheWeek.bookTitle}</span></NavLink></p>
@@ -264,6 +265,7 @@ const HomeBase = () => {
           </div>
         </div>  
       </div>
+
       <div className={homestyle.joinSection}>
         <div style={{display:"flex", justifyContent:"center", width:"80%"}}>
           <img src="/HandsDown.jpg" alt="" />
@@ -274,9 +276,10 @@ const HomeBase = () => {
           </div>
         </div>
         <div style={{display:"flex", alignItems:"center"}}>
-          <img src="/Screenshot2.jpg" alt="book picture" width="100%" height="50%" />
+          <img src="/Screenshot2.jpg" alt="book picture"  />
         </div>
       </div>
+      
       <div className={homestyle.followUsersContainer}>
         <div className={homestyle.followWrapper}>
           <h2>Follow other users and book reviewers</h2>

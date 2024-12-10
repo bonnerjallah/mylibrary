@@ -223,6 +223,18 @@ nav ul li.reviews a{
     cursor: pointer;
 }
 
+@media(500px <= width <= 766px) {
+    nav ul li a {
+        font-size: 1rem;
+    }
+}
+
+@media(300px <= width <= 500px) {
+    nav ul li a {
+        font-size: .7rem;
+    }
+}
+
 
 
 

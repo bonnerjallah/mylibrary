@@ -37,6 +37,9 @@
 
 .booksContainer{
     margin-top: .5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .booksWrapper{
@@ -53,7 +56,8 @@
 
 }
 
-.bookTitleWrapper p span{
+.bookTitleWrapper p span,
+.bookTitleWrapper p small{
     color: white
 }
 
@@ -61,3 +65,105 @@
     font-size: 1.2rem;
     margin-top: .5rem;
 }
+
+
+@media(500px <= width <= 765px) {
+    .bookTitleWrapper p {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .bookdiscriptionWrapper p{
+        font-size: 1rem;
+    }
+
+    .booksWrapper{
+        max-height: 20rem;
+    }
+
+    .pageHeader h1{
+        font-size: 2rem;
+    }
+
+    .bookTitleWrapper p small{
+        font-size: .9rem;
+        margin-left: .5rem;
+    }
+
+    .bookTitleWrapper p span{
+        font-size: .9rem;
+        margin-left: .5rem;
+    }
+
+    .bookdiscriptionWrapper{
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        height: 10rem;
+    }
+
+    .bookImageWrapper img{
+        width: 10rem;
+        height: 15rem;
+
+    }
+}
+
+@media(200px <= width <= 500px) {
+    .bookTitleWrapper p {
+        font-size: .7rem;
+        font-weight: bold;
+    }
+
+    .bookdiscriptionWrapper p{
+        font-size: .7rem;
+    }
+
+    .booksWrapper{
+        max-height: 20rem;
+    }
+
+    .pageHeader h1{
+        font-size: 1.5rem;
+    }
+
+    .bookTitleWrapper p {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bookTitleWrapper p small{
+        font-size: .7rem;
+        margin-left: .5rem;
+    }
+
+    .bookTitleWrapper p span{
+        font-size: .7rem;
+        margin-left: .5rem;
+    }
+
+    .bookdiscriptionWrapper{
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        height: 10rem;
+    }
+
+    .bookImageWrapper img{
+        width: 10rem;
+        height: 15rem;
+
+    }
+
+}
+
+@media(300px <= width <= 350px) {
+    .mainContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .booksWrapper{
+        width: 100%;
+        align-self: center;
+    }
+}
+

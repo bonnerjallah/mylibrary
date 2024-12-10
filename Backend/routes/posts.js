@@ -92,7 +92,7 @@ const checkOutBooks =  async (req, res) => {
         }
 
         const bookInCatalog = await Book.findById(bookId)
-        const bookFromSuggestion = await BooksSuggestions.findById(bookId)
+        const bookFromSuggestion = await BookSuggestions.findById(bookId)
 
         let bookAvailable = null
 

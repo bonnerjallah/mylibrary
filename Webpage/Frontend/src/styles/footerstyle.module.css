@@ -40,9 +40,25 @@
 }
 
 
+
+
 .facebook:hover,
 .instagram:hover,
 .twiter:hover{
     color: white;
     cursor: pointer;
+}
+
+@media(250px <= width <= 500px) {
+    .socialIcons{
+        font-size: 1rem
+        ;
+    }
+
+    .mainContainer{
+        display: flex;
+        flex-direction: column;
+        height: max-content;
+        align-items: center;
+    }
 }
