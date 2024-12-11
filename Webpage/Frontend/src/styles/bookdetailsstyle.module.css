@@ -50,6 +50,7 @@
     align-items: center;
 }
 
+
 .holdButton{
     width: 100%;
     height: 2rem;
@@ -75,7 +76,7 @@
 }
 
 .holdNotAvailable{
-    width: 10rem;
+    width: 100%;
     height: 2rem;
     background-color: red;
     border: none;
@@ -204,6 +205,7 @@
     text-decoration: underline;
 }
 
+
 .cummunityContainer h4{
     margin-bottom: 2rem;
 }
@@ -212,6 +214,7 @@
 .cummunityContainer form {
     background-color: rgb(219, 235, 235);
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
     text-align: center;
     font-size: 1.2rem;
@@ -233,13 +236,20 @@
     position: relative;
 }
 
+.communitySubmitButtonWrapper{
+    height: 3rem;
+    position: relative;
+    width: 30%;
+
+}
+
 .communitySubmitButtonWrapper button{
     margin-left: 2rem;
     width: 7rem;
     height: 1.5rem;
     position: absolute;
-    right: 2.2rem;
-    bottom: .3rem;
+    right:0;
+    top: .6rem;
     background-color: green;
     cursor: pointer;
     border: none;
@@ -363,6 +373,16 @@
     .aboutBookWrapper{
         width: 100%;
         margin-top: 3rem;
+    }
+
+    .cummunityContainer{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .communityratingWrapper{
+        display: flex;
+        flex-direction: column;
     }
 }
 

@@ -272,7 +272,7 @@ const ReviewerComponent = () => {
                                     <img src={`${backEndUrl}/booksimages/${filterBookData[0].bookImageUrl}`} alt=" book Image" width="80" height="90" />
                                 </div>
                             ) : (
-                                <BookImage size={100}/>
+                                <BookImage size="100%"/>
                             )}
                         </div>
                         <div className={shelvestyle.ratingStarAndSearchBookContainer}>

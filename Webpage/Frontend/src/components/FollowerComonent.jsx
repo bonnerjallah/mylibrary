@@ -118,15 +118,18 @@ const FollowerComonent = () => {
                                         ) }</p>
                                     </div>
                                 </div>
-                                {loggedInUser && loggedInUser.user.following && loggedInUser.user.following.includes(member._id.toString()) ? (
-                                    <div >
-                                        <p style={{backgroundColor: "#0353a4", borderRadius:"2rem", width:"5rem", height:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white" }}> Following </p>
-                                    </div>
-                                ) : (
-                                    <div onClick={() => handleRequestToFollow(member._id, member.username)} className={shelvestyle.followButtonWrapper}>
-                                        <p style={{backgroundColor: "#ffe14c", borderRadius:"2rem", width:"5rem", height:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white" }}> Follow </p>
-                                    </div>
-                                )}
+                                <>
+                                    {loggedInUser && loggedInUser.user.following && loggedInUser.user.following.includes(member._id.toString()) ? (
+                                        <div className={shelvestyle.followBttnToClick}>
+                                            <p style={{backgroundColor: "#0353a4", borderRadius:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white" }}> Following </p>
+                                        </div>
+                                    ) : (
+                                        <div onClick={() => handleRequestToFollow(member._id, member.username)} className={shelvestyle.followButtonWrapper}>
+                                            <p style={{backgroundColor: "#ffe14c", borderRadius:"2rem", width:"5rem", height:"2rem", display:"flex", justifyContent:"center", alignItems:"center", color:"white" }}> Follow </p>
+                                        </div>
+                                    )}
+                                </>
+                                
                             </div>
                         )
                     ))}
